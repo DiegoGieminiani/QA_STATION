@@ -1,0 +1,95 @@
+{% block content %}
+<style>
+    /* Estructura de la página */
+    .about-us-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .sidebar-left, .sidebar-right {
+        width: 20%;
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        height: fit-content;
+    }
+
+    .about-us-content {
+        width: 55%;
+        padding: 20px;
+    }
+
+    .about-us-content h1, .about-us-content h2 {
+        color: #333;
+    }
+
+    .about-us-content .highlight {
+        background-color: #e0f5d4;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .about-us-content p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* Estilos para los enlaces de las barras laterales */
+    .sidebar-left ul, .sidebar-right ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar-left ul li, .sidebar-right ul li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-left ul li a, .sidebar-right ul li a {
+        text-decoration: none;
+        color: #27ae60;
+        font-weight: bold;
+    }
+
+    .sidebar-left ul li a:hover, .sidebar-right ul li a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="about-us-container">
+    <!-- Sidebar Izquierda -->
+    <div class="sidebar-left">
+        <h2>Visión General</h2>
+        <ul>
+            <li><a href="#">¿Por qué QA Station?</a></li>
+            <li><a href="#">Diferencias Clave</a></li>
+            <li><a href="#">Tópico 2</a></li>
+            <li><a href="#">Tópico 3</a></li>
+            <li><a href="#">Tópico 4</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="about-us-content">
+        <h1>¿Por qué QA Station?</h1>
+        <div class="highlight">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae magna et justo pulvinar lobortis non sed est.</p>
+        </div>
+        <h2>En pocas palabras</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae magna et justo pulvinar lobortis non sed est. Vestibulum ac diam quis elit lobortis elementum nec et quam.</p>
+        
+        <h2>¿Quién usa QA Station?</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae magna et justo pulvinar lobortis non sed est.</p>
+    </div>
+
+    <!-- Sidebar Derecha -->
+    <div class="sidebar-right">
+        <h2>Contenido</h2>
+        <ul>
+            <li><a href="#">¿Por qué QA Station?</a></li>
+            <li><a href="#">En pocas palabras</a></li>
+            <li><a href="#">¿Quién usa QA Station?</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

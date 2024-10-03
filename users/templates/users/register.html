@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crea tu cuenta - QA Station{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Crea tu cuenta</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Esto renderiza los campos del formulario -->
+        <button type="submit" class="btn btn-primary">Continuar</button>
+    </form>
+    <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+</div>
+{% endblock %}

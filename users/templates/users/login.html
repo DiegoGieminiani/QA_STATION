@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicia Sesión - QA Station{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Bienvenidos</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Esto renderiza los campos del formulario -->
+        <button type="submit" class="btn btn-primary">Continuar</button>
+    </form>
+    <p>¿Olvidaste tu contraseña? <a href="{% url 'password_reset' %}">Recupérala aquí</a></p>
+    <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+</div>
+{% endblock %}
