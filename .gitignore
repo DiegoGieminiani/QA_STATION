@@ -4,9 +4,7 @@
 *.pyc
 __pycache__/
 db.sqlite3
-/static/
 .env
-/media/
 
 # Virtual environments
 venv/
