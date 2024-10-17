@@ -8,7 +8,7 @@ import json
 # Renderizar la página principal
 def main_page(request):
     print("Vista main_page llamada")
-    return render(request, 'functional_test/main.html')
+    return render(request, 'functional_tests/main.html')
 
 # Ruta que ejecuta las pruebas manualmente desde un formulario
 def run_tests(request):
@@ -67,4 +67,4 @@ def run_tests(request):
 
 # Mostrar los resultados de las pruebas
 def results_page(request):
-    return render(request, 'functional_test/results.html')
+    return render(request, 'functional_tests/results.html')
