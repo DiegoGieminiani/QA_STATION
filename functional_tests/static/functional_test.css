@@ -1,0 +1,149 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 50px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+}
+
+/* Styles for action rows */
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Estilos para los inputs */
+.input-group input {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilos para el select */
+.input-group select {
+    padding: 12px 30px 12px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    appearance: none;
+    background: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjE0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYuNzIgNy40MiAxMiAxMi4xNCA3LjI4IDcuNDIgNmw2IDYtNiA2IDEuMjggMS4yOCA1LTUuMDYgNS4wNi01LjA2ek0wIDIwaDI0djJoLTI0eiIvPjwvc3ZnPg==') no-repeat;
+    background-position: calc(100% - 10px) center;
+    background-size: 22px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.delete-btn {
+    background-color: transparent;
+    color: rgb(136, 159, 158);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background-color: transparent;
+    color: darkred;
+}
+
+.log-url {
+    color: blue;
+    font-weight: bold;
+}
+
+.log-ok {
+    color: green;
+    font-weight: bold;
+}
+
+.log-error {
+    color: red;
+    font-weight: bold;
+}
+
+.log-check {
+    color: green;
+    font-weight: bold;
+}
+
+.log-success {
+    color: green;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.log-failure {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.real-time-logs {
+    color: gray;
+    font-style: italic;
+}
+
+.log-final-url {
+    color: blue;
+}
+
+.log-final-check {
+    color: green;
+}
+
+.log-final-error {
+    color: red;
+}
+
+.log-final-success {
+    color: darkgreen;
+    font-weight: bold;
+}
+
+.log-final-failure {
+    color: darkred;
+    font-weight: bold;
+}
