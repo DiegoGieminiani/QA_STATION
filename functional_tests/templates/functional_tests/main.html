@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'functional_test.css' %}">
+    <title>QA Station</title>
+    <script src="{% static 'functional_test.js' %}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Proyecto: QA Station</h1>
+        <form id="testForm" action="{% url 'run_tests' %}" method="POST">
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" placeholder="Ingrese URL" required>
+            {% csrf_token %}
+            <h2>Pruebas</h2>
+            <div id="actionContainer">
+                <!-- Primer bloque de acción inicial -->
+                <div class="action-row">
+                    <div class="input-group">
+                        <!-- Añadir sufijos [] para que Django los reciba como listas -->
+                        <select name="category[]" onchange="populateActions(this)">
+                            <option value="">Seleccione una categoría</option>
+                            <option value="navigation">Navigation</option>
+                            <option value="forms">Forms</option>
+                            <option value="alerts">Alerts</option>
+                            <option value="alerts">Modals</option>
+                            <option value="javascript">Javascript</option>
+                            <option value="keyboard_mouse">Javascript</option>
+                            <option value="data_extraction">Data Extraction</option>
+                            <option value="verifications">Verifications</option>
+                        </select>           
+                        <select name="action[]" onchange="toggleInputField(this)">
+                            <option value="">Seleccione una acción</option>
+                        </select>
+                        <!-- Ajuste de nombres para que Django los reciba correctamente como listas -->
+                        <input type="text" name="element_type[]" placeholder="Tipo de elemento (e.g., name)" required>
+                        <input type="text" name="value[]" placeholder="Valor del selector (e.g., q)" required>
+                        <input type="text" name="input_value[]" placeholder="Texto a ingresar" style="display:none;">
+                    </div>
+
+                    <button type="button" class="delete-btn" onclick="removeRow(this)">✖</button>
+                </div>
+            </div>
+
+            <!-- Botones para añadir acciones y ejecutar las pruebas -->
+            <button type="button" onclick="addRow()">Añadir Acción</button>
+            <button type="submit" id="executeBtn">Ejecutar Pruebas</button>
+        </form>
+
+        <!-- Contenedor para mostrar los logs en tiempo real -->
+        <div id="log-container">
+            <h3>Logs</h3>
+            <div id="log-output"></div>
+        </div>
+    </div>
+</body>
+</html>

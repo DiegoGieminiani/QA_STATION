@@ -65,7 +65,10 @@ ROOT_URLCONF = 'qa_station.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Asegúrate de que 'templates' esté aquí
+        'DIRS': [
+            BASE_DIR / "templates",
+            BASE_DIR / "functional_tests/templates",  # Añade la carpeta de templates de functional_tests
+        ], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,9 +134,16 @@ STATIC_URL = '/static/'
 # Directorio donde Django recopilará todos los archivos estáticos para servirlos en producción
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Rutas adicionales de archivos estáticos
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Archivos estáticos generales
+    BASE_DIR / "functional_tests/static",  # Archivos estáticos específicos de functional_tests
+]
+
 # Configuración de archivos multimedia (si aplicas multimedia en el proyecto)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
