@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'about_us',
     'user_projects',
     'ai_module',
+    # Tests
     'functional_tests', 
+    'django_extensions',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -122,8 +125,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+# URL que utilizará Django para acceder a los archivos estáticos
+STATIC_URL = '/static/'
 
-STATIC_URL = 'static/'
+# Directorio donde Django recopilará todos los archivos estáticos para servirlos en producción
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Configuración de archivos multimedia (si aplicas multimedia en el proyecto)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
