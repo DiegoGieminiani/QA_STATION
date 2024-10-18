@@ -1,4 +1,4 @@
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
 

@@ -1,7 +1,7 @@
 from selenium.common.exceptions import NoAlertPresentException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 import time
 
 class PromptAlertAction(BaseAction):

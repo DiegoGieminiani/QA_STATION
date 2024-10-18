@@ -1,4 +1,4 @@
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, UnexpectedTagNameException
 from selenium.webdriver.support import expected_conditions as EC

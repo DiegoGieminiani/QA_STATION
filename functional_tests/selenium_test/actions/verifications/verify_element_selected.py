@@ -1,7 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 
 class VerifyElementSelected(BaseAction):
     def execute(self, element_type, selector_value, timeout=15, **kwargs):

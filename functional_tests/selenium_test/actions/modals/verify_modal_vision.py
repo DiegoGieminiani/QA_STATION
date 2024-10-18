@@ -1,6 +1,5 @@
-
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 
 class VerifyModalVisibleAction(BaseAction):
     def execute(self, element_type, selector_value, timeout=10, **kwargs):

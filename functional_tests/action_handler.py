@@ -21,8 +21,10 @@ def handle_alert(driver, action, log_message):
             return {'action': action, 'element': 'alert', 'status': 'fail'}
     return None
 
-NO_ELEMENT_ACTIONS = ["accept_alert", "switch_tab", "verify_url"]
-ELEMENT_ACTIONS = ["click", "enter_data", "verify_text"]
+NO_ELEMENT_ACTIONS = [ "accept_alert", "alert_is_present", "confirm_alert", "dismiss_alert", "enter_prompt", "prompt_alert", "execute_script", "back", "forward", "navigate_to_url", "refresh", "switch_tab", "verify_url"]
+
+ELEMENT_ACTIONS = ["click", "enter_data", "verify_text", "select", "extract_attribute", "extract_dropdown_options", "extract_links", "extract_list_items", "extract_table_data", "extract_text", "check_checkbox", "clear_field", "select_radio_button", "submit_form", "change_element_style", "get_element_property", "scroll_into_element", "send_keys","drag_and_drop", "context_click", "double_click", "click_and_hold", "hover", "release", "scroll", "close_modal", "enter_data_in_modal", "open_modal", "submit_modal_form","verify_modal_vision", "scroll_to_element", "verify_attribute_value", "verify_element_has_child", "verify_element_presence ", "verify_element_selected" ]
+
 
 def execute_action(action_instance, action, element_type=None, selector_value=None, **kwargs):
     """Ejecutar la acción usando la instancia mapeada."""

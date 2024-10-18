@@ -1,18 +1,18 @@
-from functional_test.selenium_test.actions.alerts import AcceptAlertAction, AlertIsPresentAction, ConfirmAlertAction, DismissAlertAction, EnterPromptAction, PromptAlertAction
+from functional_tests.selenium_test.actions.alerts import AcceptAlertAction, AlertIsPresentAction, ConfirmAlertAction, DismissAlertAction, EnterPromptAction, PromptAlertAction
 
-from functional_test.selenium_test.actions.data_extraction import ExtractAttributeAction, ExtractDropdownOptionsAction, ExtractLinksAction, ExtractListItemsAction, ExtractTableDataAction, ExtractTextAction
+from functional_tests.selenium_test.actions.data_extraction import ExtractAttributeAction, ExtractDropdownOptionsAction, ExtractLinksAction, ExtractListItemsAction, ExtractTableDataAction, ExtractTextAction
 
-from functional_test.selenium_test.actions.forms import EnterDataAction, SelectAction, CheckCheckboxAction, ClearFieldAction, SelectRadioButtonAction, SubmitFormAction
+from functional_tests.selenium_test.actions.forms import EnterDataAction, SelectAction, CheckCheckboxAction, ClearFieldAction, SelectRadioButtonAction, SubmitFormAction
 
-from functional_test.selenium_test.actions.javascript import ChangeElementStyleAction, ExecuteScriptAction, GetElementPropertyAction, ScrollIntoViewAction
+from functional_tests.selenium_test.actions.javascript import ChangeElementStyleAction, ExecuteScriptAction, GetElementPropertyAction, ScrollIntoViewAction
 
-from functional_test.selenium_test.actions.keyboard_mouse import SendKeysAction, DragAndDropAction, ContextClickAction, DoubleClickAction, ClickAndHoldAction, HoverAction, ReleaseAction, ScrollAction
+from functional_tests.selenium_test.actions.keyboard_mouse import SendKeysAction, DragAndDropAction, ContextClickAction, DoubleClickAction, ClickAndHoldAction, HoverAction, ReleaseAction, ScrollAction
 
-from functional_test.selenium_test.actions.modals import CloseModalAction, EnterDataInModalAction, OpenModalAction, SubmitModalFormAction, VerifyModalVisibleAction
+from functional_tests.selenium_test.actions.modals import CloseModalAction, EnterDataInModalAction, OpenModalAction, SubmitModalFormAction, VerifyModalVisibleAction
 
-from functional_test.selenium_test.actions.navigation import BackAction, ClickAction, ForwardAction, NavigateToUrlAction, RefreshPageAction, ScrollToElementAction, SwitchTabAction
+from functional_tests.selenium_test.actions.navigation import BackAction, ClickAction, ForwardAction, NavigateToUrlAction, RefreshPageAction, ScrollToElementAction, SwitchTabAction
 
-from functional_test.selenium_test.actions.verifications import VerifyTextAction, VerifyUrlAction, VerifyAttributeValue, VerifyElementHasChildWithClass, VerifyElementPresence, VerifyElementSelected
+from functional_tests.selenium_test.actions.verifications import VerifyTextAction, VerifyUrlAction, VerifyAttributeValue, VerifyElementHasChildWithClass, VerifyElementPresence, VerifyElementSelected
 
 class ActionRouter:
     def __init__(self, driver):

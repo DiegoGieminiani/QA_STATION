@@ -1,7 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 import re
 
 class VerifyTextAction(BaseAction):
@@ -24,11 +24,22 @@ class VerifyTextAction(BaseAction):
             )
 
             # Obtener el valor real del campo (usando 'get_attribute' para casos 'readonly')
-            actual_value = element.get_attribute("value").strip()
-
+            actual_value = element.get_attribute("value")
+            
             # Si no hay 'value', intentamos obtener el 'text'
-            if not actual_value:
-                actual_value = element.text.strip()
+            if actual_value is None or actual_value.strip() == '':
+                actual_value = element.text
+
+            # Verificar si actual_value sigue siendo None antes de continuar
+            if actual_value is None:
+                return self.default_response(
+                    action='verify_text',
+                    element=selector_value,
+                    status='fail',
+                    error="Element text or value is None."
+                )
+
+            actual_value = actual_value.strip()
 
             # Verificación robusta de tipos con 'if-elif'
             if isinstance(expected_value, (int, float)):

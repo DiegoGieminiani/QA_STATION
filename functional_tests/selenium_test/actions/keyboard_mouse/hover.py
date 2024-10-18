@@ -1,6 +1,6 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementNotInteractableException
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 
 class HoverAction(BaseAction):
     def execute(self, element_type, selector_value, timeout=10, **kwargs):

@@ -1,5 +1,5 @@
 from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
-from functional_test.selenium_test.base_action import BaseAction
+from functional_tests.selenium_test.base_action import BaseAction
 
 class EnterDataInModalAction(BaseAction):
     def execute(self, element_type, selector_value, input_value, **kwargs):
