@@ -71,4 +71,26 @@ def run_tests(request):
 
 # Mostrar los resultados de las pruebas
 def results_page(request):
-    return render(request, 'functional_tests/results.html')
+    # Asegúrate de que `results` contiene datos válidos
+    results = [
+        {
+            "action": "click",
+            "element": "//h5[text()='Forms']",
+            "status": "success"
+        },
+        {
+            "action": "click",
+            "element": "//span[text()='Practice Form']",
+            "status": "success"
+        },
+        {
+            "action": "enter_data",
+            "element": "firstName",
+            "status": "success",
+            "input_value": "John"
+        }
+        # Más resultados...
+    ]
+    
+    # Pasar los resultados al template
+    return render(request, 'functional_tests/results.html', {'results': results})

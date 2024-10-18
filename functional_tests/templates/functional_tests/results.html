@@ -1,32 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Results</title>
+    <title>Resultados de las Pruebas</title>
+
+    <!-- Incluir el CSS específico de results -->
+    <link rel="stylesheet" href="{% static 'results.css' %}">
 </head>
 <body>
-    <h1>Resultados de las Pruebas</h1>
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Acción</th>
-                <th>Elemento</th>
-                <th>Status</th>
-                <th>Error</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for result in results %}
-            <tr>
-                <td>{{ result.action }}</td>
-                <td>{{ result.element }}</td>
-                <td>{{ result.status }}</td>
-                <td>{{ result.error|default_if_none:"-" }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>Resultados de las Pruebas</h1>
+        
+        <!-- Tabla de resultados -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Acción</th>
+                    <th>Elemento</th>
+                    <th>Status</th>
+                    <th>Valor Ingresado</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.action }}</td>
+                    <td>{{ result.element }}</td>
+                    <td class="{{ result.status|lower }}">{{ result.status }}</td>
+                    <td>{{ result.input_value|default_if_none:"-" }}</td>
+                    <td>{{ result.error|default_if_none:"-" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Gráficos -->
+        <div class="chart-container">
+            <canvas id="statusPieChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="actionBarChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Incluir la librería de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Incluir el JS específico de results -->
+    <script src="{% static 'results.js' %}"></script>
+
+    <script>
+        // Pasar los datos desde Django al archivo JS
+        const results = {{ results|safe }};
+        initializeCharts(results);
+    </script>
 </body>
 </html>
