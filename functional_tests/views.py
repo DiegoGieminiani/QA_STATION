@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from functional_test.runner import TestRunner  # Orquestador de las pruebas
-from functional_test.api.serializers import TestRunSerializer  # Serializer para los datos de las pruebas
+from functional_tests.runner import TestRunner  # Orquestador de las pruebas
+from functional_tests.api.serializers import TestRunSerializer  # Serializer para los datos de las pruebas
 import logging
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Renderizar la página principal
 def main_page(request):
@@ -11,6 +12,9 @@ def main_page(request):
     return render(request, 'functional_tests/main.html')
 
 # Ruta que ejecuta las pruebas manualmente desde un formulario
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def run_tests(request):
     """
     Ruta que ejecuta las pruebas manualmente cuando se envían desde el formulario.

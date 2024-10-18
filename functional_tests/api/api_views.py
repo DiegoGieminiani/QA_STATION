@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import TestRunSerializer  # Importa el serializer para validar el JSON
-from functional_test.runner import TestRunner  # Importa el TestRunner para ejecutar las pruebas
+from functional_tests.runner import TestRunner  # Importa el TestRunner para ejecutar las pruebas
 
 class ExecuteTestsAPI(APIView):
     def post(self, request):

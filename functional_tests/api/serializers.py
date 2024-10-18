@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from functional_test.runner import TestRunner
+from functional_tests.runner import TestRunner
 
 
 class ActionSerializer(serializers.Serializer):

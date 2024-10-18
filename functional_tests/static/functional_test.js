@@ -1,6 +1,5 @@
 let executionCount = 0;  // Contador de ejecuciones
 
-
 // Mapeo de categorías a sus respectivas acciones
 const actionCategories = {
     'navigation': ['click', 'scroll_to_element', 'switch_tab', 'back', 'forward', 'navigate_to_url', 'refresh'],
@@ -11,7 +10,6 @@ const actionCategories = {
     'data_extraction': ['extract_text', 'extract_attribute', 'extract_dropdown_options', 'extract_links', 'extract_list_items', 'extract_table_data'],
     'verifications': ['verify_text', 'verify_url', 'verify_attribute_value', 'verify_element_has_child', 'verify_element_presence', 'verify_element_selected']
 };
-
 
 // Manejador de evento para enviar el formulario
 document.getElementById('testForm').addEventListener('submit', function (event) {
@@ -33,13 +31,21 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
         const element_type = row.querySelector('input[name="element_type[]"]').value;
         const value = row.querySelector('input[name="value[]"]').value;
 
-        if (!action || !element_type || !value) {
+        // Verificar si la acción es diferente a las que no necesitan 'element_type' ni 'value'
+        const actionsWithoutElementTypeValue = ['accept_alert', 'confirm_alert', 'prompt_alert'];
+        if (!actionsWithoutElementTypeValue.includes(action) && (!element_type || !value)) {
             alert("Por favor, asegúrate de que todos los campos estén llenos.");
             formIsValid = false;
-            return;
+            return;  // Salir de la función si falta algún campo obligatorio
         }
 
-        let actionData = { action, element_type, value };
+        let actionData = { action };
+
+        // Añadir 'element_type' y 'value' si no es una acción que las omite
+        if (!actionsWithoutElementTypeValue.includes(action)) {
+            actionData.element_type = element_type;
+            actionData.value = value;
+        }
 
         // Si la acción es "enter_data" o "select", se usa "input_value"
         if (action === 'enter_data' || action === 'select') {
@@ -129,8 +135,8 @@ function addRow() {
                 <option value="">Seleccione una acción</option>
             </select>
             
-            <input type="text" name="element_type[]" placeholder="Tipo de elemento (e.g., name)" required>
-            <input type="text" name="value[]" placeholder="Valor del selector (e.g., q)" required>
+            <input type="text" name="element_type[]" placeholder="Tipo de elemento (e.g., name)">
+            <input type="text" name="value[]" placeholder="Valor del selector (e.g., q)">
             <input type="text" name="input_value[]" placeholder="Texto a ingresar" style="display:none;">
         </div>
         <button type="button" class="delete-btn" onclick="removeRow(this)">✖</button>
@@ -167,7 +173,9 @@ function toggleInputField(selectElement) {
     const inputValueField = inputGroup.querySelector('input[name="input_value[]"]');
     const action = selectElement.value;
 
-    if (action === "accept_alert" || action === "confirm_alert" || action === "prompt_alert") {
+    const actionsWithoutElementTypeValue = ['accept_alert', 'confirm_alert', 'prompt_alert'];
+
+    if (actionsWithoutElementTypeValue.includes(action)) {
         elementTypeField.style.display = "none";
         elementTypeField.required = false;
         valueField.style.display = "none";

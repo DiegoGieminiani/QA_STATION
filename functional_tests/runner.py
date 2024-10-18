@@ -4,7 +4,7 @@ from .action_handler import execute_action  # Ejecutar acciones
 from .action_handler import resolve_variables  # Resolver variables dinámicas
 from .action_handler import retry_action  # Manejador de reintentos
 from .action_handler import handle_alert  # Manejador de alertas (si aplica)
-from functional_test.action_router import ActionRouter 
+from functional_tests.action_router import ActionRouter 
 
 class TestRunner:
     def __init__(self, json_data, retry_attempts=3):
