@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,14 +132,17 @@ USE_TZ = True
 # URL que utilizará Django para acceder a los archivos estáticos
 STATIC_URL = '/static/'
 
-# Directorio donde Django recopilará todos los archivos estáticos para servirlos en producción
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# Si tienes una carpeta de archivos estáticos compartidos:
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
 # Rutas adicionales de archivos estáticos
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Archivos estáticos generales
-    BASE_DIR / "functional_tests/static",  # Archivos estáticos específicos de functional_tests
-]
+#STATICFILES_DIRS = [#
+   # BASE_DIR / "static",  # Archivos estáticos generales
+    #BASE_DIR / "functional_tests/static",  # Archivos estáticos específicos de functional_tests
+#]
 
 # Configuración de archivos multimedia (si aplicas multimedia en el proyecto)
 MEDIA_URL = '/media/'
