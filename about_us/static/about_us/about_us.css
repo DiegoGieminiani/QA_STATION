@@ -1,0 +1,85 @@
+/* about_us/static/about_us.css */
+
+/* Contenedor principal */
+.about-container {
+  display: flex;
+  margin: 0 auto;
+  max-width: 1200px;  /* Limita el ancho máximo del contenedor para que el contenido no se extienda demasiado */
+  padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 20%;
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  position: left;
+  top: 0;
+  margin-left: -150px;
+  height: 100vh;  /* El sidebar ocupa toda la altura de la ventana */
+}
+
+/* Lista de navegación en el sidebar */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+  display: block;
+}
+
+.sidebar ul li a.active {
+  color: #39b54a;
+  font-weight: bold;
+  border-left: 3px solid #39b54a;
+  padding-left: 10px;
+}
+
+/* Contenido principal */
+.content {
+  width: 75%;
+  margin-left: 5%;  /* Añadimos margen para alejar el contenido del sidebar */
+  padding: 20px;
+  max-width: 800px;  /* Limita el ancho máximo del contenido para centrar mejor */
+}
+
+/* Estilo para los títulos */
+.content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: left;  /* Alineación a la izquierda */
+}
+
+.content h2 {
+  font-size: 1.8rem;
+  margin-top: 30px;
+  font-weight: 600;
+  text-align: left;  /* Alineación a la izquierda */
+}
+
+/* Estilo para la caja de "highlight" */
+.highlight {
+  background-color: #ededed;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+/* Estilo para los párrafos */
+.content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+}
