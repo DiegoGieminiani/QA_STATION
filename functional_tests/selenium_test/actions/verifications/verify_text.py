@@ -23,10 +23,10 @@ class VerifyTextAction(BaseAction):
                 EC.presence_of_element_located((by_type, selector))
             )
 
-            # Obtener el valor real del campo (usando 'get_attribute' para casos 'readonly')
+            # Obtener el valor real del campo
             actual_value = element.get_attribute("value")
-            
-            # Si no hay 'value', intentamos obtener el 'text'
+
+            # Si no hay 'value', obtenemos el 'text'
             if actual_value is None or actual_value.strip() == '':
                 actual_value = element.text
 
@@ -39,82 +39,24 @@ class VerifyTextAction(BaseAction):
                     error="Element text or value is None."
                 )
 
-            actual_value = actual_value.strip()
+            # Normalizar los valores eliminando saltos de línea y espacios extra
+            actual_value_clean = actual_value.replace('\n', ' ').strip()
+            expected_value_clean = expected_value.replace('\n', ' ').strip()
 
-            # Verificación robusta de tipos con 'if-elif'
-            if isinstance(expected_value, (int, float)):
-                # Comparación numérica
-                try:
-                    actual_value_num = float(actual_value)
-                    expected_value_num = float(expected_value)
-                    if actual_value_num == expected_value_num:
-                        return self.default_response(
-                            action='verify_text',
-                            element=selector_value,
-                            status='success',
-                            actual_value=actual_value
-                        )
-                    else:
-                        return self.default_response(
-                            action='verify_text',
-                            element=selector_value,
-                            status='fail',
-                            error=f"Expected number: {expected_value}, Actual number: {actual_value}"
-                        )
-                except ValueError:
-                    # Si no se puede convertir a número, falla
-                    return self.default_response(
-                        action='verify_text',
-                        element=selector_value,
-                        status='fail',
-                        error=f"Cannot convert actual value '{actual_value}' to a number."
-                    )
-            
-            elif isinstance(expected_value, str):
-                # Comparación de cadenas
-                expected_value_clean = expected_value.strip()
-                actual_value_clean = actual_value.strip()
-
-                if actual_value_clean == expected_value_clean:
-                    return self.default_response(
-                        action='verify_text',
-                        element=selector_value,
-                        status='success',
-                        actual_value=actual_value_clean
-                    )
-                else:
-                    return self.default_response(
-                        action='verify_text',
-                        element=selector_value,
-                        status='fail',
-                        error=f"Expected text: '{expected_value_clean}', Actual text: '{actual_value_clean}'"
-                    )
-
-            elif isinstance(expected_value, list):
-                # Comparación de listas (por ejemplo, opciones de dropdown)
-                actual_values = actual_value.split(',')  # Supón que las opciones están separadas por coma
-                if all(item in actual_values for item in expected_value):
-                    return self.default_response(
-                        action='verify_text',
-                        element=selector_value,
-                        status='success',
-                        actual_value=actual_values
-                    )
-                else:
-                    return self.default_response(
-                        action='verify_text',
-                        element=selector_value,
-                        status='fail',
-                        error=f"Expected list: {expected_value}, Actual list: {actual_values}"
-                    )
-            
+            # Comparación flexible: verificar si el valor esperado está en el valor real
+            if expected_value_clean in actual_value_clean:
+                return self.default_response(
+                    action='verify_text',
+                    element=selector_value,
+                    status='success',
+                    actual_value=actual_value_clean
+                )
             else:
-                # Caso para otros tipos que podrían agregarse en el futuro
                 return self.default_response(
                     action='verify_text',
                     element=selector_value,
                     status='fail',
-                    error="Unsupported 'expected_value' type."
+                    error=f"Expected text: '{expected_value_clean}', Actual text: '{actual_value_clean}'"
                 )
 
         except TimeoutException:

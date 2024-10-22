@@ -6,12 +6,90 @@ body {
     padding: 0;
 }
 
+/* Sidebar para las pruebas que estará fija a la izquierda */
+.sidebar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 230px;
+    height: 100vh;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar-fixed h2 {
+    margin-bottom: 20px;
+    border: none
+}
+
+#testList {
+    list-style: none;
+    padding: 0;
+    border-radius: 12px;
+}
+
+/* Estilo para los ítems de prueba */
+.test-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px; /* Más redondeado */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 14px; /* Tamaño de texto reducido */
+    height: 40px; /* Altura ajustada */
+}
+
+.test-item input.test-name {
+    border: none;
+    background-color: transparent;
+    width: 80%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+.test-item input.test-name:focus {
+    background-color: #e9ecef;
+    outline: none;
+}
+/* Estilo para ítems activos */
+.test-item.active {
+    background-color: #d1e7dd;
+    font-weight: bold;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra para el activo */
+}
+
+.test-item:hover {
+    background-color: #e9ecef;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra suave al pasar el cursor */
+}
+/* Estilo para el botón de añadir prueba */
+#addTestBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 12px; /* Más redondeado */
+    font-size: 16px;
+}
+
+/* Contenedor principal */
 .container {
+    margin-left: 280px; /* Deja espacio para el sidebar */
     max-width: 1000px;
-    margin: 50px auto;
     padding: 50px;
     background-color: white;
-    border-radius: 30px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -61,11 +139,9 @@ input[type="text"] {
     width: 100%;
     box-sizing: border-box;
     appearance: none;
-    background: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjE0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYuNzIgNy40MiAxMiAxMi4xNCA3LjI4IDcuNDIgNmw2IDYtNiA2IDEuMjggMS4yOCA1LTUuMDYgNS4wNi01LjA2ek0wIDIwaDI0djJoLTI0eiIvPjwvc3ZnPg==') no-repeat;
-    background-position: calc(100% - 10px) center;
-    background-size: 22px;
 }
 
+/* Botones generales */
 button {
     background-color: #4CAF50;
     color: white;
@@ -76,6 +152,8 @@ button {
     border: none;
 }
 
+
+/* Botón eliminar de pruebas y filas de acción */
 .delete-btn {
     background-color: transparent;
     color: rgb(136, 159, 158);
@@ -86,64 +164,49 @@ button {
 }
 
 .delete-btn:hover {
-    background-color: transparent;
     color: darkred;
 }
 
-.log-url {
-    color: blue;
+/* Logs */
+/* Logs */
+#log-container {
+    margin-top: 40px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding-top: 10px; /* Reduce el padding superior */
+}
+
+#log-container h3 {
+    margin-top: 0; /* Remueve el margen superior para evitar espacio adicional */
+    font-size: 16px;
     font-weight: bold;
 }
 
-.log-ok {
-    color: green;
-    font-weight: bold;
+#log-output {
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 12px;
+    margin-top: 10px; /* Añadido para separar los logs del título */
 }
 
-.log-error {
-    color: red;
-    font-weight: bold;
+/* Estilos para el campo de texto editable */
+.test-name {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    width: 85%;
+    cursor: pointer;
 }
 
-.log-check {
-    color: green;
-    font-weight: bold;
+.test-name:hover, .test-name:focus {
+    background-color: #e9ecef;
+    outline: none;
+    border-radius: 20px;
 }
 
-.log-success {
-    color: green;
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-.log-failure {
-    color: red;
-    font-weight: bold;
-    font-size: 1.2em;
-}
-.real-time-logs {
-    color: gray;
-    font-style: italic;
-}
-
-.log-final-url {
-    color: blue;
-}
-
-.log-final-check {
-    color: green;
-}
-
-.log-final-error {
-    color: red;
-}
-
-.log-final-success {
-    color: darkgreen;
-    font-weight: bold;
-}
-
-.log-final-failure {
-    color: darkred;
-    font-weight: bold;
+/* Ocultar contorno al hacer focus en los botones */
+button:focus, .delete-btn:focus {
+    outline: none;
 }
