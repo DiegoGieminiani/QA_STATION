@@ -76,9 +76,6 @@ class ActionRouter:
             "verify_element_presence": VerifyElementPresence,
             "verify_element_selected": VerifyElementSelected
         }
-
-    def route_action(self, action_name):
+    def route_action(self, action_name, params):
         action_class = self.action_map.get(action_name)
-        if action_class:
-            return action_class(self.driver)  # Asegúrate de pasar el driver aquí
-        return None
+        return action_class(self.driver)

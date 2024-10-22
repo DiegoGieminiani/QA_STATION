@@ -9,48 +9,67 @@
     <script src="{% static 'functional_test.js' %}" defer></script>
 </head>
 <body>
+
+    <!-- Contenedor fijo a la izquierda para las pruebas -->
+    <div class="sidebar-fixed">
+        <h2>Pruebas</h2>
+        <div id="testList">
+            <div class="test-item active" id="test-1" onclick="showTest(1)">
+                <input type="text" value="Prueba 1" class="test-name" oninput="updateTestName(1, this.value)">
+                <button type="button" class="delete-btn" onclick="RemoveTestTest(1)">✖</button>
+            </div>
+            <div class="test-item" id="test-2" onclick="showTest(2)">
+                <input type="text" value="Prueba 2" class="test-name" oninput="updateTestName(2, this.value)">
+                <button type="button" class="delete-btn" onclick="RemoveTestTest(2)">✖</button>
+            </div>
+            <div class="test-item" id="test-3" onclick="showTest(3)">
+                <input type="text" value="Prueba 3" class="test-name" oninput="updateTestName(3, this.value)">
+                <button type="button" class="delete-btn" onclick="RemoveTest(3)">✖</button>
+            </div>
+            <button type="button" id="addTestBtn" onclick="addTest()">+ Añadir Prueba</button>
+        </div>
+    </div>
+
+    <!-- Contenedor principal que estará a la derecha de las pruebas -->
     <div class="container">
         <h1>Proyecto: QA Station</h1>
+
         <form id="testForm" action="{% url 'run_tests' %}" method="POST">
             <label for="url">URL:</label>
             <input type="text" id="url" name="url" placeholder="Ingrese URL" required>
             {% csrf_token %}
-            <h2>Pruebas</h2>
+
+            <h2>Acciones</h2>
             <div id="actionContainer">
-                <!-- Primer bloque de acción inicial -->
                 <div class="action-row">
                     <div class="input-group">
-                        <!-- Añadir sufijos [] para que Django los reciba como listas -->
                         <select name="category[]" onchange="populateActions(this)">
                             <option value="">Seleccione una categoría</option>
                             <option value="navigation">Navigation</option>
                             <option value="forms">Forms</option>
                             <option value="alerts">Alerts</option>
-                            <option value="alerts">Modals</option>
+                            <option value="modals">Modals</option>
+                            <option value="keyboard_mouse">Keyboard & Mouse</option>
                             <option value="javascript">Javascript</option>
-                            <option value="keyboard_mouse">Javascript</option>
                             <option value="data_extraction">Data Extraction</option>
                             <option value="verifications">Verifications</option>
-                        </select>           
+                        </select>
                         <select name="action[]" onchange="toggleInputField(this)">
                             <option value="">Seleccione una acción</option>
                         </select>
-                        <!-- Ajuste de nombres para que Django los reciba correctamente como listas -->
                         <input type="text" name="element_type[]" placeholder="Tipo de elemento (e.g., name)" required>
                         <input type="text" name="value[]" placeholder="Valor del selector (e.g., q)" required>
                         <input type="text" name="input_value[]" placeholder="Texto a ingresar" style="display:none;">
                     </div>
-
                     <button type="button" class="delete-btn" onclick="removeRow(this)">✖</button>
                 </div>
             </div>
 
-            <!-- Botones para añadir acciones y ejecutar las pruebas -->
             <button type="button" onclick="addRow()">Añadir Acción</button>
             <button type="submit" id="executeBtn">Ejecutar Pruebas</button>
         </form>
 
-        <!-- Contenedor para mostrar los logs en tiempo real -->
+        <!-- Contenedor para mostrar los logs -->
         <div id="log-container">
             <h3>Logs</h3>
             <div id="log-output"></div>

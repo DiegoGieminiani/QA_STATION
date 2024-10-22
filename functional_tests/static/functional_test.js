@@ -1,4 +1,12 @@
 let executionCount = 0;  // Contador de ejecuciones
+let currentTest = 1;  // Controla la prueba que está activa
+let testCounter = 3;  // Controla el número total de pruebas creadas (3 por defecto)
+const testsData = {};  // Almacena las acciones de cada prueba
+
+// Inicializa con tres pruebas por defecto
+testsData[1] = [];
+testsData[2] = [];
+testsData[3] = [];
 
 // Mapeo de categorías a sus respectivas acciones
 const actionCategories = {
@@ -31,7 +39,6 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
         const element_type = row.querySelector('input[name="element_type[]"]').value;
         const value = row.querySelector('input[name="value[]"]').value;
 
-        // Verificar si la acción es diferente a las que no necesitan 'element_type' ni 'value'
         const actionsWithoutElementTypeValue = ['accept_alert', 'confirm_alert', 'prompt_alert'];
         if (!actionsWithoutElementTypeValue.includes(action) && (!element_type || !value)) {
             alert("Por favor, asegúrate de que todos los campos estén llenos.");
@@ -47,13 +54,11 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
             actionData.value = value;
         }
 
-        // Si la acción es "enter_data" o "select", se usa "input_value"
         if (action === 'enter_data' || action === 'select') {
             const input_value = row.querySelector('input[name="input_value[]"]').value || null;
             actionData.input_value = input_value;
         }
 
-        // Si la acción es "verify_text" u otra verificación, se usa "expected_value"
         if (action.startsWith('verify_')) {
             const expected_value = row.querySelector('input[name="input_value[]"]').value || null;
             actionData.expected_value = expected_value;
@@ -64,10 +69,13 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
 
     if (!formIsValid) return;
 
+    // Almacena las acciones para la prueba actual
+    testsData[currentTest] = actions;
+
     // Crear los datos que vamos a enviar
     const data = {
         url: url,
-        actions: actions
+        tests: testsData
     };
 
     console.log("Datos enviados al servidor:", data);  // Verifica que los datos se están preparando correctamente
@@ -77,15 +85,15 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value  // Incluye el token CSRF
+            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
         },
-        body: JSON.stringify(data)  // Convertir los datos a JSON
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Datos procesados:", data);  // Muestra los datos recibidos del servidor
-        
-        let allSuccess = true;  // Variable para verificar si todas las pruebas son exitosas
+        console.log("Datos procesados:", data);
+
+        let allSuccess = true;
 
         // Mostrar los resultados en el contenedor de logs
         data.results.forEach(result => {
@@ -93,13 +101,11 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
             logEntry.innerHTML = `Acción: ${result.action}, Elemento: ${result.element}, Estado: ${result.status}`;
             logContainer.appendChild(logEntry);
 
-            // Si alguna prueba falló, cambiar el estado de allSuccess
             if (result.status !== 'success') {
                 allSuccess = false;
             }
         });
 
-        // Mostrar el resultado final (check si todo es exitoso, X si alguna falla)
         const finalLogEntry = document.createElement('p');
         if (allSuccess) {
             finalLogEntry.innerHTML = `<span style="color: green;">✔️ Todas las acciones fueron exitosas</span>`;
@@ -109,9 +115,80 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
         logContainer.appendChild(finalLogEntry);
     })
     .catch(error => {
-        console.error("Error en el fetch:", error);  // Captura y muestra cualquier error en el fetch
+        console.error("Error en el fetch:", error);
     });
 });
+
+function addTest() {
+    // Encuentra el número más bajo disponible para una nueva prueba
+    let newTestNumber = 1;
+    while (testsData[newTestNumber]) {
+        newTestNumber++; // Aumentar hasta encontrar un número que no esté en uso
+    }
+
+    const testList = document.getElementById('testList');
+    const newTestDiv = document.createElement('div');
+    
+    newTestDiv.classList.add('test-item');
+    newTestDiv.id = `test-${newTestNumber}`;
+    newTestDiv.innerHTML = `<span>Prueba ${newTestNumber}</span> <button class="delete-btn" onclick="removeTest(${newTestNumber})">✖</button>`;
+    newTestDiv.onclick = function () { showTest(newTestNumber); };
+
+    testList.insertBefore(newTestDiv, document.getElementById('addTestBtn'));  // Añadir la prueba antes del botón de añadir prueba
+    testsData[newTestNumber] = [];  // Inicializar las acciones de la nueva prueba
+}
+
+
+// Función para mostrar una prueba seleccionada y sus acciones
+function showTest(testId) {
+    currentTest = testId;
+
+    // Cambiar el estado activo en la lista de pruebas
+    document.querySelectorAll('.test-item').forEach(item => item.classList.remove('active'));
+    document.getElementById(`test-${testId}`).classList.add('active');
+
+    // Cargar las acciones de la prueba seleccionada
+    const actionContainer = document.getElementById('actionContainer');
+    actionContainer.innerHTML = '';  // Limpiar el contenedor de acciones
+
+    if (testsData[testId].length > 0) {
+        testsData[testId].forEach(actionData => {
+            const newRow = createActionRow(actionData);
+            actionContainer.appendChild(newRow);
+        });
+    } else {
+        // Si no hay acciones, agregar una fila vacía
+        addRow();
+    }
+
+    // Actualizar el título de la prueba
+    document.getElementById('testTitle').innerText = `Prueba ${testId}`;
+}
+
+
+// Función para crear una fila de acción a partir de los datos
+function createActionRow(actionData) {
+    const newRow = document.createElement('div');
+    newRow.classList.add('action-row');
+
+    const actionSelectHTML = Object.entries(actionCategories).map(([category, actions]) => {
+        return actions.map(action => `<option value="${action}" ${actionData.action === action ? 'selected' : ''}>${action}</option>`).join('');
+    }).join('');
+
+    newRow.innerHTML = `
+        <div class="input-group">
+            <select name="action[]">
+                ${actionSelectHTML}
+            </select>
+            <input type="text" name="element_type[]" value="${actionData.element_type || ''}" placeholder="Tipo de elemento">
+            <input type="text" name="value[]" value="${actionData.value || ''}" placeholder="Valor del selector">
+            <input type="text" name="input_value[]" value="${actionData.input_value || ''}" placeholder="Texto a ingresar" style="${actionData.input_value ? 'block' : 'none'};">
+        </div>
+        <button type="button" class="delete-btn" onclick="removeRow(this)">✖</button>
+    `;
+
+    return newRow;
+}
 
 // Función para añadir una fila de acción
 function addRow() {
@@ -135,8 +212,8 @@ function addRow() {
                 <option value="">Seleccione una acción</option>
             </select>
             
-            <input type="text" name="element_type[]" placeholder="Tipo de elemento (e.g., name)">
-            <input type="text" name="value[]" placeholder="Valor del selector (e.g., q)">
+            <input type="text" name="element_type[]" placeholder="">
+            <input type="text" name="value[]" placeholder="">
             <input type="text" name="input_value[]" placeholder="Texto a ingresar" style="display:none;">
         </div>
         <button type="button" class="delete-btn" onclick="removeRow(this)">✖</button>
@@ -163,6 +240,36 @@ function populateActions(selectElement) {
 // Función para eliminar una fila
 function removeRow(button) {
     button.closest('.action-row').remove();
+}
+
+// Función para eliminar una prueba
+function removeTest(testId) {
+    delete testsData[testId];  // Eliminar la prueba de los datos
+
+    const testElement = document.getElementById(`test-${testId}`);
+    if (testElement) {
+        testElement.remove();  // Eliminar visualmente el div de la prueba
+    }
+
+    // Si se eliminan todas las pruebas, añadir una nueva
+    if (Object.keys(testsData).length === 0) {
+        testCounter = 0;  // Reiniciar el contador si todas las pruebas fueron eliminadas
+        addTest();  // Añadir una nueva prueba por defecto
+    }
+}
+
+// Aseguramos que las pruebas 1, 2 y 3 también se puedan eliminar correctamente
+function initializeDefaultTests() {
+    for (let i = 1; i <= 3; i++) {
+        document.getElementById(`test-${i}`).innerHTML = `<span>Prueba ${i}</span> <button class="delete-btn" onclick="removeTest(${i})">✖</button>`;
+    }
+}
+// Llamamos a esta función para inicializar las pruebas por defecto al cargar la página
+initializeDefaultTests();
+
+// Función para actualizar el nombre de la prueba
+function updateTestName(testId, newName) {
+    document.querySelector(`#test-${testId} .test-name`).value = newName;
 }
 
 // Función para mostrar/ocultar input según la acción seleccionada

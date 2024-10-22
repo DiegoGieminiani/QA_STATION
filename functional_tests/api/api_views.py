@@ -1,30 +1,40 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import TestRunSerializer  # Importa el serializer para validar el JSON
-from functional_tests.runner import TestRunner  # Importa el TestRunner para ejecutar las pruebas
+from .serializers import TestRunSerializer
+from .test_case_processor import process_test_cases
 
 class ExecuteTestsAPI(APIView):
     def post(self, request):
-        # Obtener los datos JSON de la solicitud
         json_data = request.data
 
-        # Validar el JSON usando el serializer
-        serializer = TestRunSerializer(data=json_data)
-        
-        # Si el JSON es válido, ejecutar las pruebas
+        # Validar el JSON
+        serializer = TestRunSerializer(data=json_data, many=True)
+
         if serializer.is_valid():
             try:
-                # Pasar los datos validados al TestRunner
-                runner = TestRunner(serializer.validated_data)
-                result = runner.run_tests()
+                # Procesar las pruebas (ya ejecuta el TestRunner dentro de process_test_cases)
+                processed_tests = process_test_cases(serializer.validated_data)
 
-                # Retornar los resultados de las pruebas
-                return Response(result, status=status.HTTP_200_OK)
-            
+                # Verifica que los resultados no estén vacíos
+                if not processed_tests['individual_results']:
+                    print("Error: Lista de resultados vacía.")
+                    return Response({'error': 'No results found'}, status=status.HTTP_204_NO_CONTENT)
+
+                # Imprimir la lista de resultados completa
+                print(f"Lista final de resultados: {processed_tests['individual_results']}")
+
+                # Devuelve los resultados correctamente
+                return Response(processed_tests, status=status.HTTP_200_OK)
+
+            except NameError as e:
+                print(f"Error en la ejecución (NameError): {str(e)}")
+                return Response({'error': f'NameError: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
             except Exception as e:
-                # Si ocurre un error en la ejecución de las pruebas, devolver un mensaje de error
-                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        # Si el JSON no es válido, devolver los errores de validación
+                print(f"Error en la ejecución: {str(e)}")
+                return Response({'error': f'Exception: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Si la validación del serializer falla
+        print(f"Errores de validación: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from functional_tests.runner import TestRunner
+
 
 
 class ActionSerializer(serializers.Serializer):
@@ -36,10 +36,9 @@ class ActionSerializer(serializers.Serializer):
         
         return data
 
-
 class TestRunSerializer(serializers.Serializer):
     url = serializers.URLField()  # La URL de la página que se va a probar
-    actions = ActionSerializer(many=True)  # Una lista de acciones a ejecutar
+    actions = ActionSerializer(many=True)  # Lista de acciones a ejecutar
 
     def validate(self, data):
         # Validar que haya al menos una acción
@@ -53,14 +52,5 @@ class TestRunSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
-        
-        # Aquí ejecutamos la lógica de pruebas basadas en los datos validados
-        url = validated_data['url']
-        actions_data = validated_data['actions']
-        
-
-        # Llamar al TestRunner para ejecutar las pruebas
-        runner = TestRunner(url, actions_data)
-        result = runner.run_tests()  # Ejecutar las pruebas y retornar resultados
-
-        return result
+        # No llamamos al TestRunner directamente aquí
+        return validated_data  # Solo devolver los datos validados

@@ -79,6 +79,7 @@ class BaseAction:
         conditions_map = {
             "visibility": EC.visibility_of_element_located,
             "clickable": EC.element_to_be_clickable,
+            "presence": EC.presence_of_element_located,  # Ejemplo de condición adicional
             # Puedes agregar más condiciones aquí según sea necesario
         }
 
@@ -98,6 +99,7 @@ class BaseAction:
         except Exception as e:
             # Cualquier otro tipo de error
             self.handle_exceptions(e)
+
 
     def default_response(self, action, element, status="success", **extra):
         """
