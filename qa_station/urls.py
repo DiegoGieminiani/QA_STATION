@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('about_us/', include('about_us.urls')),
-    path('documentation/', include('user_documentation.urls'))
-    
+    path('documentation/', include('user_documentation.urls')),
+    path('ai_module/', include('ai_module.urls'))  
 ]

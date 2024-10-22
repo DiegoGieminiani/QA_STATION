@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Casos de Prueba</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Tu archivo CSS adicional si lo necesitas -->
+    <link rel="stylesheet" href="{% static 'ai_module/css/styles.css' %}">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Casos de Prueba</h1>
+        
+        <!-- Mostrar la respuesta de ChatGPT -->
+        <div class="test-cases-container border rounded p-4 shadow-sm bg-light">
+            <div class="test-case">
+                <pre class="bg-white p-3">{{ respuesta|default:"No hay respuesta disponible aún." }}</pre>
+            </div>
+        </div>
+
+        <!-- Formulario para enviar un nuevo mensaje o archivo PDF -->
+        <form method="POST" enctype="multipart/form-data" class="my-4" onsubmit="mostrarLoader()">
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea name="mensaje" class="form-control rounded" rows="3" placeholder="Escribe un mensaje..."></textarea>
+            </div>
+            <div class="mb-3">
+                <input type="file" name="archivo" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+
+        <!-- Icono de carga -->
+        <div class="loading-icon" id="loading" style="display:none;"></div>
+
+        <!-- Botón para activar html_processor.py -->
+        <form action="{% url 'ejecutar_html_processor' %}" method="post" class="my-4" onsubmit="mostrarLoader()">
+            {% csrf_token %}
+            <input type="hidden" name="respuesta" value="{{ respuesta }}">
+            <button type="submit" class="btn btn-success">Ejecutar HTML Processor</button>
+        </form>
+
+        {% if mensaje %}
+            <div class="alert alert-success mt-3">{{ mensaje }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap 5 JS (incluye Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Tu script adicional -->
+    <script src="{% static 'ai_module/js/scripts.js' %}"></script>
+</body>
+</html>
