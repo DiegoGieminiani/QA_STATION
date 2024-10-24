@@ -1,0 +1,17 @@
+.cuadrado {
+    width: 50vw;
+    height: 50vw;
+    max-width: 500px; /* Limitar el tamaño máximo */
+    max-height: 500px; /* Limitar el tamaño máximo */
+    background-color: #8fbc8f;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Espacio entre el cuadrado y el campo de texto */
+}
+
+.campo-texto {
+    border-radius: 20px;
+}
