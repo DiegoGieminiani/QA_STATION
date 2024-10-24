@@ -116,38 +116,81 @@ def procesar_html(respuesta_chatgpt):
         {"role": "system", "content": "Analiza el archivo HTML adjunto y entrega un JSON en este formato para cada caso de prueba"},
         {"role": "system", "content": "Este JSON se le pasara a Selenium , por lo que el element_type debe ser uno de estos valores: id, name, xpath, css_selector, class_name, tag_name, link_text, partial_link"},
         {"role": "system", "content": """
-         {
-  "url": "https://www.tu-url-aqui.com",
-  "actions": [
+         Por ejemplo, si encuentras esta etiqueta:
+         <a class="nav-link" href="#" id="login2" data-toggle="modal" data-target="#logInModal" style="display: block;">Log in</a>
+         la accion seria: click, element_type seria: id, value: seria login2
+         """},
+        {"role": "system", "content": """ Aquí tienes un ejemplo: (E
+[
     {
-      "action": "enter_data",
-      "element_type": "name",
-      "value": "q",
-      "input_value": "Texto a ingresar"
+        "url": "https://www.tu-url-aqui.com",
+        "actions": [
+            {
+                "action": "click",
+                "element_type": "id",
+                "value": "login2"
+            },
+            {
+                "action": "enter_data",
+                "element_type": "name",
+                "value": "q",  // Nombre del campo
+                "input_value": "Texto a ingresar" 
+            },
+            {
+                "action": "submit",
+                "element_type": "xpath",
+                "value": "//button[@type='submit']"
+            }
+        ]
+    },
+    {
+        "url": "https://www.otro-url-aqui.com",
+        "actions": [
+            {
+                "action": "click",
+                "element_type": "css_selector",
+                "value": ".btn-primary"
+            },
+            {
+                "action": "enter_data",
+                "element_type": "id",
+                "value": "email",
+                "input_value": "usuario@example.com"
+            },
+            {
+                "action": "enter_data",
+                "element_type": "id",
+                "value": "password",
+                "input_value": "contraseñaSegura"
+            },
+            {
+                "action": "submit",
+                "element_type": "name",
+                "value": "login"
+            }
+        ]
     }
-  ]
-}
+]
+
+
 
 Asegúrate de sustituir los valores correspondientes según el contenido del documento y el HTML proporcionado.
          """},
+        {"role": "assistant", "content": "La respuesta generada debe ser solo un JSON, nada de explicaciones ni nada, el puro JSON"},
         {"role": "assistant", "content": respuesta_chatgpt},  # Cambiado a usar respuesta_chatgpt
         {"role": "user", "content": prompt}
     ]
 
-    print("ESTA ES LA RESPUESTA_CHATGPT QUE LE PASAMOS:", respuesta_chatgpt)
     
     # Realizar la solicitud a OpenAI
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=mensaje,
-        temperature=0.1,
-        max_tokens=2500
+        temperature=0.1
     )
 
     # Obtener la respuesta de OpenAI
     respuesta = response.choices[0].message.content
     print("Este es el mensaje que entrega la respuesta combinada de casos de prueba:          ",respuesta)
     return respuesta
-
-
 
