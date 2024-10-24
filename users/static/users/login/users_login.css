@@ -1,0 +1,79 @@
+/* Estilos generales */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Contenedor del login que ocupará gran parte de la pantalla */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    background-color: white; /* Fondo blanco */
+}
+
+/* Estilos para el logo */
+.login-logo img {
+    width: 100%;  /* El logo se ajusta al tamaño del formulario */
+    max-width: 400px; /* Tamaño máximo igual al del formulario */
+    height: auto;
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+.login-form {
+    width: 100%;
+    max-width: 400px; /* Tamaño máximo del formulario y del logo */
+    padding: 20px;
+    background-color: white; /* Fondo blanco para el formulario */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Centrar los inputs dentro del formulario */
+    align-items: center;
+}
+
+/* Estilos para los campos de texto */
+.form-group {
+    width: 100%;  /* Asegura que las cajitas ocupen todo el ancho del formulario */
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;  /* Asegura que el padding esté dentro del tamaño total */
+}
+
+/* Estilos para el botón de inicio de sesión */
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1rem;
+    font-weight: 600; /* Aumenta ligeramente el grosor del texto */
+    background-color: #39b54a; /* Color verde */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Suaviza el cambio de color */
+}
+
+.btn-login:hover {
+    background-color: #2e8b3d; /* Un tono más oscuro al hacer hover */
+}

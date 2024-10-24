@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_projects',
     'ai_module',
     # Tests
+    # Tests
     'functional_tests', 
     'django_extensions',
     'rest_framework'
@@ -66,6 +67,10 @@ ROOT_URLCONF = 'qa_station.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            BASE_DIR / "templates",
+            BASE_DIR / "functional_tests/templates",  # Añade la carpeta de templates de functional_tests
+        ], 
         'DIRS': [
             BASE_DIR / "templates",
             BASE_DIR / "functional_tests/templates",  # Añade la carpeta de templates de functional_tests
