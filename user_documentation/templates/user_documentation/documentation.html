@@ -1,33 +1,88 @@
-{% extends 'base.html' %}
-
-{% block title %}Documentación{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="{% static 'user_documentation/user_documentation.css' %}"
+/>
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %} {% block content %}
 <div class="documentation-container">
-    <div class="sidebar-left">
-        <h2>Documentación</h2>
-        <ul>
-            <li><a href="#">Introducción</a></li>
-            <li><a href="#">Cómo crear un proyecto</a></li>
-            <li><a href="#">Pruebas y validaciones</a></li>
-            <li><a href="#">Reportes</a></li>
-        </ul>
-    </div>
+  <!-- Sidebar izquierdo -->
+  <aside class="sidebar sidebar-right">
+    <h2>Contenido</h2>
+    <ul>
+      <!-- Enlaces dentro de la misma página -->
+      <li><a href="#intro">¿Qué es hacer pruebas y su importancia?</a></li>
+      <li><a href="#tipos-pruebas">Tipos de pruebas más importantes</a></li>
+      <ul>
+        <li><a href="#pruebas-funcionales">Pruebas Funcionales</a></li>
+        <li><a href="#pruebas-no-funcionales">Pruebas No Funcionales</a></li>
+        <li><a href="#pruebas-automatizadas">Pruebas Automatizadas</a></li>
+      </ul>
 
-    <div class="documentation-content">
-        <h1>Introducción a QA Station</h1>
-        <p>QA Station es una plataforma para gestionar proyectos de calidad de software, permitiendo automatizar pruebas y generar reportes detallados.</p>
-        <p>En esta sección aprenderás a crear proyectos, realizar pruebas funcionales y automatizadas, y a gestionar reportes de calidad.</p>
-    </div>
+      <!-- Enlaces a otras páginas usando 'url' de Django -->
+      <li>
+        <a href="{% url 'documentation' %}#seccion-automatizacion"
+          >Pruebas Automatizadas en QA Station</a
+        >
+      </li>
+      <ul>
+        <li>
+          <a href="{% url 'documentation' %}#selenium">¿Qué es Selenium?</a>
+        </li>
+        <li>
+          <a href="{% url 'documentation' %}#selenium-qa"
+            >Cómo utiliza QA Station Selenium</a
+          >
+        </li>
+      </ul>
+      <li>
+        <a href="{% url 'documentation' %}#como-realizar-pruebas"
+          >Cómo realizar pruebas en QA Station</a
+        >
+      </li>
+    </ul>
+  </aside>
 
-    <div class="sidebar-right">
-        <h2>Secciones de la documentación</h2>
-        <ul>
-            <li><a href="#">Introducción</a></li>
-            <li><a href="#">Proyectos</a></li>
-            <li><a href="#">Pruebas</a></li>
-            <li><a href="#">Reportes</a></li>
-        </ul>
-    </div>
+  <!-- Contenido principal -->
+  <main class="content documentation-content">
+    <section id="intro">
+      <h1>¿Qué es hacer pruebas y su importancia?</h1>
+      <div class="highlight">
+        <p>Las pruebas de software son un proceso esencial...</p>
+      </div>
+    </section>
+
+    <section id="tipos-pruebas">
+      <h2>Tipos de pruebas más importantes</h2>
+      <p>...</p>
+    </section>
+  </main>
 </div>
+
+<!-- Sidebar derecho -->
+<aside class="sidebar sidebar-left">
+  <ul>
+    <!-- Enlaces dentro de la misma página -->
+    <li><a href="#porque-qa-station">¿Porque QA Station?</a></li>
+    <li><a href="#diferencias-clave">Diferencias Clave</a></li>
+    <li><a href="#topico-2">Topico 2</a></li>
+    <li><a href="#topico-3">Topico 3</a></li>
+    <li><a href="#topico-4">Topico 4</a></li>
+    <li><a href="#topico-5">Topico 5</a></li>
+    <li><a href="#topico-6">Topico 6</a></li>
+    <li><a href="#topico-7">Topico 7</a></li>
+
+    <!-- Enlaces a otras páginas usando 'url' de Django -->
+    <li><a href="{% url 'about_us' %}#seccion-nosotros">Nosotros</a></li>
+    <li>
+      <a href="{% url 'documentation' %}#seccion-documentacion"
+        >Documentación</a
+      >
+    </li>
+  </ul>
+</aside>
+{% endblock %} {% block extra_js %}
+<script src="{% static 'user_documentation/user_documentation.js' %}"></script>
+<script src="{% static 'js/sidebar_navigation.js' %}"></script>
 {% endblock %}
