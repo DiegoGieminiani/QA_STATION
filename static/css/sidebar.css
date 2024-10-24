@@ -1,0 +1,64 @@
+/* Estilos generales para ambos sidebars */
+.sidebar {
+    width: auto;  /* Ajusta automáticamente el ancho según el contenido */
+    max-width: 300px;  /* Ancho máximo aumentado */
+    min-width: 220px;  /* Ancho mínimo aumentado */
+    background-color: #f7f7f7;
+    padding: 20px 15px;  /* Ajustamos el padding para mantener el contenido alineado */
+    border-right: 1px solid #ddd;
+    height: calc(100vh - 80px);  /* Ajustamos la altura del sidebar para no superponerse con el navbar */
+    overflow-y: auto;
+}
+
+/* Sidebar izquierdo */
+.sidebar-left {
+    position: fixed;
+    left: 0;
+    top: 80px;  /* Ajustamos la posición para que comience después del navbar */
+}
+
+/* Sidebar derecho */
+.sidebar-right {
+    position: fixed;
+    right: 0;
+    top: 80px;  /* Ajustamos la posición para que comience después del navbar */
+    border-left: 1px solid #ddd;  /* Añadimos borde izquierdo para el sidebar derecho */
+}
+
+/* Lista de navegación en los sidebars */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+/* Estilo de los enlaces en los sidebars */
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.3rem;  /* Aumentamos el tamaño de las letras */
+    display: block;
+    padding-left: 10px; /* Reducimos el padding para ajustarlo más al centro */
+}
+
+/* Enlaces activos */
+.sidebar ul li a.active {
+    color: #39b54a;
+    font-weight: bold;
+    border-left: 3px solid #39b54a;
+    padding-left: 15px;
+}
+
+/* Hover - Cambiar a color verde */
+.sidebar ul li a:hover {
+    color: #39b54a;
+    font-weight: bold;
+}
+
+/* Scroll suave en el contenido */
+html {
+    scroll-behavior: smooth;
+}

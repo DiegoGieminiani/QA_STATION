@@ -1,17 +1,38 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Inicia Sesión - QA Station{% endblock %}
-
-{% block content %}
-<div class="form-container">
-    <h2>Bienvenidos</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}  <!-- Esto renderiza los campos del formulario -->
-        <button type="submit" class="btn btn-primary">Continuar</button>
-    </form>
-    <p>¿Olvidaste tu contraseña? <a href="{% url 'password_reset' %}">Recupérala aquí</a></p>
-    <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+{% extends 'base.html' %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'users/login/users_login.css' %}" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %} {% block content %}
+<div class="login-container">
+  <!-- Llamada a la imagen del logo -->
+  <div class="login-logo">
+    <img
+      src="{% static 'users/login/image/logo.png' %}"
+      alt="Logo de QA Station"
+    />
+  </div>
+  <form action="/login" method="post" class="login-form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username">Usuario</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Ingresa tu usuario"
+      />
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Ingresa tu contraseña"
+      />
+    </div>
+    <button type="submit" class="btn-login">Iniciar sesión</button>
+  </form>
 </div>
+{% endblock %} {% block extra_js %}
+<script src="{% static 'users/login/users_login.js' %}"></script>
 {% endblock %}
