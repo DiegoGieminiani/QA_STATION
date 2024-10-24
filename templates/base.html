@@ -1,25 +1,42 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}QA Station{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <!-- Incluir la fuente de Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
     <header>
-        <!-- Tu header aquí -->
+      <div class="navbar">
+        <div class="navbar-logo">QA Station</div>
+        <div class="navbar-links">
+          <!-- Enlaces actualizados con rutas correctas a las páginas -->
+          <a href="{% url 'about_us' %}#nosotros">Nosotros</a>
+          <!-- Cambia 'about_us' por la URL que apunta a tu página de "Nosotros" -->
+          <a href="{% url 'documentation' %}#documentacion">Documentación</a>
+          <!-- Cambia 'documentation' por la URL que apunta a tu página de "Documentación" -->
+          <a href="#">Proyectos</a>
+        </div>
+        <div class="user-profile">
+          <img src="https://via.placeholder.com/40" alt="User Profile" />
+          <span>Juanita</span>
+        </div>
+      </div>
     </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
 
-    <footer>
-        <!-- Tu footer aquí -->
-    </footer>
-
-    <script src="{% static 'js/main.js' %}"></script>
-</body>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>

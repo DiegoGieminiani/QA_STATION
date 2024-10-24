@@ -11,11 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-# settings.py
 import os
-
-MEDIA_URL = '/media/'
-
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,7 +48,10 @@ INSTALLED_APPS = [
     'about_us',
     'user_projects',
     'ai_module',
+    # Tests
     'functional_tests', 
+    'django_extensions',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -70,7 +69,10 @@ ROOT_URLCONF = 'qa_station.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Asegúrate de que 'templates' esté aquí
+        'DIRS': [
+            BASE_DIR / "templates",
+            BASE_DIR / "functional_tests/templates",  # Añade la carpeta de templates de functional_tests
+        ], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,13 +132,30 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+# URL que utilizará Django para acceder a los archivos estáticos
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+"""
+# Rutas adicionales de archivos estáticos
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Archivos estáticos generales
+    BASE_DIR / "functional_tests/static",  # Archivos estáticos específicos de functional_tests
+]"""
+
+# Configuración de archivos multimedia (si aplicas multimedia en el proyecto)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 STATIC_URL = '/static/'
 
 # Esto permite que Django busque archivos estáticos en las subcarpetas "static" de cada app
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Si tienes una carpeta "static" global en el proyecto
-]
+#STATICFILES_DIRS = [
+#    BASE_DIR / "static",  # Si tienes una carpeta "static" global en el proyecto
+#]
 
 # Donde se recopilarán todos los archivos estáticos cuando ejecutes 'collectstatic'
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Para producción
