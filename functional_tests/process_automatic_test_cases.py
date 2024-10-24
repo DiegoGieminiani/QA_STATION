@@ -1,6 +1,6 @@
-from functional_tests.runner import TestRunner
+from .runner import TestRunner
 
-def process_test_cases(valid_data):
+def process_automatic_test_cases(valid_data):
     processed_tests = []
     test_id_counter = 1
 
@@ -9,7 +9,7 @@ def process_test_cases(valid_data):
         actions = test.get('actions', [])
         url = test.get('url')
 
-        print(f"Procesando Prueba {test_id}: URL: {url}, Actions: {actions}")
+        print(f"Procesando {test_id}: URL: {url}, Actions: {actions}")
 
         processed_tests.append({
             'id': test_id,
@@ -51,3 +51,4 @@ def process_test_cases(valid_data):
         'individual_results': results,
         'global_results': global_results
     }
+

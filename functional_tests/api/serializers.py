@@ -1,13 +1,11 @@
 from rest_framework import serializers
 
-
-
 class ActionSerializer(serializers.Serializer):
     action = serializers.CharField(max_length=50)
-    element_type = serializers.CharField(max_length=50, required=False)  # Opcional
-    value = serializers.CharField(max_length=255, required=False)  # Opcional
+    element_type = serializers.CharField(max_length=50, required=False)  # Opcional para algunas acciones
+    value = serializers.CharField(max_length=255, required=False)  # Opcional para algunas acciones
     input_value = serializers.CharField(max_length=255, required=False)  # Opcional
-    expected_value = serializers.CharField(max_length=255, required=False)  # Para verificar URL
+    expected_value = serializers.CharField(max_length=255, required=False)  # Para verificar URL o valores esperados
 
     def validate(self, data):
         action = data.get('action')
@@ -16,24 +14,16 @@ class ActionSerializer(serializers.Serializer):
         actions_requiring_element_and_value = ["click", "enter_data", "select", "verify_text"]
         if action in actions_requiring_element_and_value:
             if not data.get('element_type') or not data.get('value'):
-                raise serializers.ValidationError("The fields 'element_type' and 'value' are required for this action.")
-
-        # Validar que 'expected_value' sea obligatorio para 'verify_url'
-        if action == "verify_url" and not data.get('expected_value'):
-            raise serializers.ValidationError("The field 'expected_value' is required for the 'verify_url' action.")
-        
-        # Debug: Verificar que 'expected_value' llega correctamente
-        if action == "verify_url":
-            print(f"Validando verify_url con expected_value: {data.get('expected_value')}")
+                raise serializers.ValidationError("Los campos 'element_type' y 'value' son obligatorios para esta acción.")
 
         # Validar que 'input_value' sea obligatorio para 'enter_data' y 'select'
         if action in ["enter_data", "select"] and not data.get('input_value'):
-            raise serializers.ValidationError("The 'input_value' field is required for 'enter_data' or 'select'.")
+            raise serializers.ValidationError("El campo 'input_value' es obligatorio para la acción 'enter_data' o 'select'.")
 
-        # Validar que 'input_value' no esté presente para la acción 'click'
-        if action == 'click' and data.get('input_value'):
-            raise serializers.ValidationError("The 'input_value' field should not be present for the 'click' action.")
-        
+        # Validar que 'expected_value' sea obligatorio para 'verify_text'
+        if action == "verify_text" and not data.get('expected_value'):
+            raise serializers.ValidationError("El campo 'expected_value' es obligatorio para 'verify_text'.")
+
         return data
 
 class TestRunSerializer(serializers.Serializer):
@@ -43,14 +33,14 @@ class TestRunSerializer(serializers.Serializer):
     def validate(self, data):
         # Validar que haya al menos una acción
         if not data.get('actions'):
-            raise serializers.ValidationError("At least one action must be provided.")
+            raise serializers.ValidationError("Se debe proporcionar al menos una acción.")
 
         # Validar que la URL esté presente
         if not data.get('url'):
-            raise serializers.ValidationError("The URL field is required.")
+            raise serializers.ValidationError("El campo URL es obligatorio.")
 
         return data
 
     def create(self, validated_data):
-        # No llamamos al TestRunner directamente aquí
-        return validated_data  # Solo devolver los datos validados
+        # Este método es para crear la representación validada de los datos
+        return validated_data

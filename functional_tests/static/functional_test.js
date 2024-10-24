@@ -4,9 +4,9 @@ let testCounter = 3;  // Controla el número total de pruebas creadas (3 por def
 const testsData = {};  // Almacena las acciones de cada prueba
 
 // Inicializa con tres pruebas por defecto
-testsData[1] = [];
-testsData[2] = [];
-testsData[3] = [];
+testsData[1] = { actions: [] };  // Usamos un objeto con una propiedad 'actions'
+testsData[2] = { actions: [] };
+testsData[3] = { actions: [] };
 
 // Mapeo de categorías a sus respectivas acciones
 const actionCategories = {
@@ -18,6 +18,32 @@ const actionCategories = {
     'data_extraction': ['extract_text', 'extract_attribute', 'extract_dropdown_options', 'extract_links', 'extract_list_items', 'extract_table_data'],
     'verifications': ['verify_text', 'verify_url', 'verify_attribute_value', 'verify_element_has_child', 'verify_element_presence', 'verify_element_selected']
 };
+// Función para validar si la URL es válida
+function isValidUrl(string) {
+    try {
+        new URL(string);
+        return true;
+    } catch (_) {
+        return false;  
+    }
+}
+// Inicializa las pruebas por defecto y asigna eventos para poder eliminarlas
+function initializeDefaultTests() {
+    for (let i = 1; i <= 3; i++) {
+        document.getElementById(`test-${i}`).innerHTML = `<span>Prueba ${i}</span> <button class="delete-btn" onclick="removeTest(${i})">✖</button>`;
+        // Inicializamos los datos para cada prueba (vacío por defecto)
+        testsData[i] = { url: '', actions: [] };
+    }
+}
+
+// Llamamos a esta función para inicializar las pruebas por defecto al cargar la página
+initializeDefaultTests();
+
+// Función para guardar la URL y acciones de la prueba actual
+function saveCurrentTest() {
+    const url = document.getElementById('url').value;  // Capturar la URL actual
+    const actions = [];  // Aquí guardaremos las acciones
+}
 
 // Manejador de evento para enviar el formulario
 document.getElementById('testForm').addEventListener('submit', function (event) {
@@ -29,9 +55,14 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
     const logContainer = document.getElementById('log-output');
     logContainer.innerHTML = '';  // Limpiar logs anteriores
 
-    // Aquí debes construir las acciones que quieres enviar al servidor
     const actions = [];
     let formIsValid = true;
+
+    // Validar que la URL esté presente y sea válida
+    if (!url || !isValidUrl(url)) {
+        alert("Por favor, ingresa una URL válida.");
+        return;
+    }
 
     // Recorre todas las filas de acción y agrega las acciones al array 'actions'
     document.querySelectorAll('#actionContainer .action-row').forEach((row) => {
@@ -43,12 +74,11 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
         if (!actionsWithoutElementTypeValue.includes(action) && (!element_type || !value)) {
             alert("Por favor, asegúrate de que todos los campos estén llenos.");
             formIsValid = false;
-            return;  // Salir de la función si falta algún campo obligatorio
+            return;
         }
 
         let actionData = { action };
 
-        // Añadir 'element_type' y 'value' si no es una acción que las omite
         if (!actionsWithoutElementTypeValue.includes(action)) {
             actionData.element_type = element_type;
             actionData.value = value;
@@ -69,61 +99,82 @@ document.getElementById('testForm').addEventListener('submit', function (event) 
 
     if (!formIsValid) return;
 
-    // Almacena las acciones para la prueba actual
-    testsData[currentTest] = actions;
+     // Almacenar la URL y las acciones para la prueba actual
+    testsData[currentTest] = { url: url, actions: actions };  // URL específica para cada prueba
+    // Filtrar y enviar solo las pruebas que tengan acciones y URL válidas
+    const data = Object.keys(testsData)
+        .filter(testId => testsData[testId].actions.length > 0 && isValidUrl(testsData[testId].url))
+        .map(testId => ({
+            url: testsData[testId].url,
+            actions: testsData[testId].actions
+        }));
 
-    // Crear los datos que vamos a enviar
-    const data = {
-        url: url,
-        tests: testsData
-    };
+    console.log("Datos que se enviarán:", JSON.stringify(data));
 
-    console.log("Datos enviados al servidor:", data);  // Verifica que los datos se están preparando correctamente
-
-    // Enviar los datos al servidor con fetch
+    // Enviar los datos con fetch
     fetch('/tests/run/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
+            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value  // Incluye el token CSRF
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data)  // Enviar el JSON con los datos de la prueba
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => {
+                logContainer.innerHTML = `<span style="color: red;">Error en el servidor: ${errorData.error || 'Error desconocido'}</span>`;
+                console.error("Error en la respuesta del servidor:", errorData);
+                throw new Error('Error en el servidor');
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         console.log("Datos procesados:", data);
 
-        let allSuccess = true;
+        logContainer.innerHTML = '';  // Limpiar logs anteriores
 
-        // Mostrar los resultados en el contenedor de logs
-        data.results.forEach(result => {
-            const logEntry = document.createElement('p');
-            logEntry.innerHTML = `Acción: ${result.action}, Elemento: ${result.element}, Estado: ${result.status}`;
-            logContainer.appendChild(logEntry);
+        if (data.individual_results && Array.isArray(data.individual_results)) {
+            let allSuccess = true;
+            const totalResults = data.individual_results.length;
+            const successfulResults = data.individual_results.filter(result => result.result === 'success').length;
 
-            if (result.status !== 'success') {
-                allSuccess = false;
-            }
-        });
+            data.individual_results.forEach(result => {
+                const logEntry = document.createElement('p');
+                logEntry.innerHTML = `Acción: ${result.actions.map(a => a.action)}, Estado: ${result.result}`;
+                logContainer.appendChild(logEntry);
 
-        const finalLogEntry = document.createElement('p');
-        if (allSuccess) {
-            finalLogEntry.innerHTML = `<span style="color: green;">✔️ Todas las acciones fueron exitosas</span>`;
+                if (result.result !== 'success') {
+                    allSuccess = false;
+                }
+            });
+
+            const finalLogEntry = document.createElement('p');
+            finalLogEntry.innerHTML = successfulResults === totalResults
+                ? `<span style="color: green;">✔️ Todas las acciones (${successfulResults}/${totalResults}) fueron exitosas</span>`
+                : `<span style="color: red;">❌ ${totalResults - successfulResults} de ${totalResults} acciones fallaron</span>`;
+            logContainer.appendChild(finalLogEntry);
         } else {
-            finalLogEntry.innerHTML = `<span style="color: red;">❌ Algunas acciones fallaron</span>`;
+            console.error("El objeto 'individual_results' no existe o no es un array:", data);
+            const errorEntry = document.createElement('p');
+            errorEntry.innerHTML = `<span style="color: red;">Error: No se recibieron resultados válidos</span>`;
+            logContainer.appendChild(errorEntry);
         }
-        logContainer.appendChild(finalLogEntry);
     })
     .catch(error => {
         console.error("Error en el fetch:", error);
+        const errorEntry = document.createElement('p');
+        errorEntry.innerHTML = `<span style="color: red;">Error al procesar las pruebas: ${error.message}</span>`;
+        logContainer.appendChild(errorEntry);
     });
 });
 
+// Función para agregar una nueva prueba
 function addTest() {
-    // Encuentra el número más bajo disponible para una nueva prueba
     let newTestNumber = 1;
     while (testsData[newTestNumber]) {
-        newTestNumber++; // Aumentar hasta encontrar un número que no esté en uso
+        newTestNumber++;  // Encuentra el número de prueba más bajo disponible
     }
 
     const testList = document.getElementById('testList');
@@ -134,39 +185,39 @@ function addTest() {
     newTestDiv.innerHTML = `<span>Prueba ${newTestNumber}</span> <button class="delete-btn" onclick="removeTest(${newTestNumber})">✖</button>`;
     newTestDiv.onclick = function () { showTest(newTestNumber); };
 
-    testList.insertBefore(newTestDiv, document.getElementById('addTestBtn'));  // Añadir la prueba antes del botón de añadir prueba
-    testsData[newTestNumber] = [];  // Inicializar las acciones de la nueva prueba
+    testList.insertBefore(newTestDiv, document.getElementById('addTestBtn'));
+    testsData[newTestNumber] = { url: '', actions: [] };  // Inicializar la nueva prueba
 }
 
-
-// Función para mostrar una prueba seleccionada y sus acciones
+// Función para mostrar la prueba seleccionada
 function showTest(testId) {
+    // Guardar la prueba actual antes de cambiar a una nueva prueba
+    saveCurrentTest();
+
+    // Actualizar el ID de la prueba actual
     currentTest = testId;
 
-    // Cambiar el estado activo en la lista de pruebas
-    document.querySelectorAll('.test-item').forEach(item => item.classList.remove('active'));
-    document.getElementById(`test-${testId}`).classList.add('active');
+    // Cargar los datos de la nueva prueba desde testsData
+    const testData = testsData[testId];
 
-    // Cargar las acciones de la prueba seleccionada
+    // Cargar la URL en el campo correspondiente
+    document.getElementById('url').value = testData.url || '';  // Si no tiene URL, dejar vacío
+
+    // Limpiar el contenedor de acciones
     const actionContainer = document.getElementById('actionContainer');
-    actionContainer.innerHTML = '';  // Limpiar el contenedor de acciones
+    actionContainer.innerHTML = '';
 
-    if (testsData[testId].length > 0) {
-        testsData[testId].forEach(actionData => {
-            const newRow = createActionRow(actionData);
-            actionContainer.appendChild(newRow);
+    // Cargar cada acción guardada de la prueba en la interfaz
+    if (testData.actions.length > 0) {
+        testData.actions.forEach((actionData) => {
+            const newRow = createActionRow(actionData);  // Crear una fila con los datos de la acción
+            actionContainer.appendChild(newRow);  // Añadir la fila de acción
         });
     } else {
-        // Si no hay acciones, agregar una fila vacía
-        addRow();
+        addRow();  // Si no hay acciones, agregar una fila vacía
     }
-
-    // Actualizar el título de la prueba
-    document.getElementById('testTitle').innerText = `Prueba ${testId}`;
 }
-
-
-// Función para crear una fila de acción a partir de los datos
+// Función para crear una fila de acción
 function createActionRow(actionData) {
     const newRow = document.createElement('div');
     newRow.classList.add('action-row');
@@ -190,6 +241,7 @@ function createActionRow(actionData) {
     return newRow;
 }
 
+
 // Función para añadir una fila de acción
 function addRow() {
     const container = document.getElementById('actionContainer');
@@ -207,11 +259,9 @@ function addRow() {
                 <option value="data_extraction">Data Extraction</option>
                 <option value="verifications">Verifications</option>
             </select>
-
             <select name="action[]" onchange="toggleInputField(this)">
                 <option value="">Seleccione una acción</option>
             </select>
-            
             <input type="text" name="element_type[]" placeholder="">
             <input type="text" name="value[]" placeholder="">
             <input type="text" name="input_value[]" placeholder="Texto a ingresar" style="display:none;">
@@ -220,7 +270,6 @@ function addRow() {
     `;
     container.appendChild(newRow);
 }
-
 // Función para poblar las acciones según la categoría seleccionada
 function populateActions(selectElement) {
     const category = selectElement.value;
@@ -237,40 +286,27 @@ function populateActions(selectElement) {
     }
 }
 
-// Función para eliminar una fila
+// Función para eliminar una prueba
+
 function removeRow(button) {
     button.closest('.action-row').remove();
 }
 
 // Función para eliminar una prueba
 function removeTest(testId) {
-    delete testsData[testId];  // Eliminar la prueba de los datos
-
     const testElement = document.getElementById(`test-${testId}`);
     if (testElement) {
-        testElement.remove();  // Eliminar visualmente el div de la prueba
+        testElement.remove();  // Eliminar el elemento del DOM
     }
-
-    // Si se eliminan todas las pruebas, añadir una nueva
-    if (Object.keys(testsData).length === 0) {
-        testCounter = 0;  // Reiniciar el contador si todas las pruebas fueron eliminadas
-        addTest();  // Añadir una nueva prueba por defecto
-    }
+    delete testsData[testId];  // Eliminar la prueba de los datos
 }
 
-// Aseguramos que las pruebas 1, 2 y 3 también se puedan eliminar correctamente
-function initializeDefaultTests() {
-    for (let i = 1; i <= 3; i++) {
-        document.getElementById(`test-${i}`).innerHTML = `<span>Prueba ${i}</span> <button class="delete-btn" onclick="removeTest(${i})">✖</button>`;
-    }
-}
-// Llamamos a esta función para inicializar las pruebas por defecto al cargar la página
-initializeDefaultTests();
 
 // Función para actualizar el nombre de la prueba
 function updateTestName(testId, newName) {
     document.querySelector(`#test-${testId} .test-name`).value = newName;
 }
+
 
 // Función para mostrar/ocultar input según la acción seleccionada
 function toggleInputField(selectElement) {

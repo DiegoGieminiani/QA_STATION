@@ -2,10 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import TestRunSerializer
-from .test_case_processor import process_test_cases
+from functional_tests.process_automatic_test_cases import process_automatic_test_cases
 
 class ExecuteTestsAPI(APIView):
+    
     def post(self, request):
+        
         json_data = request.data
 
         # Validar el JSON
@@ -14,7 +16,7 @@ class ExecuteTestsAPI(APIView):
         if serializer.is_valid():
             try:
                 # Procesar las pruebas (ya ejecuta el TestRunner dentro de process_test_cases)
-                processed_tests = process_test_cases(serializer.validated_data)
+                processed_tests = process_automatic_test_cases(serializer.validated_data)
 
                 # Verifica que los resultados no estén vacíos
                 if not processed_tests['individual_results']:

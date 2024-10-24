@@ -39,7 +39,7 @@ class ActionRouter:
             "check_checkbox": CheckCheckboxAction,
             "clear_field": ClearFieldAction,
             "select_radio_button": SelectRadioButtonAction,
-            "submit_form": SubmitFormAction,
+            "submit": SubmitFormAction,
             # JavaScript
             "change_element_style": ChangeElementStyleAction,
             "execute_script": ExecuteScriptAction,
@@ -76,6 +76,7 @@ class ActionRouter:
             "verify_element_presence": VerifyElementPresence,
             "verify_element_selected": VerifyElementSelected
         }
+        
     def route_action(self, action_name, params):
         action_class = self.action_map.get(action_name)
         return action_class(self.driver)
