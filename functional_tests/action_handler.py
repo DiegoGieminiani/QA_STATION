@@ -31,7 +31,7 @@ ELEMENT_ACTIONS = [
     "click", "enter_data", "verify_text", "select", "extract_attribute", 
     "extract_dropdown_options", "extract_links", "extract_list_items", 
     "extract_table_data", "extract_text", "check_checkbox", "clear_field", 
-    "select_radio_button", "submit_form", "change_element_style", 
+    "select_radio_button", "submit", "change_element_style", 
     "get_element_property", "scroll_into_element", "send_keys", "drag_and_drop", 
     "context_click", "double_click", "click_and_hold", "hover", "release", 
     "scroll", "close_modal", "enter_data_in_modal", "open_modal", 

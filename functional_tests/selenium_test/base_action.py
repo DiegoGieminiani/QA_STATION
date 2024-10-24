@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException
 from selenium.webdriver.common.by import By
+import time  # Para el delay controlado
 
 class BaseAction:
     def __init__(self, driver):
@@ -42,7 +43,7 @@ class BaseAction:
         print(message)
         raise exception  # Volvemos a lanzar la excepción para que el flujo la maneje
 
-    def get_element(self, element_type, selector_value, timeout=10, check_visibility=False, check_clickable=False):
+    def get_element(self, element_type, selector_value, timeout=30, check_visibility=True, check_clickable=False):
         """
         Método para obtener un elemento dado su tipo y selector, con manejo de tiempo de espera.
         Puede opcionalmente verificar si el elemento es visible o clickeable.
@@ -52,19 +53,28 @@ class BaseAction:
             
             if check_clickable:
                 # Verificar si el elemento es clickeable
-                return WebDriverWait(self.driver, timeout).until(
+                element = WebDriverWait(self.driver, timeout).until(
                     EC.element_to_be_clickable((by_type, selector))
                 )
             elif check_visibility:
                 # Verificar si el elemento es visible
-                return WebDriverWait(self.driver, timeout).until(
+                element = WebDriverWait(self.driver, timeout).until(
                     EC.visibility_of_element_located((by_type, selector))
                 )
             else:
                 # Verificar si el elemento está presente en el DOM
-                return WebDriverWait(self.driver, timeout).until(
+                element = WebDriverWait(self.driver, timeout).until(
                     EC.presence_of_element_located((by_type, selector))
                 )
+            
+            # Desplazar el elemento a la vista
+            self.scroll_into_view(element)
+
+            # Añadir un pequeño delay controlado para garantizar que sea interactuable
+            time.sleep(1)
+            
+            return element
+
         except (TimeoutException, NoSuchElementException, ElementClickInterceptedException) as e:
             # Manejar las excepciones con el método centralizado y volver a lanzarlas
             self.handle_exceptions(e, element_type, selector_value)
@@ -72,15 +82,13 @@ class BaseAction:
             # Cualquier otro tipo de error
             self.handle_exceptions(e)
 
-    def wait_for_condition(self, condition, element_type, selector_value, timeout=15):
-        """
-        Este método maneja condiciones de espera explícita como visibilidad, clicabilidad, etc.
-        """
+    def wait_for_condition(self, condition, element_type, selector_value, timeout=30):
         conditions_map = {
             "visibility": EC.visibility_of_element_located,
             "clickable": EC.element_to_be_clickable,
-            "presence": EC.presence_of_element_located,  # Ejemplo de condición adicional
-            # Puedes agregar más condiciones aquí según sea necesario
+            "presence": EC.presence_of_element_located,
+            "text_to_be_present": EC.text_to_be_present_in_element,
+            "selected": EC.element_to_be_selected
         }
 
         try:
@@ -100,6 +108,17 @@ class BaseAction:
             # Cualquier otro tipo de error
             self.handle_exceptions(e)
 
+    def scroll_into_view(self, element):
+        """
+        Método para desplazar un elemento a la vista usando JavaScript.
+        """
+        try:
+            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", element)
+            print("Elemento desplazado a la vista.")
+        except Exception as e:
+            print(f"Error al desplazar el elemento a la vista: {str(e)}")
+            raise e
+
 
     def default_response(self, action, element, status="success", **extra):
         """
@@ -115,7 +134,6 @@ class BaseAction:
         # Si la acción falla, imprimir el error y permitir que el test falle
         if status == "fail":
             print(f"Test failed at action: {action}, element: {element}")
-            # Aquí puedes agregar lógica adicional para manejar el fallo del test, como detener el flujo
         
         response.update(extra)  # Permite agregar más atributos si es necesario
         return response

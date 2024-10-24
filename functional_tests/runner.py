@@ -37,6 +37,7 @@ class TestRunner:
             except Exception as e:
                 self.log_message(f"Error al cerrar el navegador: {e}")
             self.driver = None
+            
     def handle_single_action(self, action):
         """Manejar la ejecución de una sola acción."""
         action_name = action.get('action')
@@ -90,6 +91,7 @@ class TestRunner:
             self.log_message("Error: La lista test_results sigue vacía después de ejecutar las acciones.")
         else:
             self.log_message(f"test_results llenado correctamente con {len(self.test_results)} resultados.")
+            
 
     def run_tests(self):
         """Método principal para correr las pruebas."""

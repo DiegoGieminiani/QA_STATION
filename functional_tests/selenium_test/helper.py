@@ -16,4 +16,8 @@ def initialize_chrome_driver():
     # Inicializamos el driver de Chrome con las opciones configuradas
     driver = webdriver.Chrome(options=chrome_options)
     
+    # Borrar todas las cookies antes de comenzar
+    driver.delete_all_cookies()
+    print("Cookies eliminadas con éxito.")
+    
     return driver

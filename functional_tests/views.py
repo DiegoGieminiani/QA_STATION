@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from functional_tests.runner import TestRunner  # Orquestador de las pruebas
-from functional_tests.api.serializers import TestRunSerializer  # Serializer para los datos de las pruebas
+from functional_tests.runner import TestRunner
+from functional_tests.api.serializers import TestRunSerializer
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .process_manual_test_cases import process_manual_test_cases  # Importamos la función que ejecuta las pruebas
 
 # Renderizar la página principal
 def main_page(request):
@@ -12,62 +13,68 @@ def main_page(request):
     return render(request, 'functional_tests/main.html')
 
 # Ruta que ejecuta las pruebas manualmente desde un formulario
-from django.views.decorators.csrf import csrf_exempt
-
 @csrf_exempt
-def run_tests(request):
+def run_manual_test(request):
     """
-    Ruta que ejecuta las pruebas manualmente cuando se envían desde el formulario.
+    Ruta que genera el formato JSON de pruebas manuales y las ejecuta.
+    Acumula las pruebas ejecutadas y genera un reporte con todas las pruebas.
     """
+    global manual_test_results  # Usamos una lista global para almacenar los resultados
+
     if request.method == 'POST':
         try:
             # Obtener los datos del cuerpo de la solicitud como JSON
             body_unicode = request.body.decode('utf-8')
-            parameters = json.loads(body_unicode)  # Convertir los datos JSON a un diccionario Python
+            parameters = json.loads(body_unicode)
 
-            # Depurar los datos recibidos para verificar que llegan correctamente
-            print("Datos recibidos en el formulario:", parameters)
+            # Validación inicial para verificar estructura mínima del JSON
+            if not parameters or not isinstance(parameters, list):
+                return JsonResponse({'error': 'El formato de datos proporcionado no es válido.'}, status=400)
 
-            # Verificar que los datos básicos estén presentes
-            if not parameters.get('url') or not parameters.get('actions'):
-                print("Faltan parámetros obligatorios (URL o acciones)")
-                return JsonResponse({'error': 'Faltan parámetros obligatorios (URL o acciones)'}, status=400)
+            # Validación adicional para comprobar que cada prueba tiene 'url' y 'actions'
+            for test in parameters:
+                if 'url' not in test or 'actions' not in test:
+                    return JsonResponse({'error': 'Cada prueba debe contener "url" y "actions".'}, status=400)
 
-            # Procesar las acciones y preparar los datos para el serializer
-            actions = parameters['actions']
+            # Inicializar manual_test_results si no existe previamente
+            if 'manual_test_results' not in globals():
+                manual_test_results = []
 
-            data = {
-                'url': parameters.get('url'),
-                'actions': actions
-            }
+            # Validar el JSON usando el serializer para múltiples pruebas
+            try:
+                serializer = TestRunSerializer(data=parameters, many=True)
+                if serializer.is_valid():
+                    # Procesar las pruebas manuales
+                    formatted_tests = process_manual_test_cases(serializer.validated_data)
 
-            # Depurar los datos que se están enviando al serializer
-            print("Datos preparados para el serializer:", data)
+                    # Acumular los resultados de cada prueba manual en la lista global
+                    manual_test_results.extend(formatted_tests['individual_results'])
 
-            # Validar los datos usando el serializer
-            serializer = TestRunSerializer(data=data)
-            if serializer.is_valid():
-                print("Datos validados correctamente por el serializer")
+                    # Acumular los resultados globales
+                    global_results = [{'id': test.get('id', 'Desconocido'), 'result': test.get('result', 'Desconocido')} for test in manual_test_results]
 
-                # Ejecutar las pruebas si los datos son válidos
-                runner = TestRunner(serializer.validated_data)
-                results = runner.run_tests()  # Ejecutar las pruebas
-                print("Resultados de las pruebas:", results)
-                return JsonResponse({'results': results})
-            else:
-                print("Errores de validación del serializer:", serializer.errors)
-                # Retornar los errores de validación si los datos no son válidos
-                return JsonResponse({'errors': serializer.errors}, status=400)
+                    # Devolver el reporte acumulado con resultados individuales y globales
+                    return JsonResponse({
+                        'individual_results': manual_test_results,
+                        'global_results': global_results  # Global con todas las pruebas ejecutadas
+                    }, status=200)
+                else:
+                    # Devolver errores de validación en caso de que el JSON no sea válido
+                    return JsonResponse({'errors': serializer.errors}, status=400)
+            except Exception as e:
+                logging.error(f"Error en la validación del serializer: {str(e)}")
+                return JsonResponse({'error': 'Error durante la validación de las pruebas.'}, status=500)
+
+        except json.JSONDecodeError:
+            logging.error("Error al decodificar el JSON del cuerpo de la solicitud.")
+            return JsonResponse({'error': 'JSON mal formado en la solicitud.'}, status=400)
 
         except Exception as e:
-            # Registrar cualquier error ocurrido durante la ejecución
-            logging.error(f"Error ejecutando las pruebas: {str(e)}")
-            print(f"Excepción capturada: {str(e)}")
-            return JsonResponse({'error': str(e)}, status=500)
+            logging.error(f"Error procesando las pruebas manuales: {str(e)} - Datos recibidos: {parameters}")
+            return JsonResponse({'error': f'Error interno: {str(e)}'}, status=500)
 
-    # Si no es una solicitud POST, devolver un error
-    print("Método no válido. Se esperaba POST.")
-    return JsonResponse({'error': 'Método inválido'}, status=405)
+    # Si el método no es POST, devolvemos un error
+    return JsonResponse({'error': 'Método inválido. Debes usar POST.'}, status=405)
 
 # Mostrar los resultados de las pruebas
 def results_page(request):
