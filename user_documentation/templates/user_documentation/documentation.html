@@ -1,88 +1,81 @@
-{% extends 'base.html' %} {% load static %} {% block extra_css %}
-<link
-  rel="stylesheet"
-  href="{% static 'user_documentation/user_documentation.css' %}"
-/>
-<link rel="stylesheet" href="{% static 'css/sidebar.css' %}" />
-<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-{% endblock %} {% block content %}
-<div class="documentation-container">
-  <!-- Sidebar izquierdo -->
-  <aside class="sidebar sidebar-right">
-    <h2>Contenido</h2>
-    <ul>
-      <!-- Enlaces dentro de la misma página -->
-      <li><a href="#intro">¿Qué es hacer pruebas y su importancia?</a></li>
-      <li><a href="#tipos-pruebas">Tipos de pruebas más importantes</a></li>
-      <ul>
-        <li><a href="#pruebas-funcionales">Pruebas Funcionales</a></li>
-        <li><a href="#pruebas-no-funcionales">Pruebas No Funcionales</a></li>
-        <li><a href="#pruebas-automatizadas">Pruebas Automatizadas</a></li>
-      </ul>
+{% extends 'base.html' %}
+{% load static %}
 
-      <!-- Enlaces a otras páginas usando 'url' de Django -->
-      <li>
-        <a href="{% url 'documentation' %}#seccion-automatizacion"
-          >Pruebas Automatizadas en QA Station</a
-        >
-      </li>
-      <ul>
-        <li>
-          <a href="{% url 'documentation' %}#selenium">¿Qué es Selenium?</a>
-        </li>
-        <li>
-          <a href="{% url 'documentation' %}#selenium-qa"
-            >Cómo utiliza QA Station Selenium</a
-          >
-        </li>
-      </ul>
-      <li>
-        <a href="{% url 'documentation' %}#como-realizar-pruebas"
-          >Cómo realizar pruebas en QA Station</a
-        >
-      </li>
+{% block extra_css %}
+  <!-- Archivos CSS específicos de la página -->
+  <link rel="stylesheet" href="{% static 'user_documentation/user_documentation.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  
+  <!-- Sidebar Izquierdo -->
+  <aside class="sidebar sidebar-left">
+    <ul>
+      <!-- Enlaces de ancla a secciones dentro de la misma página -->
+      <li><a href="#introduction">Introducción</a></li>
+      <li><a href="#installation">Instalación</a></li>
+      <li><a href="#getting-started">Primeros pasos</a></li>
+      <li><a href="#test-management">Gestión de Pruebas</a></li>
+      <li><a href="#ci-cd-integration">Integración con CI/CD</a></li>
+      <li><a href="#test-reporting">Reportes de Pruebas</a></li>
+      <li><a href="#customization">Personalización de Pruebas</a></li>
+      <li><a href="#support">Soporte</a></li>
     </ul>
   </aside>
 
   <!-- Contenido principal -->
-  <main class="content documentation-content">
-    <section id="intro">
-      <h1>¿Qué es hacer pruebas y su importancia?</h1>
+  <main class="content">
+    <section id="introduction">
+      <h1>Introducción</h1>
       <div class="highlight">
-        <p>Las pruebas de software son un proceso esencial...</p>
+        <p1>Bienvenido a la documentación de QA Station. Aquí encontrarás toda la información necesaria para usar nuestra herramienta y sacarle el máximo provecho a la automatización de pruebas.</p1>
       </div>
     </section>
 
-    <section id="tipos-pruebas">
-      <h2>Tipos de pruebas más importantes</h2>
-      <p>...</p>
+    <section id="installation">
+      <h2>Instalación</h2>
+      <p>Para comenzar a utilizar QA Station, sigue los pasos de instalación detallados a continuación. Nuestra plataforma es compatible con múltiples sistemas operativos y es fácil de configurar.</p>
+    </section>
+
+    <section id="getting-started">
+      <h2>Primeros pasos</h2>
+      <p>Descubre cómo configurar tu primer proyecto de pruebas en QA Station. Te guiaremos a través de los primeros pasos para que puedas ejecutar tus primeras pruebas en minutos.</p>
+    </section>
+
+    <section id="test-management">
+      <h2>Gestión de Pruebas</h2>
+      <p>Aprende a organizar y gestionar tus pruebas en QA Station. Puedes agrupar casos de prueba, crear suites de pruebas y automatizar la ejecución de cada una de ellas.</p>
+    </section>
+
+    <section id="ci-cd-integration">
+      <h2>Integración con CI/CD</h2>
+      <p>QA Station se integra fácilmente con tus pipelines de CI/CD. Automatiza las pruebas en cada despliegue para garantizar que los cambios en tu aplicación no rompan la funcionalidad existente.</p>
+    </section>
+
+    <section id="test-reporting">
+      <h2>Reportes de Pruebas</h2>
+      <p>Genera reportes detallados de cada ejecución de prueba. Con gráficos y resúmenes, podrás identificar rápidamente cualquier fallo y mantener un historial de tus pruebas a lo largo del tiempo.</p>
+    </section>
+
+    <section id="customization">
+      <h2>Personalización de Pruebas</h2>
+      <p>QA Station es altamente personalizable. Configura pruebas a medida, ajusta tiempos de espera, establece condiciones avanzadas y mucho más.</p>
+    </section>
+
+    <section id="support">
+      <h2>Soporte</h2>
+      <p>Si necesitas ayuda, nuestro equipo de soporte está disponible para asistirte. Además, encontrarás recursos adicionales como tutoriales y FAQs en nuestro portal de soporte.</p>
     </section>
   </main>
+
 </div>
 
-<!-- Sidebar derecho -->
-<aside class="sidebar sidebar-left">
-  <ul>
-    <!-- Enlaces dentro de la misma página -->
-    <li><a href="#porque-qa-station">¿Porque QA Station?</a></li>
-    <li><a href="#diferencias-clave">Diferencias Clave</a></li>
-    <li><a href="#topico-2">Topico 2</a></li>
-    <li><a href="#topico-3">Topico 3</a></li>
-    <li><a href="#topico-4">Topico 4</a></li>
-    <li><a href="#topico-5">Topico 5</a></li>
-    <li><a href="#topico-6">Topico 6</a></li>
-    <li><a href="#topico-7">Topico 7</a></li>
+{% endblock %}
 
-    <!-- Enlaces a otras páginas usando 'url' de Django -->
-    <li><a href="{% url 'about_us' %}#seccion-nosotros">Nosotros</a></li>
-    <li>
-      <a href="{% url 'documentation' %}#seccion-documentacion"
-        >Documentación</a
-      >
-    </li>
-  </ul>
-</aside>
-{% endblock %} {% block extra_js %}
-<script src="{% static 'user_documentation/user_documentation.js' %}"></script>
-<script src="{% static 'js/sidebar_navigation.js' %}"></script>
+{% block extra_js %}
+  <!-- Archivos JavaScript específicos de la página -->
+  <script src="{% static 'user_documentation/user_documentation.js' %}"></script>
+  <script src="{% static 'js/sidebar_navigation.js' %}"></script>
 {% endblock %}

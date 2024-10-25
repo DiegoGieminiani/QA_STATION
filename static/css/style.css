@@ -2,16 +2,17 @@
 .navbar {
   background-color: #fff;
   padding: 15px 30px;
-  border-bottom: 2px solid #ddd;
-  display: flex;
+  border-bottom: 4px solid #ddd;
+  display: flex; 
   font-family: 'Poppins', sans-serif;
   align-items: center;
-  justify-content: space-between; /* Distribuir uniformemente */
+  border-radius: 15px;
+
 }
 
 /* Estilos del logo */
 .navbar-logo img {
-  max-width: 100px; /* Tamaño máximo del logo */
+  max-width: 105px; /* Tamaño máximo del logo */
   height: auto; /* Mantener las proporciones */
   display: block; /* Asegurar que se comporte como un bloque */
 }
@@ -38,7 +39,7 @@
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .user-profile img {

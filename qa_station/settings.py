@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'about_us',
     'user_projects',
     'ai_module',
-    # Tests
+
     # Tests
     'functional_tests', 
     'django_extensions',
