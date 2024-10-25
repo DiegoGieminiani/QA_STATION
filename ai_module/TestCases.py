@@ -28,16 +28,6 @@ ID:
 NOMBRE:
 PASO A PASO:
 RESULTADO ESPERADO:
-Inicio de sesión: Verificar que los usuarios puedan iniciar sesión con credenciales válidas y que se muestren mensajes de error para credenciales inválidas.
-Registro de usuario: Asegurar que el proceso de registro funcione correctamente, incluyendo la validación de campos.
-Formularios: Validar entradas y asegurar que los datos se envíen correctamente.
-Navegación: Verificar que todos los enlaces y botones de navegación funcionen correctamente.
-Búsqueda: Asegurar que la función de búsqueda retorne resultados relevantes.
-Carrito de compras: Verificar que los productos se puedan agregar y quitar correctamente.
-Gestión de contenido: Asegurar que los usuarios puedan crear, editar y eliminar contenido según sus permisos.
-Integración con APIs: Verificar que las integraciones funcionen correctamente.
-Mensajes de error y validaciones: Asegurar que se muestren mensajes de error claros.
-Flujo de trabajo: Verificar que los usuarios puedan completar tareas específicas sin interrupciones."
     """}
 ]
 
