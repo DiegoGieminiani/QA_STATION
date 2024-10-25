@@ -19,8 +19,26 @@ def allowed_file(filename):
 
 historial = [
     {"role": "system", "content": "Eres un asistente que ayuda a crear casos de prueba"},
-    {"role": "system", "content": "El titulo del deocumento debe ser profesional y debe contener el nombre de la pagina y obligatoriamente la Url"},
-    {"role": "system", "content": "Los casos de prueba deben contener: ID, Nombre, Paso a Paso y  Respuesta Esperada"}
+    {"role": "system", "content": "El titulo del documento debe ser simple y sencillo de leer, si tablas"},
+    {"role": "system", "content": """
+Genera un conjunto de casos de prueba para una aplicación web, basados en las siguientes pruebas funcionales comunes. Para cada prueba, proporciona un caso de prueba en el siguiente formato:
+
+URL:
+ID:
+NOMBRE:
+PASO A PASO:
+RESULTADO ESPERADO:
+Inicio de sesión: Verificar que los usuarios puedan iniciar sesión con credenciales válidas y que se muestren mensajes de error para credenciales inválidas.
+Registro de usuario: Asegurar que el proceso de registro funcione correctamente, incluyendo la validación de campos.
+Formularios: Validar entradas y asegurar que los datos se envíen correctamente.
+Navegación: Verificar que todos los enlaces y botones de navegación funcionen correctamente.
+Búsqueda: Asegurar que la función de búsqueda retorne resultados relevantes.
+Carrito de compras: Verificar que los productos se puedan agregar y quitar correctamente.
+Gestión de contenido: Asegurar que los usuarios puedan crear, editar y eliminar contenido según sus permisos.
+Integración con APIs: Verificar que las integraciones funcionen correctamente.
+Mensajes de error y validaciones: Asegurar que se muestren mensajes de error claros.
+Flujo de trabajo: Verificar que los usuarios puedan completar tareas específicas sin interrupciones."
+    """}
 ]
 
 def process_chat_request(request):
@@ -52,7 +70,7 @@ def process_chat_request(request):
     mensaje_usuario = request.POST.get('mensaje')
 
     if mensaje_usuario:
-        historial.append({"role": "user", "content": f"Genera el documento de casos de prueba en base a esta URL:\n{mensaje_usuario}"})
+        historial.append({"role": "user", "content": f"Genera el documento de casos de prueba en base a esta URL:\n{mensaje_usuario}, la cual debe ir en el documento generado"})
 
         try:
             # Envía la conversación a la API de OpenAI
