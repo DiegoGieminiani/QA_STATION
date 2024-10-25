@@ -113,14 +113,14 @@ def procesar_html(respuesta_chatgpt):
 
     # Crear el mensaje para OpenAI, usando respuesta_chatgpt en lugar de historial
     mensaje = [
-        {"role": "system", "content": "Analiza el archivo HTML adjunto y entrega un JSON en este formato para cada caso de prueba"},
+        {"role": "system", "content": "Analiza el archivo HTML adjunto en conjunto con el documento de casos de prueba y entrega un JSON para cada caso de prueba"},
         {"role": "system", "content": "Este JSON se le pasara a Selenium , por lo que el element_type debe ser uno de estos valores: id, name, xpath, css_selector, class_name, tag_name, link_text, partial_link"},
         {"role": "system", "content": """
-         Por ejemplo, si encuentras esta etiqueta:
-         <a class="nav-link" href="#" id="login2" data-toggle="modal" data-target="#logInModal" style="display: block;">Log in</a>
-         la accion seria: click, element_type seria: id, value: seria login2
-         """},
-        {"role": "system", "content": """ Aquí tienes un ejemplo: (E
+        Por ejemplo, si encuentras esta etiqueta:
+        <a class="nav-link" href="#" id="login2" data-toggle="modal" data-target="#logInModal" style="display: block;">Log in</a>
+        la accion seria: click, element_type seria: id, value: seria login2
+        """},
+        {"role": "system", "content": """ Aquí tienes un ejemplo de como deberia ser El JSON: 
 [
     {
         "url": "https://www.tu-url-aqui.com",
@@ -133,7 +133,7 @@ def procesar_html(respuesta_chatgpt):
             {
                 "action": "enter_data",
                 "element_type": "name",
-                "value": "q",  // Nombre del campo
+                "value": "q", 
                 "input_value": "Texto a ingresar" 
             },
             {
@@ -175,7 +175,7 @@ def procesar_html(respuesta_chatgpt):
 
 
 Asegúrate de sustituir los valores correspondientes según el contenido del documento y el HTML proporcionado.
-         """},
+        """},
         {"role": "assistant", "content": "La respuesta generada debe ser solo un JSON, nada de explicaciones ni nada, el puro JSON"},
         {"role": "assistant", "content": respuesta_chatgpt},  # Cambiado a usar respuesta_chatgpt
         {"role": "user", "content": prompt}

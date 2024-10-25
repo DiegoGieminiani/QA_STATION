@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .TestCases import process_chat_request
 from .html_processor import procesar_respuesta_chatgpt, procesar_html
+from .json_processor import procesar_y_enviar_json
 
 def test_cases_view(request):
     if request.method == 'POST':
@@ -40,3 +42,18 @@ def ejecutar_html_processor(request):
         'respuesta': respuesta_chatgpt,  # Muestra la respuesta previa
         'mensaje': 'No se ha ejecutado aún el proceso.'
     })
+
+def enviar_json_view(request):
+    if request.method == 'POST':
+        # Aquí deberías obtener `respuesta` desde el procesamiento previo en html_processor
+        respuesta = procesar_html("Aquí va la respuesta que obtienes de html_processor")  # Reemplaza con la llamada adecuada
+
+        # Procesa y envía el JSON
+        resultado = procesar_y_enviar_json(respuesta)
+        if resultado:
+            mensaje = "JSON enviado exitosamente."
+        else:
+            mensaje = "Error al enviar el JSON."
+
+        return JsonResponse({'mensaje': mensaje})
+    return JsonResponse({'mensaje': 'Método no permitido.'}, status=405)
