@@ -1,29 +1,29 @@
-{% extends 'base.html' %} {% load static %} {% block extra_css %}
-<link rel="stylesheet" href="{% static 'about_us/about_us.css' %}" />
-<link rel="stylesheet" href="{% static 'css/sidebar.css' %}" />
-<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-{% endblock %} {% block content %}
-<div class="about-container">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <!-- Archivos CSS específicos de la página -->
+  <link rel="stylesheet" href="{% static 'about_us/about_us.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/sidebar_navigation.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  
   <!-- Sidebar Izquierdo -->
   <aside class="sidebar sidebar-left">
     <ul>
-      <!-- Enlaces dentro de la misma página -->
+      <!-- Enlaces de ancla a secciones dentro de la misma página -->
       <li><a href="#porque-qa-station">¿Porque QA Station?</a></li>
       <li><a href="#diferencias-clave">Diferencias Clave</a></li>
       <li><a href="#topico-2">Topico 2</a></li>
-      <li><a href="#topico-3">Topico 3</a></li>
-      <li><a href="#topico-4">Topico 4</a></li>
-      <li><a href="#topico-5">Topico 5</a></li>
-      <li><a href="#topico-6">Topico 6</a></li>
-      <li><a href="#topico-7">Topico 7</a></li>
-
-      <!-- Enlaces a otras páginas usando 'url' de Django -->
-      <li><a href="{% url 'about_us' %}#seccion-nosotros">Nosotros</a></li>
-      <li>
-        <a href="{% url 'documentation' %}#seccion-documentacion"
-          >Documentación</a
-        >
-      </li>
+      <li><a href="#topico-3">Automatización de Pruebas</a></li>
+      <li><a href="#topico-4">Pruebas Funcionales y No Funcionales</a></li>
+      <li><a href="#topico-5">Integración Continua (CI/CD)</a></li>
+      <li><a href="#topico-6">Documentación Detallada</a></li>
+      <li><a href="#topico-7">Escalabilidad y Personalización</a></li>
+      <li><a href="#topico-8">Soporte y Actualizaciones</a></li>
     </ul>
   </aside>
 
@@ -32,63 +32,57 @@
     <section id="porque-qa-station">
       <h1>¿Porque QA Station?</h1>
       <div class="highlight">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+        <p1>QA Station es la herramienta perfecta para automatizar y gestionar pruebas funcionales y no funcionales en cualquier proyecto de software. Ofrecemos una solución completa para asegurar la calidad de tu aplicación en cada etapa del desarrollo.</p1>
       </div>
     </section>
 
     <section id="diferencias-clave">
       <h2>Diferencias Clave</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+      <p>QA Station se destaca por su modularidad, integración con múltiples herramientas y su capacidad para adaptarse a cualquier flujo de trabajo. Nuestra plataforma es fácil de usar, altamente personalizable, y diseñada para soportar proyectos de cualquier tamaño.</p>
     </section>
 
     <section id="topico-2">
-      <h2>Topico 2</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+      <h2>Características similares</h2>
+      <p>Explora todas las características adicionales de QA Station, diseñadas para facilitar y mejorar la gestión de calidad en tu software.</p>
+    </section>
+
+    <section id="topico-3">
+      <h2>Automatización de Pruebas</h2>
+      <p>QA Station permite la ejecución automática de pruebas funcionales para asegurar que tu aplicación funcione correctamente en todo momento. Con herramientas de última generación como Selenium, podrás ahorrar tiempo y reducir errores manuales.</p>
+    </section>
+
+    <section id="topico-4">
+      <h2>Pruebas Funcionales y No Funcionales</h2>
+      <p>QA Station facilita la ejecución de pruebas tanto funcionales (que validan la lógica de la aplicación) como no funcionales (que evalúan el rendimiento, seguridad y usabilidad). Asegura que tu aplicación no solo funcione bien, sino que también cumpla con los estándares de calidad.</p>
+    </section>
+
+    <section id="topico-5">
+      <h2>Integración Continua (CI/CD)</h2>
+      <p>Integra QA Station con tu pipeline de desarrollo continuo. Automatiza las pruebas en cada despliegue para identificar posibles fallos en las primeras fases del desarrollo y mantener la calidad del código a lo largo del ciclo de vida del proyecto.</p>
+    </section>
+
+    <section id="topico-6">
+      <h2>Documentación Detallada</h2>
+      <p>QA Station te permite generar documentación automatizada de tus pruebas, creando reportes claros y detallados para que puedas analizar los resultados de cada prueba y compartir los hallazgos con tu equipo.</p>
+    </section>
+
+    <section id="topico-7">
+      <h2>Escalabilidad y Personalización</h2>
+      <p>El sistema modular de QA Station te permite escalar tus pruebas y personalizarlas según las necesidades específicas de tu proyecto. Ya sea que necesites realizar pruebas en múltiples navegadores o dispositivos, QA Station está listo para adaptarse a tu flujo de trabajo.</p>
+    </section>
+
+    <section id="topico-8">
+      <h2>Soporte y Actualizaciones</h2>
+      <p>Con QA Station, siempre estarás al día. Nuestro equipo proporciona soporte continuo y actualizaciones regulares para asegurarse de que las herramientas que utilizas estén siempre optimizadas y mejoren constantemente.</p>
     </section>
   </main>
+
 </div>
 
-<!-- Sidebar derecho -->
-<aside class="sidebar sidebar-right">
-  <h2>Contenido</h2>
-  <ul>
-    <!-- Enlaces dentro de la misma página -->
-    <li><a href="#intro">¿Qué es hacer pruebas y su importancia?</a></li>
-    <li><a href="#tipos-pruebas">Tipos de pruebas más importantes</a></li>
-    <ul>
-      <li><a href="#pruebas-funcionales">Pruebas Funcionales</a></li>
-      <li><a href="#pruebas-no-funcionales">Pruebas No Funcionales</a></li>
-      <li><a href="#pruebas-automatizadas">Pruebas Automatizadas</a></li>
-    </ul>
-
-    <!-- Enlaces a otras páginas usando 'url' de Django -->
-    <li>
-      <a href="{% url 'documentation' %}#seccion-automatizacion"
-        >Pruebas Automatizadas en QA Station</a
-      >
-    </li>
-    <ul>
-      <li>
-        <a href="{% url 'documentation' %}#selenium">¿Qué es Selenium?</a>
-      </li>
-      <li>
-        <a href="{% url 'documentation' %}#selenium-qa"
-          >Cómo utiliza QA Station Selenium</a
-        >
-      </li>
-    </ul>
-    <li>
-      <a href="{% url 'documentation' %}#como-realizar-pruebas"
-        >Cómo realizar pruebas en QA Station</a
-      >
-    </li>
-  </ul>
-</aside>
-{% endblock %} {% block extra_js %}
-<script src="{% static 'about_us/about_us.js' %}"></script>
-<script src="{% static 'js/sidebar_navigation.js' %}"></script>
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'about_us/about_us.js' %}"></script>
+  <!-- Archivos JavaScript específicos de la página -->
+  <script src="{% static 'about_us/about_us.js' %}"></script>
+  <script src="{% static 'js/sidebar_navigation.js' %}"></script>
 {% endblock %}

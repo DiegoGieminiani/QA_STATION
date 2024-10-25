@@ -6,17 +6,10 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 
-# Vista de registro
-def register_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Cuenta creada con éxito.')
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'users/register.html', {'form': form})
+# Renderizar la página principal
+def main_view(request):
+    print("Vista main_page llamada")
+    return render(request, 'users/login.html')
 
 # Vista de login
 def login_view(request):
@@ -38,6 +31,18 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
 
+# Vista de registro
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cuenta creada con éxito.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'users/register.html', {'form': form})
+
 # Vista para restablecer la contraseña (solicitud)
 def password_reset_view(request):
     if request.method == 'POST':
@@ -57,7 +62,7 @@ def password_reset_view(request):
         except User.DoesNotExist:
             messages.error(request, 'No se encontró una cuenta con ese correo electrónico.')
     return render(request, 'users/password_reset.html')
-
+"""
 # Vista para ingresar el código de verificación
 def password_reset_confirm_view(request):
     if request.method == 'POST':
@@ -74,3 +79,4 @@ def password_reset_confirm_view(request):
         else:
             messages.error(request, 'El código de verificación es incorrecto.')
     return render(request, 'users/password_reset_confirm.html')
+"""

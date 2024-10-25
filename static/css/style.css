@@ -9,22 +9,25 @@
   justify-content: space-between; /* Distribuir uniformemente */
 }
 
-.navbar-logo {
-  font-size: 26px;
-  font-weight: bold;
-  color: #4CAF50;
+/* Estilos del logo */
+.navbar-logo img {
+  max-width: 100px; /* Tamaño máximo del logo */
+  height: auto; /* Mantener las proporciones */
+  display: block; /* Asegurar que se comporte como un bloque */
 }
 
 /* Enlaces de navegación */
 .navbar-links {
   display: flex;
-  gap: 40px; /* Espacio entre enlaces */
+  justify-content: center; /* Centrar horizontalmente los enlaces */
+  gap: 40px; /* Espacio entre los enlaces */
+  width: 100%; /* Asegurar que ocupe el ancho completo */
 }
-
 .navbar-links a {
   text-decoration: none; /* Sin subrayado en los enlaces */
-  font-size: 22px; /* Tamaño de fuente de los enlaces */
+  font-size: 19px; /* Tamaño de fuente de los enlaces */
   color: #333; /* Color del texto de los enlaces */
+
 }
 
 .navbar-links a:hover {
@@ -35,11 +38,12 @@
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
 }
 
 .user-profile img {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 60%;
 }
+
