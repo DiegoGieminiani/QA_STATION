@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <!-- Archivos CSS específicos de la página -->
+  <link rel="stylesheet" href="{% static 'user_projects/user_project.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  <main class="content">
+    <h1 class="projects-title">Tus Proyectos</h1>
+    
+    <!-- Cuadrícula de proyectos -->
+    <div class="projects-grid">
+      <div id="project1" class="project-card">
+        <span class="project-title">Google Testing</span>
+      </div>
+      <div id="project2" class="project-card">
+        <span class="project-title">Duoc Page Testing</span>
+      </div>
+      <div id="project3" class="project-card">
+        <span class="project-title">QA Station Testing</span>
+      </div>
+      <div class="project-card-add">
+        <span class="project-title">+</span>
+      </div>
+    </div>
+
+    <!-- Detalles del proyecto -->
+    <div id="projectDetails">
+      <p>Haz clic en un proyecto para ver sus detalles o agregar uno nuevo</p>
+    </div>
+
+    <!-- Formulario para agregar un nuevo proyecto -->
+    <div id="addProjectForm" style="display: none;">
+      <h2>Añadir Nuevo Proyecto</h2>
+      <form id="newProjectForm">
+        <label for="projectName">Nombre del Proyecto:</label>
+        <input type="text" id="projectName" name="projectName" required>
+        <button type="submit">Agregar Proyecto</button>
+      </form>
+    </div>
+  </main>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+  <!-- Archivos JavaScript específicos de la página -->
+  <script src="{% static 'user_projects/user_project.js' %}"></script>
+{% endblock %}

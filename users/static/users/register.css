@@ -1,11 +1,10 @@
 /* Estilos generales */
 body, html {
-    height: 100%;
-    margin: 0;
     font-family: 'Poppins', sans-serif;
+    
 }
 
-/* Contenedor del registro que ocupará gran parte de la pantalla */
+/* Contenedor del background */
 .background-container {
     display: flex;
     flex-direction: column;
@@ -18,7 +17,7 @@ body, html {
 /* Estilos para el logo */
 .register-logo img {
     width: 200%;  /* El logo se ajusta al tamaño del formulario */
-    max-width: 230px; /* Tamaño máximo igual al del formulario */
+    max-width: 210px; /* Tamaño máximo igual al del formulario */
     height: auto;
     display: block;
     margin: 0 auto 10px; /* Centra el logo horizontalmente */

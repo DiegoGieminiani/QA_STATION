@@ -1,31 +1,53 @@
 /* General styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+* {
+    box-sizing: border-box;
 }
 
+.main-container {
+    display: flex;
+    padding: 40px;
+    margin-top: -5px;
+    margin-right:1px ;  /* Espaciado desde la izquierda */
+    }
 /* Sidebar para las pruebas que estará fija a la izquierda */
 .sidebar-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 230px;
+    width: 278px;
+    position: sticky;
+    top: 100px;
     height: 100vh;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-right: 1px solid #ddd;
+    background-color: #fbfdff;  /* Fondo más claro */
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 60px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+  }
+
+  /* Contenedor principal */
+.container {
+    margin-left: 35px; /* Deja espacio para el sidebar */
+    padding: 30px 50px ;
+    width: 1300px;
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    line-height: 1.4;  
+    margin-bottom: 60px;
 }
 
 .sidebar-fixed h2 {
-    margin-bottom: 20px;
-    border: none
+    margin-bottom: 40px;
+    font-size: 18px;
 }
 
+/* Lista de pruebas */
 #testList {
     list-style: none;
     padding: 0;
+    margin: 0;
     border-radius: 12px;
 }
 
@@ -34,30 +56,33 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px;
-    margin-bottom: 10px;
+    padding: 14px;
+    margin-bottom: 20px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 12px; /* Más redondeado */
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     font-size: 14px; /* Tamaño de texto reducido */
-    height: 40px; /* Altura ajustada */
+    height: 50px; /* Ajuste de altura para mejor presentación */
 }
 
 .test-item input.test-name {
     border: none;
     background-color: transparent;
     width: 80%;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #333;
     cursor: pointer;
+    padding-left: 10px; /* Espaciado para el input */
 }
+
 .test-item input.test-name:focus {
     background-color: #e9ecef;
     outline: none;
 }
+
 /* Estilo para ítems activos */
 .test-item.active {
     background-color: #d1e7dd;
@@ -65,15 +90,17 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra para el activo */
 }
 
+/* Efecto hover */
 .test-item:hover {
     background-color: #e9ecef;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra suave al pasar el cursor */
 }
+
 /* Estilo para el botón de añadir prueba */
 #addTestBtn {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -83,15 +110,10 @@ body {
     font-size: 16px;
 }
 
-/* Contenedor principal */
-.container {
-    margin-left: 280px; /* Deja espacio para el sidebar */
-    max-width: 1000px;
-    padding: 50px;
+#addTestBtn:hover {
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 
 h1, h2 {
     color: #333;
@@ -99,12 +121,15 @@ h1, h2 {
 
 input[type="text"] {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     margin: 5px 0;
     box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-/* Styles for action rows */
+/* Estilos para filas de acción */
 .action-row {
     display: flex;
     justify-content: space-between;
@@ -115,7 +140,7 @@ input[type="text"] {
 .input-group {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     align-items: center;
 }
@@ -130,7 +155,7 @@ input[type="text"] {
     box-sizing: border-box;
 }
 
-/* Estilos para el select */
+/* Estilos para los select */
 .input-group select {
     padding: 12px 30px 12px 12px;
     font-size: 16px;
@@ -150,8 +175,12 @@ button {
     border-radius: 5px;
     cursor: pointer;
     border: none;
+    transition: background-color 0.3s ease;
 }
 
+button:hover {
+    background-color: white;
+}
 
 /* Botón eliminar de pruebas y filas de acción */
 .delete-btn {
@@ -160,26 +189,23 @@ button {
     border: none;
     font-size: 20px;
     cursor: pointer;
-    margin-left: 10px;
 }
 
 .delete-btn:hover {
     color: darkred;
 }
 
-/* Logs */
-/* Logs */
+/* Contenedor de logs */
 #log-container {
     margin-top: 40px;
     background-color: #f8f9fa;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding-top: 10px; /* Reduce el padding superior */
 }
 
 #log-container h3 {
-    margin-top: 0; /* Remueve el margen superior para evitar espacio adicional */
+    margin-top: 0;
     font-size: 16px;
     font-weight: bold;
 }
@@ -188,7 +214,7 @@ button {
     white-space: pre-wrap;
     font-family: monospace;
     font-size: 12px;
-    margin-top: 10px; /* Añadido para separar los logs del título */
+    margin-top: 10px;
 }
 
 /* Estilos para el campo de texto editable */
