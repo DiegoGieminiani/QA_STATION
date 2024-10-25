@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import markdown2
 from django.http import JsonResponse
 from .TestCases import process_chat_request
 from .html_processor import procesar_respuesta_chatgpt, procesar_html
@@ -11,8 +12,11 @@ def test_cases_view(request):
         
         if respuesta_chatgpt:  # Verifica si la respuesta existe
             procesar_respuesta_chatgpt(respuesta_chatgpt)  # Pasa la respuesta de ChatGPT directamente
-            
-        return render(request, 'testcases.html', {'respuesta': respuesta_chatgpt})
+
+            # Convertir Markdown a HTML
+            respuesta_html = markdown2.markdown(respuesta_chatgpt)
+
+        return render(request, 'testcases.html', {'respuesta': respuesta_html})  # Enviar HTML convertido
     
     # Si la solicitud es GET, renderizar un formulario vacío
     return render(request, 'testcases.html')
