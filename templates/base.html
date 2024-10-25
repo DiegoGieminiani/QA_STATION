@@ -13,17 +13,20 @@
       rel="stylesheet"
     />
 
-    {% block extra_css %}{% endblock %}
+  {% block extra_css %}{% endblock %}
   </head>
   <body>
     <header>
       <div class="navbar">
-        <div class="navbar-logo">QA Station</div>
+        <div class="navbar-logo">
+          <a href="/about_us/">
+          <img src="{% static 'image/logo.png' %}" alt="QA Station Logo" />
+        </div>
         <div class="navbar-links">
           <!-- Enlaces actualizados con rutas correctas a las páginas -->
-          <a href="{% url 'about_us' %}#nosotros">Nosotros</a>
+          <a href="{% url 'about_us' %}">Nosotros</a>
           <!-- Cambia 'about_us' por la URL que apunta a tu página de "Nosotros" -->
-          <a href="{% url 'documentation' %}#documentacion">Documentación</a>
+          <a href="{% url 'documentation' %}">Documentación</a>
           <!-- Cambia 'documentation' por la URL que apunta a tu página de "Documentación" -->
           <a href="#">Proyectos</a>
         </div>

@@ -1,35 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static '/users/register.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <!-- Metadatos básicos -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro - QA Station</title>
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro</title>
-    {% load static %}
-    <!-- Llamada al archivo CSS del login que será reutilizado para el registro -->
-    <link rel="stylesheet" href="{% static 'users/login/users_login.css' %}" />
   </head>
+
   <body>
-    <div class="login-container">
+    <div class="background-container">
       <!-- Logo -->
-      <div class="login-logo">
-        <img
-          src="{% static 'users/login/image/logo.png' %}"
-          alt="Logo de QA Station"
-        />
+      <div class="register-logo">
+        <img src="{% static '/image/logo.png' %}" alt="Logo de QA Station" />
       </div>
 
       <!-- Texto debajo del logo -->
-      <h2 style="text-align: center; font-weight: 600; margin-bottom: 20px">
-        Crea tu cuenta
-      </h2>
+      <h2 class="title">Crea tu cuenta</h2>
 
       <!-- Formulario de registro -->
-      <form class="login-form" method="POST" action="{% url 'register' %}">
+      <form class="register-form" method="POST" action="{% url 'register' %}">
         {% csrf_token %}
+        
         <!-- Nombre -->
         <div class="form-group">
           <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" name="nombre" required />
+          <input type="text" id="nombre" name="nombre" required/>
         </div>
 
         <!-- Apellidos -->
@@ -51,8 +61,13 @@
         </div>
 
         <!-- Botón de registro -->
-        <button type="submit" class="btn-login">Crear cuenta</button>
+        <button type="submit" class="btn-register">Crear cuenta</button>
       </form>
     </div>
   </body>
 </html>
+{% endblock %} 
+
+{% block extra_js %}
+<script src="{% static 'users/register.js' %}"></script>
+{% endblock %}
