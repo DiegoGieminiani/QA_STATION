@@ -1,0 +1,120 @@
+.cuadrado {
+    width: 50vw;
+    height: 50vw;
+    max-width: 500px; /* Limitar el tamaño máximo */
+    max-height: 500px; /* Limitar el tamaño máximo */
+    background-color: #8fbc8f;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Espacio entre el cuadrado y el campo de texto */
+}
+
+.campo-texto {
+    border-radius: 20px;
+}
+
+/* Estilo general del body */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Cuadro gris claro */
+.grey-square {
+    width: 50%;
+    height: 50vh; /* Ocupa el 50% de la altura de la pantalla */
+    background-color: #3db56b; /* Gris claro */
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.grey-square {
+    font-size: 18px;
+    color: #3db56b;
+}
+
+/* Cuadro de texto con botones */
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    padding: 5px; /* Ajuste para que sea más delgado */
+    border-radius: 30px;
+    width: 60%; /* Ajustado para ser más delgado */
+    max-width: 500px;
+    background-color: white;
+}
+
+/* Campo de texto */
+.input-container input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 5px; /* Hacer más delgado */
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.input-container input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+/* Botones de iconos */
+.icon-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 20px;
+    color: #505050;
+}
+
+.icon-button i {
+    font-size: 20px;
+}
+
+/* CUADRADO VERDE PARA LA GENERACIÓN DE TEXTO DE CHAT GPT*/
+.test-cases-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden; /* Para cortar el contenido que se desborda */
+}
+
+.test-case {
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Hacer que el contenido tenga barra de desplazamiento si es necesario */
+}
+
+.test-case .bg-white {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box; /* Incluir el padding en el tamaño total */
+    overflow-y: auto; /* Barra de desplazamiento vertical si el contenido sobrepasa */
+}
