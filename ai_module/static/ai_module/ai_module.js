@@ -7,14 +7,14 @@ function mostrarLoader() {
     document.getElementById("loading").style.display = "block";
 }
 
-// Función para enviar JSON al presionar el botón
 function enviarJSON() {
-    fetch("{% url 'enviar_json' %}", {
+    fetch("{% url 'enviar_json' %}", {  // Django procesa la URL en el HTML
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "X-CSRFToken": "{{ csrf_token }}"
-        }
+        },
+        body: JSON.stringify({ key: "valor" })  // Cambia el JSON según lo que necesites enviar
     })
     .then(response => response.json())
     .then(data => {
