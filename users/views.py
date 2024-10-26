@@ -1,36 +1,67 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
 from django.contrib import messages
+from .forms import CustomAuthenticationForm  # Asegúrate de tener tu formulario personalizado aquí
+from django.contrib.auth.forms import UserCreationForm
+
+
+SIMULATED_USERS = {
+    'user1@example.com': 'password123',
+    'user2@example.com': 'mysecurepassword',
+}
+
+def login_view(request):
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+
+            # Simulación de autenticación
+            if email not in SIMULATED_USERS:
+                form.add_error('email', "El correo electrónico ingresado no existe. Por favor, verifica e intenta nuevamente.")
+            elif SIMULATED_USERS[email] != password:
+                form.add_error('password', "La contraseña ingresada es incorrecta. Por favor, intenta nuevamente o restablece tu contraseña.")
+            else:
+                messages.success(request, f'Bienvenido/a {email}')
+                return redirect('about_us')  # Redirige al usuario simulado
+
+    else:
+        form = CustomAuthenticationForm()
+
+    return render(request, 'users/login.html', {'form': form})
+
+"""
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
-
+from django.contrib.auth import login
+from django.contrib import messages
+from .forms import CustomAuthenticationForm 
+"""
 # Renderizar la página principal
 def main_view(request):
     print("Vista main_page llamada")
     return render(request, 'users/login.html')
-
-# Vista de login
+"""
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = CustomAuthenticationForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Bienvenido/a {username}')
-                return redirect('home')  # Ajustar la redirección según tu proyecto
-            else:
-                messages.error(request, 'Usuario o contraseña incorrectos.')
+            email = form.cleaned_data.get('email')
+            user = User.objects.get(email=email)  # Asumimos que el correo es único
+            login(request, user)
+            messages.success(request, f'Bienvenido/a {user.username}')
+            return redirect('about_us')
         else:
-            messages.error(request, 'Usuario o contraseña incorrectos.')
+            messages.error(request, 'Por favor, corrige los errores en el formulario.')
     else:
-        form = AuthenticationForm()
-    return render(request, 'users/login.html', {'form': form})
+        form = CustomAuthenticationForm()
 
+    return render(request, 'users/login.html', {'form': form})
+"""
 # Vista de registro
 def register_view(request):
     if request.method == 'POST':
@@ -62,7 +93,7 @@ def password_reset_view(request):
         except User.DoesNotExist:
             messages.error(request, 'No se encontró una cuenta con ese correo electrónico.')
     return render(request, 'users/password_reset.html')
-"""
+
 # Vista para ingresar el código de verificación
 def password_reset_confirm_view(request):
     if request.method == 'POST':
@@ -79,4 +110,3 @@ def password_reset_confirm_view(request):
         else:
             messages.error(request, 'El código de verificación es incorrecto.')
     return render(request, 'users/password_reset_confirm.html')
-"""
