@@ -23,7 +23,6 @@ urlpatterns = [
     path('about_us/', include('about_us.urls')),
     path('documentation/', include('user_documentation.urls')),
     path('projects/', include('user_projects.urls')),
-    path('tests/', include('functional_tests.urls')) 
-    
+    path('tests/', include('functional_tests.urls')), 
     path('ai_module/', include('ai_module.urls'))  
 ]
