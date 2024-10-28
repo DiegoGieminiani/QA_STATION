@@ -5,21 +5,17 @@ import requests
 URL_DESTINO = 'http://127.0.0.1:8000/tests/api/run-tests/'
 
 def convertir_a_json(texto):
-    json_regex = r'(\[\s*\{(?:[^{}]|\{[^{}]*\})*\}\s*\])'
-    match = re.search(json_regex, texto, re.DOTALL)
-
-    if match:
-        json_str = match.group(1)  # Obtiene solo el contenido de la lista JSON
-        print("JSON extraído:", json_str)  # Agregado para depuración
-        try:
-            json_data = json.loads(json_str)
-            return json_data
-        except json.JSONDecodeError as e:
-            print(f"Error al decodificar JSON: {e}")
-            return None
-    else:
-        print("No se encontró una lista JSON válida en el texto.")
+    # Eliminamos las etiquetas de inicio y fin
+    cleaned_text = texto.strip('```json').strip('```').strip()
+    
+    # Intentamos cargar el texto limpio como JSON
+    try:
+        json_data = json.loads(cleaned_text)
+        return json_data
+    except json.JSONDecodeError as e:
+        print(f"Error al decodificar JSON: {e}")
         return None
+
 
 
 
