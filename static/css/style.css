@@ -7,7 +7,6 @@
   font-family: 'Poppins', sans-serif;
   align-items: center;
   border-radius: 15px;
-
 }
 
 /* Estilos del logo */
@@ -28,7 +27,6 @@
   text-decoration: none; /* Sin subrayado en los enlaces */
   font-size: 19px; /* Tamaño de fuente de los enlaces */
   color: #333; /* Color del texto de los enlaces */
-
 }
 
 .navbar-links a:hover {
@@ -48,3 +46,81 @@
   border-radius: 60%;
 }
 
+.user-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 20px;
+}
+
+.user-profile .toggle-menu {
+    margin-left: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dropdown-menu {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    min-width: 120px;
+    padding: 8px 0;
+    text-align: left;
+    z-index: 100;
+}
+
+/* Estilo para los enlaces dentro del menú desplegable */
+.dropdown-menu a,
+.dropdown-menu button {
+    font-family: 'Poppins', sans-serif;
+    display: block;
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Efecto hover general */
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background-color: #f2f2f2;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo para el botón "Cerrar sesión" */
+.dropdown-menu button.btn-logout {
+    display: block;
+    width: 100%;
+    padding: 8px ;
+    font-size: 15px;
+    color: #333; /* Texto blanco */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.1s ease; /* Transición suave */
+}
+
+/* Efecto hover para el botón */
+.dropdown-menu button.btn-logout:hover {
+    background-color: #e22d40; /* Color rojo más oscuro al pasar el mouse */
+    box-shadow: 0px 4px 8px rgba(220, 53, 69, 0.4); /* Sombra suave */
+}
+
+/* Animación de escala al hacer clic */
+.dropdown-menu button.btn-logout:active {
+    transform: scale(0.95); /* Reduce ligeramente el tamaño al hacer clic */
+}
+
+/* Mostrar menú */
+.show-menu {
+    display: block;
+}
