@@ -1,172 +1,162 @@
 /* General */
-
 * {
-    box-sizing: border-box;
-  }
-  
+  box-sizing: border-box;
+}
 
 .main-container {
-    display: flex;
-    padding: 40px;
-    margin-top: -5px;
-    margin-right:1px ;
-    margin-left: 150px;
+  display: flex;
+  padding: 40px;
+  margin-top: -5px;
+  margin-right: 1px;
+  margin-left: 150px;
 }
 
 /* Contenido principal */
 .content {
-    width: 100%;
-    max-width: 1200px;
-    padding: 50px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    line-height: 1.2; 
+  width: 100%;
+  max-width: 1200px;
+  padding: 50px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  line-height: 1.2;
 }
 
 /* Título */
 .projects-title {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 40px;
-    text-align: left;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 40px;
+  text-align: left;
 }
 
 /* Grid de proyectos */
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columnas */
-    gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+  gap: 30px;
 }
 
 /* Tarjetas de proyectos */
-.project-card, .project-card-add {
-    background-color: #d9fdda;
-    border-radius: 10px;
-    padding: 40px 20px;
-    text-align: left;
-    font-size: 1.5em;
-    position: relative;
-    transition: box-shadow 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 150px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
+.project-card,
+.project-card-add {
+  background-color: #d9fdda;
+  border-radius: 10px;
+  padding: 45px 25px; /* Reducir el relleno */
+  text-align: left;
+  font-size: 1.1em; /* Reducir el tamaño de la fuente */
+  position: relative;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px; /* Reducir la altura mínima */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.project-card:hover, .project-card-add:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+.project-card:hover,
+.project-card-add:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
 .project-title {
-    font-size: 1.3em;
-    font-weight: 600;
-    color: #333;
-    text-align: left;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Estilos para la descripción en las tarjetas */
+.project-description {
+  font-size: 1.1em;
+  color: #666;
+  margin-top: 15px;
 }
 
 /* Estilos especiales para la tarjeta de agregar proyecto */
 .project-card-add {
-    background-color: #d3d3d3;
-    justify-content: center;
+  background-color: #d3d3d3;
+  justify-content: center;
 }
 
 .project-card-add .project-title {
-    font-size: 2.5em;
-    color: #666;
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-}
-
-/* Menú de opciones en las tarjetas (tres puntos) */
-.project-options {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 5px;
-    height: 5px;
-    background-color: #333;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.project-options::after, .project-options::before {
-    content: '';
-    display: block;
-    width: 5px;
-    height: 5px;
-    background-color: #333;
-    border-radius: 50%;
-    margin-top: 5px;
+  font-size: 2.5em;
+  color: #666;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Contenedor del formulario para agregar nuevo proyecto */
 #addProjectForm {
-    display: none; /* Se mantiene oculto inicialmente */
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    width: 50%; /* Ancho del formulario */
-    margin: 0 auto; /* Centrar horizontalmente */
-    margin-top: 40px; /* Separación superior */
-    text-align: center; /* Centrar texto dentro del formulario */
+  display: none; /* Se mantiene oculto inicialmente */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 50%; /* Ancho del formulario */
+  margin: 0 auto; /* Centrar horizontalmente */
+  margin-top: 40px; /* Separación superior */
+  text-align: center; /* Centrar texto dentro del formulario */
 }
 
 /* Estilo del título dentro del formulario */
 #addProjectForm h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 20px;
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 /* Input del formulario */
-#newProjectForm input[type="text"] {
-    width: 80%; /* El input ocupa el 80% del contenedor */
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 0.7rem;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra interna suave */
+#newProjectForm input[type="text"],
+#newProjectForm textarea {
+  width: 80%; /* El input ocupa el 80% del contenedor */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra interna suave */
 }
 
 /* Botón para agregar el proyecto */
 #newProjectForm button {
-    padding: 10px 20px;
-    background-color: #39b54a;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease; /* Transición suave para hover */
+  padding: 10px 20px;
+  background-color: #39b54a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease; /* Transición suave para hover */
 }
 
 /* Efecto hover en el botón */
 #newProjectForm button:hover {
-    background-color: #2e8b41; /* Color de fondo al hacer hover */
+  background-color: #2e8b41; /* Color de fondo al hacer hover */
 }
 
 /* Estilo del label */
 #newProjectForm label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-    color: #333;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #333;
 }
 
+/* Estilo para el área de detalles del proyecto */
+#projectDetails h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
 
-/* Párrafo dentro de #projectDetails */
 #projectDetails p {
-    color: #666; /* Texto en un gris suave */
-    margin: 20; /* Elimina margen para centrar el texto */
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
+  color: #666;
+  font-size: 1em;
+  line-height: 1.5;
+  margin-top: 10px;
+  font-family: "Poppins", sans-serif;
 }

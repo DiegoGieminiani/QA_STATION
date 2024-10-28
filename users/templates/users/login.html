@@ -10,7 +10,7 @@
 {% block content %}
 <!-- Contenedor principal para el login -->
 <div class="background-container">
-  
+
   <!-- Logo de la página -->
   <div class="logo">
     <img src="{% static 'image/logo.png' %}" alt="Logo de QA Station" />
@@ -18,9 +18,9 @@
   
   <!-- Texto debajo del logo -->
   <h2 class="title">Inicio de sesión</h2>
-  
+
   <!-- Formulario de inicio de sesión -->
-  <form action="{% url 'login' %}" method="POST" class="login-form">
+  <form action="{% url 'users:login' %}" method="POST" class="login-form">
     {% csrf_token %}
     
     <!-- Campo de correo/usuario -->
@@ -29,7 +29,7 @@
       <input
         type="email"
         id="email"
-        name="username"
+        name="email"
         placeholder="Ingresa tu correo"
         required
       />
@@ -52,7 +52,7 @@
 
     <!-- Enlace para recuperación de contraseña -->
     <div class="recovery-options">
-      <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+      <a href="{% url 'users:password_reset' %}">¿Olvidaste tu contraseña?</a>
       <p>                                                          </p>
     </div>
 
@@ -61,7 +61,7 @@
   </form>
 
   <!-- Enlace para registrarse -->
-  <p>¿No tienes cuenta? <a href="{% url 'register' %}"> Regístrate aquí</a></p>
+  <p>¿No tienes cuenta? <a href="{% url 'users:register' %}"> Regístrate aquí</a></p>
 
 </div>
 {% endblock %} 
