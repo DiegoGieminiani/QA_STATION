@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from functional_tests.runner import TestRunner
-from functional_tests.api.serializers import TestRunSerializer
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt

@@ -4,7 +4,7 @@ class ActionSerializer(serializers.Serializer):
     action = serializers.CharField(max_length=50)
     element_type = serializers.CharField(max_length=50, required=False)  # Opcional para algunas acciones
     value = serializers.CharField(max_length=255, required=False)  # Opcional para algunas acciones
-    input_value = serializers.CharField(max_length=255, required=False)  # Opcional
+    input_value = serializers.CharField(max_length=255, required=False)  # Opcional para algunas acciones
     expected_value = serializers.CharField(max_length=255, required=False)  # Para verificar URL o valores esperados
 
     def validate(self, data):
@@ -25,22 +25,3 @@ class ActionSerializer(serializers.Serializer):
             raise serializers.ValidationError("El campo 'expected_value' es obligatorio para 'verify_text'.")
 
         return data
-
-class TestRunSerializer(serializers.Serializer):
-    url = serializers.URLField()  # La URL de la página que se va a probar
-    actions = ActionSerializer(many=True)  # Lista de acciones a ejecutar
-
-    def validate(self, data):
-        # Validar que haya al menos una acción
-        if not data.get('actions'):
-            raise serializers.ValidationError("Se debe proporcionar al menos una acción.")
-
-        # Validar que la URL esté presente
-        if not data.get('url'):
-            raise serializers.ValidationError("El campo URL es obligatorio.")
-
-        return data
-
-    def create(self, validated_data):
-        # Este método es para crear la representación validada de los datos
-        return validated_data
