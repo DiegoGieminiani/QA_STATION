@@ -13,26 +13,37 @@
       rel="stylesheet"
     />
 
-  {% block extra_css %}{% endblock %}
+    {% block extra_css %}{% endblock %}
   </head>
   <body>
     <header>
       <div class="navbar">
         <div class="navbar-logo">
-          <a href="/about_us/">
-          <img src="{% static 'image/logo.png' %}" alt="QA Station Logo" />
+          <a href="{% url 'about_us' %}">
+            <img src="{% static 'image/logo.png' %}" alt="QA Station Logo" />
+          </a>
         </div>
         <div class="navbar-links">
           <!-- Enlaces actualizados con rutas correctas a las páginas -->
           <a href="{% url 'about_us' %}">Nosotros</a>
-          <!-- Cambia 'about_us' por la URL que apunta a tu página de "Nosotros" -->
           <a href="{% url 'documentation' %}">Documentación</a>
-          <!-- Cambia 'documentation' por la URL que apunta a tu página de "Documentación" -->
-          <a href="#">Proyectos</a>
+          <a href="{% url 'projects' %}">Proyectos</a>
         </div>
+                
         <div class="user-profile">
           <img src="https://via.placeholder.com/40" alt="User Profile" />
-          <span>Juanita</span>
+          {% if user.is_authenticated %}
+            <span class="user-name">{{ user.username }}</span>
+            <div class="dropdown-menu">
+              <a href="#">Perfil</a>
+              <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-logout">Cerrar sesión</button>
+              </form>
+            </div>
+          {% else %}
+            <span>Invitado</span>
+          {% endif %}
         </div>
       </div>
     </header>

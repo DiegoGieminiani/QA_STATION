@@ -13,14 +13,17 @@
     
     <!-- Cuadrícula de proyectos -->
     <div class="projects-grid">
-      <div id="project1" class="project-card">
+      <div id="project1" class="project-card" onclick="showProjectDetails('Google Testing', 'Este proyecto implica pruebas para el motor de búsqueda de Google.')">
         <span class="project-title">Google Testing</span>
+        <p class="project-description">Pruebas para el motor de búsqueda de Google.</p>
       </div>
-      <div id="project2" class="project-card">
+      <div id="project2" class="project-card" onclick="showProjectDetails('Duoc Page Testing', 'Pruebas para el sitio web institucional de Duoc.')">
         <span class="project-title">Duoc Page Testing</span>
+        <p class="project-description">Pruebas para el sitio web institucional de Duoc.</p>
       </div>
-      <div id="project3" class="project-card">
+      <div id="project3" class="project-card" onclick="showProjectDetails('QA Station Testing', 'Proyecto para automatizar y gestionar pruebas de calidad en QA Station.')">
         <span class="project-title">QA Station Testing</span>
+        <p class="project-description">Automatización de pruebas en QA Station.</p>
       </div>
       <div class="project-card-add">
         <span class="project-title">+</span>
@@ -30,6 +33,8 @@
     <!-- Detalles del proyecto -->
     <div id="projectDetails">
       <p>Haz clic en un proyecto para ver sus detalles o agregar uno nuevo</p>
+      <h2 id="selectedProjectTitle"></h2>
+      <p id="selectedProjectDescription"></p>
     </div>
 
     <!-- Formulario para agregar un nuevo proyecto -->
@@ -38,11 +43,16 @@
       <form id="newProjectForm">
         <label for="projectName">Nombre del Proyecto:</label>
         <input type="text" id="projectName" name="projectName" required>
+        
+        <label for="projectDescription">Descripción del Proyecto:</label>
+        <textarea id="projectDescription" name="projectDescription" ></textarea>
+        
         <button type="submit">Agregar Proyecto</button>
       </form>
     </div>
   </main>
 </div>
+
 
 {% endblock %}
 

@@ -21,7 +21,6 @@ def test_cases_view(request):
     # Si la solicitud es GET, renderizar un formulario vacío
     return render(request, 'testcases.html')
 
-
 def ejecutar_html_processor(request):
     # Asegúrate de inicializar 'respuesta' y 'resultado' fuera de la verificación de POST
     respuesta_chatgpt = None
@@ -61,3 +60,5 @@ def enviar_json_view(request):
 
         return JsonResponse({'mensaje': mensaje})
     return JsonResponse({'mensaje': 'Método no permitido.'}, status=405)
+
+
