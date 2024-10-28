@@ -115,6 +115,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'qa_station.middleware.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'qa_station.urls'
@@ -124,11 +125,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / "templates",
-            BASE_DIR / "functional_tests/templates",  # Añade la carpeta de templates de functional_tests
-        ], 
-        'DIRS': [
-            BASE_DIR / "templates",
-            BASE_DIR / "functional_tests/templates",  # Añade la carpeta de templates de functional_tests
         ], 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -153,7 +149,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'qa_station',  # El nombre de la base de datos que creaste
         'USER': 'root',  # O el nombre del usuario que prefieras
-        'PASSWORD': 'QA_Station.,',  # La contraseña que usaste para el usuario de MySQL
+        'PASSWORD': 'Casino1980',  # La contraseña que usaste para el usuario de MySQL
         'HOST': 'localhost',  # Normalmente 'localhost' si MySQL está en la misma máquina
         'PORT': '3306',  # El puerto predeterminado de MySQL
         'OPTIONS': {
@@ -163,6 +159,9 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
 
 
 # Password validation
