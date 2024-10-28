@@ -7,7 +7,6 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .process_manual_test_cases import process_manual_test_cases  # Importamos la función que ejecuta las pruebas
 
-# Renderizar la página principal
 def main_page(request):
     print("Vista main_page llamada")
     return render(request, 'functional_tests/main.html')

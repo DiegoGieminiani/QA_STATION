@@ -4,3 +4,5 @@ from django.shortcuts import render
 def project_view(request):
     print("Vista user_project llamada")
     return render(request, 'user_projects/user_project.html')
+
+
