@@ -67,20 +67,25 @@
         </form>
         <p id="mensaje"></p>
     </div>
+    <input type="hidden" id="resultadoProcesado" value="{{ resultado_procesado }}">
 
     <!-- Bootstrap 5 JS (incluye Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tu script adicional -->
     <script src="{% static 'ai_module/ai_module.js' %}"></script>
+    
     <script>
         function enviarJSON() {
-            fetch("{% url 'enviar_json' %}", {  // Ahora Django procesa esta URL
+            // Obtén el resultado procesado del HTML
+            const resultadoProcesado = document.getElementById("resultadoProcesado").value;
+    
+            fetch("{% url 'enviar_json' %}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
-                body: JSON.stringify({ key: "valor" })
+                body: JSON.stringify({ resultado_procesado: resultadoProcesado })
             })
             .then(response => response.json())
             .then(data => {
