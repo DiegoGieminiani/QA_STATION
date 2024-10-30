@@ -2,30 +2,24 @@
 {% load static %}
 
 {% block extra_css %}
-  <!-- Archivos CSS específicos de la página -->
-  <link rel="stylesheet" href="{% static 'user_projects/user_project.css' %}" />
+<link rel="stylesheet" href="{% static 'user_projects/user_project.css' %}" />
 {% endblock %}
 
 {% block content %}
 <div class="main-container">
   <main class="content">
     <h1 class="projects-title">Tus Proyectos</h1>
-    
+
     <!-- Cuadrícula de proyectos -->
     <div class="projects-grid">
-      <div id="project1" class="project-card" onclick="showProjectDetails('Google Testing', 'Este proyecto implica pruebas para el motor de búsqueda de Google.')">
-        <span class="project-title">Google Testing</span>
-        <p class="project-description">Pruebas para el motor de búsqueda de Google.</p>
+      {% for project in projects %}
+      <div class="project-card" onclick="showProjectDetails('{{ project.name }}', '{{ project.description }}')">
+        <span class="project-title">{{ project.name }}</span>
+        <p class="project-description">{{ project.description }}</p>
       </div>
-      <div id="project2" class="project-card" onclick="showProjectDetails('Duoc Page Testing', 'Pruebas para el sitio web institucional de Duoc.')">
-        <span class="project-title">Duoc Page Testing</span>
-        <p class="project-description">Pruebas para el sitio web institucional de Duoc.</p>
-      </div>
-      <div id="project3" class="project-card" onclick="showProjectDetails('QA Station Testing', 'Proyecto para automatizar y gestionar pruebas de calidad en QA Station.')">
-        <span class="project-title">QA Station Testing</span>
-        <p class="project-description">Automatización de pruebas en QA Station.</p>
-      </div>
-      <div class="project-card-add">
+      {% endfor %}
+
+      <div class="project-card-add" onclick="document.getElementById('addProjectForm').style.display = 'block';">
         <span class="project-title">+</span>
       </div>
     </div>
@@ -40,23 +34,16 @@
     <!-- Formulario para agregar un nuevo proyecto -->
     <div id="addProjectForm" style="display: none;">
       <h2>Añadir Nuevo Proyecto</h2>
-      <form id="newProjectForm">
-        <label for="projectName">Nombre del Proyecto:</label>
-        <input type="text" id="projectName" name="projectName" required>
-        
-        <label for="projectDescription">Descripción del Proyecto:</label>
-        <textarea id="projectDescription" name="projectDescription" ></textarea>
-        
+      <form method="post" action="{% url 'projects' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
         <button type="submit">Agregar Proyecto</button>
       </form>
     </div>
   </main>
 </div>
-
-
 {% endblock %}
 
 {% block extra_js %}
-  <!-- Archivos JavaScript específicos de la página -->
-  <script src="{% static 'user_projects/user_project.js' %}"></script>
+<script src="{% static 'user_projects/user_project.js' %}"></script>
 {% endblock %}
