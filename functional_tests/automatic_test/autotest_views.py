@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import TestRunSerializer
 
-
 class ExecuteTestsAPI(APIView):
     
     def post(self, request):
@@ -14,8 +13,9 @@ class ExecuteTestsAPI(APIView):
         serializer = TestRunSerializer(data=json_data, many=True)
 
         if serializer.is_valid():
-            # Crear instancia del manejador de ejecución de pruebas
-            handler = TestExecutionHandler(serializer.validated_data)
+            # Intentar obtener el usuario con ID 2, y si no existe, crearlo
+            # Crear instancia del manejador de ejecución de pruebas con el usuario asignado
+            handler = TestExecutionHandler(serializer.validated_data, user=user)
 
             # Guardar los casos de prueba sin ejecutar aún
             save_status = handler.save_tests()

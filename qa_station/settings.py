@@ -46,11 +46,11 @@ INSTALLED_APPS = [
     'users',
     'user_documentation',
     'about_us',
+    'functional_tests',
     'user_projects',
     'ai_module',
 
-    # Tests
-    'functional_tests', 
+    # Third-party apps 
     'django_extensions',
     'rest_framework'
 ]
@@ -149,7 +149,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'qa_station',  # El nombre de la base de datos que creaste
         'USER': 'root',  # O el nombre del usuario que prefieras
-        'PASSWORD': 'QA_Station.,',  # La contraseña que usaste para el usuario de MySQL
+        'PASSWORD': 'Casino1980',  # La contraseña que usaste para el usuario de MySQL
         'HOST': 'localhost',  # Normalmente 'localhost' si MySQL está en la misma máquina
         'PORT': '3306',  # El puerto predeterminado de MySQL
         'OPTIONS': {
@@ -226,8 +226,6 @@ STATIC_URL = '/static/'
 
 # Donde se recopilarán todos los archivos estáticos cuando ejecutes 'collectstatic'
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Para producción
-
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
