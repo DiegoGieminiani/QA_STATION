@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
-from .forms import CustomAuthenticationForm 
-from django.contrib import messages
 from django.urls import reverse
+
 
 # Renderizar la página principal
 def main_view(request):
@@ -45,14 +45,18 @@ def login_view(request):
 # Vista de registro
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Cuenta creada con éxito.')
-            return redirect('login')
+            return redirect('users:login')
+        else:
+            messages.error(request, 'Ocurrió un error en el registro. Por favor, revisa los datos ingresados.')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
+
     return render(request, 'users/register.html', {'form': form})
+   
 
 # Vista para restablecer la contraseña (solicitud)
 def password_reset_view(request):

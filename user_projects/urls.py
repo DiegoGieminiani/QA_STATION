@@ -1,6 +1,9 @@
-from django.urls import path, include
-from .views import project_view
+# user_projects/urls.py
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('',project_view, name='projects'),
+    path('', views.project_view, name='projects'),
+
+     # Ruta para agregar proyecto
 ]
