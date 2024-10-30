@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect 
 import markdown2
 from django.http import JsonResponse
 from .TestCases import process_chat_request
 from .html_processor import procesar_respuesta_chatgpt, procesar_html
 from .json_processor import procesar_y_enviar_json
+from .models import TestCase
+from user_projects.models import Project
+from .forms import TestCaseForm
+
 
 def test_cases_view(request):
     if request.method == 'POST':
@@ -62,3 +66,15 @@ def enviar_json_view(request):
     return JsonResponse({'mensaje': 'Método no permitido.'}, status=405)
 
 
+def add_test_case(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if request.method == 'POST':
+        form = TestCaseForm(request.POST)
+        if form.is_valid():
+            test_case = form.save(commit=False)
+            test_case.project = project  # Asigna el TestCase al Project
+            test_case.save()
+            return redirect('project_detail', project_id=project.id)
+    else:
+        form = TestCaseForm()
+    return render(request, 'add_test_case.html', {'form': form, 'project': project})
