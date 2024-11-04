@@ -22,7 +22,7 @@ def extraer_primera_url(texto):
 # Función para descargar el HTML de la URL
 def descargar_html(url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         if response.status_code == 200:
             print("HTML descargado correctamente.")  # Mensaje de éxito
             return response.text  # Devuelve el contenido HTML
@@ -88,7 +88,7 @@ def procesar_respuesta_chatgpt(respuesta_chatgpt):
 # Función para procesar el HTML y generar el JSON basado en la respuesta de ChatGPT
 def procesar_html(respuesta_chatgpt):
     # Pedir el texto (Prompt)
-    texto_prompt = "Identifica todos los elementos HTML con los que el usuario debe interactuar y correspondientes a los casos de prueba."
+    texto_prompt = "Identifica todos los elementos HTML con los que el usuario debe interactuar y para que se cumplan a los casos de prueba."
 
     # Obtener la lista de archivos en la carpeta media
     html_folder = settings.MEDIA_ROOT
@@ -113,8 +113,15 @@ def procesar_html(respuesta_chatgpt):
 
     # Crear el mensaje para OpenAI, usando respuesta_chatgpt en lugar de historial
     mensaje = [
+        {"role": "system", "content": "Analiza el archivo HTML adjunto y entrega un JSON solo para los elementos HTML que realmente existen en el documento."},
+        {"role": "system", "content": "Asegúrate de que los elementos generados correspondan únicamente a los elementos que encuentras en el HTML proporcionado."},
         {"role": "system", "content": "Analiza el archivo HTML adjunto en conjunto con el documento de casos de prueba y entrega un JSON para cada caso de prueba"},
-        {"role": "system", "content": "Este JSON se le pasara a Selenium , por lo que el element_type debe ser uno de estos valores: id, name, xpath, css_selector, class_name, tag_name, link_text, partial_link"},
+        {"role": "system", "content": "element_type debe ser uno de estos valores: id, name, xpath, css_selector, class_name, tag_name, link_text, partial_link, "},
+        {"role": "system", "content": """
+si element_type es xpath, dentro de esto: <>, tomalo como un valor variable que tienes que llenar tu "//<tag html>[text()='<el valor que tiene el tag html seleccionado>']"
+ejemplo:<button class='clase_de_ejemplo'>clickeame esta</button>. teniendo eso, deberias devolver \"button[text()='clickeame esta']\"
+ejemplo2:<a class='classname'>clickeame</a> teniendo eso, deberias devolver \"a[text()='clickeame']\"
+ """},
         {"role": "system", "content": """
         Por ejemplo, si encuentras esta etiqueta:
         <a class="nav-link" href="#" id="login2" data-toggle="modal" data-target="#logInModal" style="display: block;">Log in</a>
@@ -186,11 +193,12 @@ Asegúrate de sustituir los valores correspondientes según el contenido del doc
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=mensaje,
-        temperature=0.1
+        temperature=0.0
     )
 
     # Obtener la respuesta de OpenAI
     respuesta = response.choices[0].message.content
     print("Este es el mensaje que entrega la respuesta combinada de casos de prueba:          ",respuesta)
     return respuesta
+
 

@@ -18,10 +18,10 @@
         <h1 class="text-center">Casos de Prueba</h1>
         
         <!-- Cuadrado con tamaño fijo en altura, pero ancho ajustable a la pantalla -->
-        <div class="test-cases-container border rounded p-4 shadow-sm bg-light mx-auto mt-5 col-10">
-            <div class="test-case bg-white p-3">
+        <div class="test-cases-container border rounded p-4 shadow-sm bg-light mx-auto col-10 mt-2">
+            <div class="test-case bg-white p-3" style="height: 600px; overflow-y: auto;">
                 <!-- Aquí se muestra el contenido generado, que se ajustará al cuadro -->
-                <div class="overflow-auto h-100">{{ respuesta|safe }}</div>
+                <div class="overflow-auto">{{ respuesta|safe }}</div>
             </div>
         </div>
     
@@ -34,29 +34,33 @@
 
 
         <!-- Cuadro de Texto -->
-        <div class="input-container">
-            <!--  -->
-            <form method="POST" enctype="multipart/form-data" class="my-4" onsubmit="mostrarLoader()">
+        <div class="input-container d-flex align-items-center my-2" style="padding: 0;">
+            <!-- Formulario para enviar mensajes -->
+            <form method="POST" enctype="multipart/form-data" onsubmit="mostrarLoader()" class="d-flex align-items-center" style="flex: 1;">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <textarea name="mensaje" class="form-control rounded" rows="3" placeholder="Escribe un mensaje..."></textarea>
-                </div>
-                <div class="mb-3">
-                    button
-                </div>
+                
+                <!-- Botón para adjuntar archivos -->
+                <input type="file" name="archivo" id="archivo" class="form-control" style="display: none;" onchange="updateFileName()">
+                <button type="button" class="icon-button me-2" onclick="document.getElementById('archivo').click();">
+                    <i class="bi bi-paperclip"></i>
+                </button>
+                
+                <!-- Input para escribir -->
+                <textarea name="mensaje" class="form-control rounded me-2" rows="1" placeholder="Escribe un mensaje..." style="flex: 1; border: none; box-shadow: none; resize: none;"></textarea>
+            
+                <!-- Botón para enviar -->
                 <button type="submit" class="icon-button"><i class="bi bi-send"></i></button>
             </form>
-
-            <!-- Icono de carga -->
-            <div class="loading-icon" id="loading" style="display:none;"></div>
-
             <!-- Botón para activar html_processor.py -->
-            <form action="{% url 'ejecutar_html_processor' %}" method="post" class="my-4" onsubmit="mostrarLoader()">
+            <form action="{% url 'ejecutar_html_processor' %}" method="post" class="ms-2" onsubmit="mostrarLoader()">
                 {% csrf_token %}
                 <input type="hidden" name="respuesta" value="{{ respuesta }}">
                 <button type="submit" class="icon-button"><i class="bi bi-arrow-right"></i></button>
             </form>
         </div>
+       
+        <!-- Icono de carga -->
+        <div class="loading-icon" id="loading" style="display:none;"></div>
 
 
 
@@ -66,6 +70,7 @@
             <button type="submit" class="btn btn-warning mt-3">Enviar JSON a la URL</button>
         </form>
         <p id="mensaje"></p>
+        
     </div>
     <input type="hidden" id="resultadoProcesado" value="{{ resultado_procesado }}">
 
