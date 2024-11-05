@@ -1,46 +1,26 @@
 /* Estilos generales */
-body,
 html {
     font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f9fa;
-}
 
-/* Contenedor principal */
-.page-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
 }
 
 /* Contenedor del background */
 .background-container {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    margin: 0 20px;
+    background-color: white; /* Fondo blanco */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+    display: flex; /* Centra horizontalmente */    /* Centra verticalmente */
+    height: 100vh;            /* Ocupa toda la altura de la ventana */
 }
 
 /* Estilos para el logo */
 .register-logo img {
-    width: 60%;
-    /* Ajusta el tamaño del logo */
-    max-width: 150px;
-    margin-bottom: 10px;
+    width: 200%;
+    height: auto;
+    max-width: 190px;
+    margin-bottom: 0 auto 10px;
 }
 
 /* Estilo del título */
@@ -55,33 +35,50 @@ html {
 /* Formulario de registro */
 .register-form {
     width: 100%;
+    max-width: 400px; /* Tamaño máximo del formulario y del logo */
+    padding: 30px;
+    background-color: whitesmoke; /* Fondo blanco para el formulario */
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    justify-content: center; 
+    align-items: center;
 }
 
 .register-form .form-group {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .register-form .form-group label {
     display: block;
     font-size: 1rem;
     color: #333;
+    margin-bottom: 5px;
 }
 
 .register-form .form-group input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.register-form .form-group input:focus {
+    border-color: #39b54a;
+    outline: none;
+    box-shadow: 0 0 5px rgba(57, 181, 74, 0.3);
 }
 
 /* Botón de registro */
 .btn-register {
     width: 100%;
-    padding: 10px;
-    font-size: 1.1rem;
+    padding: 12px;
+    font-size: 1.0rem;
+    margin-top: 20px;
     font-weight: 600;
     background-color: #39b54a;
     color: white;
@@ -115,4 +112,15 @@ html {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
+}
+
+/* Mensajes de error en el formulario */
+.error-message {
+    font-size: 0.85rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    padding: 8px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-top: 5px;
 }

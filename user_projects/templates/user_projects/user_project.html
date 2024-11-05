@@ -13,10 +13,12 @@
     <!-- Cuadrícula de proyectos -->
     <div class="projects-grid">
       {% for project in projects %}
-      <div class="project-card" onclick="showProjectDetails('{{ project.name }}', '{{ project.description }}')">
+      <div class="project-card" data-id="{{ project.id }}" onclick="showProjectDetails('{{ project.id }}')">
         <span class="project-title">{{ project.name }}</span>
         <p class="project-description">{{ project.description }}</p>
       </div>
+      {% empty %}
+      <p>No tienes proyectos aún. ¡Agrega uno nuevo!</p>
       {% endfor %}
 
       <div class="project-card-add" onclick="document.getElementById('addProjectForm').style.display = 'block';">

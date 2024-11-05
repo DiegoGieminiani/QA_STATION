@@ -1,7 +1,0 @@
-<!-- templates/ai_module/add_test_case.html -->
-<h1>Add Test Case to {{ project.name }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Test Case</button>
-</form>

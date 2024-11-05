@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views  # Importamos las vistas desde views.py
 
+app_name = 'ai_module'
+
 urlpatterns = [
     path('testcases/', views.test_cases_view, name='testcases'), # Ruta para TestCases 
     path('ejecutar-html-processor/', views.ejecutar_html_processor, name='ejecutar_html_processor'),

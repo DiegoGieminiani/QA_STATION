@@ -1,6 +1,9 @@
 from django.urls import path, include
 from .views import main_page, results_page, run_manual_test  # Importa correctamente las vistas
 
+
+app_name = 'functional_tests'
+
 urlpatterns = [
     path('', main_page, name='main_page'),  # Ruta para la interfaz principal
     path('results/', results_page, name='results_page'),  # Ruta para la página de resultados

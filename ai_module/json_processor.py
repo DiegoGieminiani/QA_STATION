@@ -22,6 +22,10 @@ def convertir_a_json(texto):
         return None
 
 def enviar_json(json_data):
+    # Asegúrate de que json_data sea una lista
+    if not isinstance(json_data, list):
+        json_data = [json_data]
+
     try:
         headers = {'Content-Type': 'application/json'}
         response = requests.post(URL_DESTINO, json=json_data, headers=headers)

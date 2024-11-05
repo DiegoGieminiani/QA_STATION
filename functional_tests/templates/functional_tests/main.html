@@ -34,7 +34,8 @@
     <div class="container">
         <h1>Proyecto: QA Station</h1>
 
-        <form id="testForm" action="{% url 'run_manual_test' %}" method="POST">
+        <form id="testForm" action="{% url 'functional_tests:run_manual_test' %}" method="POST">
+
             <label for="url">URL:</label>
             <input type="text" id="url" name="url" placeholder="Ingrese URL" required>
             {% csrf_token %}

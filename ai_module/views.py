@@ -20,10 +20,10 @@ def test_cases_view(request):
             # Convertir Markdown a HTML
             respuesta_html = markdown2.markdown(respuesta_chatgpt)
 
-        return render(request, 'testcases.html', {'respuesta': respuesta_html})  # Enviar HTML convertido
+        return render(request, 'ai_module/testcases.html', {'respuesta': respuesta_html})  # Enviar HTML convertido
     
     # Si la solicitud es GET, renderizar un formulario vacío
-    return render(request, 'testcases.html')
+    return render(request, 'ai_module/testcases.html')
 
 def ejecutar_html_processor(request):
     # Asegúrate de inicializar 'respuesta' y 'resultado' fuera de la verificación de POST
@@ -38,14 +38,14 @@ def ejecutar_html_processor(request):
         resultado_procesado = procesar_html(respuesta_chatgpt)
 
         # Devuelve un mensaje indicando que se ha ejecutado el proceso
-        return render(request, 'testcases.html', {
+        return render(request, 'ai_module/testcases.html', {
             'mensaje': 'Se ha ejecutado todo el proceso.',
             'respuesta': respuesta_chatgpt,  # Muestra la respuesta generada
             'resultado': resultado_procesado  # Muestra el resultado del procesamiento HTML
         })
     
     # Si no es POST, asegúrate de devolver el contenido previo
-    return render(request, 'testcases.html', {
+    return render(request, 'ai_module/testcases.html', {
         'respuesta': respuesta_chatgpt,  # Muestra la respuesta previa
         'mensaje': 'No se ha ejecutado aún el proceso.'
     })

@@ -1,120 +1,170 @@
-.cuadrado {
-    width: 50vw;
-    height: 50vw;
-    max-width: 500px; /* Limitar el tamaño máximo */
-    max-height: 500px; /* Limitar el tamaño máximo */
-    background-color: #8fbc8f;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px; /* Espacio entre el cuadrado y el campo de texto */
+/* Fondo principal */
+/* General */
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.campo-texto {
-    border-radius: 20px;
-}
 
-/* Estilo general del body */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-}
-
-/* Contenedor principal */
-.container {
+/* Contenedor principal centrado */
+.main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 40px;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Panel de resultados */
+.results-container {
+    background-color: #e9f7e9;
+    padding: 20px;
+    border-radius: 12px;
     width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-/* Cuadro gris claro */
-.grey-square {
-    width: 50%;
-    height: 50vh; /* Ocupa el 50% de la altura de la pantalla */
-    background-color: #3db56b; /* Gris claro */
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+.results-container h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 15px;
 }
 
-.grey-square {
-    font-size: 18px;
-    color: #3db56b;
-}
-
-/* Cuadro de texto con botones */
-.input-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ccc;
-    padding: 5px; /* Ajuste para que sea más delgado */
-    border-radius: 30px;
-    width: 60%; /* Ajustado para ser más delgado */
-    max-width: 500px;
-    background-color: white;
-}
-
-/* Campo de texto */
-.input-container input[type="text"] {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    padding: 5px; /* Hacer más delgado */
-    font-size: 16px;
-    border-radius: 20px;
-}
-
-.input-container input[type="text"]::placeholder {
-    color: #aaa;
-}
-
-/* Botones de iconos */
-.icon-button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 20px;
-    color: #505050;
-}
-
-.icon-button i {
-    font-size: 20px;
-}
-
-/* CUADRADO VERDE PARA LA GENERACIÓN DE TEXTO DE CHAT GPT*/
+/* Contenedor de casos generados */
 .test-cases-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f9fa;
-    border: 1px solid #ccc;
+    background-color: #d0f0d0;
     border-radius: 10px;
-    overflow: hidden; /* Para cortar el contenido que se desborda */
-}
-
-.test-case {
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Hacer que el contenido tenga barra de desplazamiento si es necesario */
-}
-
-.test-case .bg-white {
-    width: 100%;
-    height: 100%;
     padding: 15px;
-    box-sizing: border-box; /* Incluir el padding en el tamaño total */
-    overflow-y: auto; /* Barra de desplazamiento vertical si el contenido sobrepasa */
+    max-height: 500px;
+    overflow-y: auto;
+    font-family: monospace;
+    color: #333;
+    font-size: 0.9em;
+}
+
+
+/* Panel del generador de casos de prueba */
+.generator-panel {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.generator-panel h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.button-row form {
+    flex: 1; /* Hace que cada formulario ocupe el mismo espacio */
+}
+
+.button-row .btn {
+    width: 100%; /* Hace que el botón dentro del formulario ocupe todo el ancho */
+    padding: 8px;
+    font-size: 0.9em;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Botones en el panel del generador */
+button.btn {
+    width: 100%;
+    padding: 8px; /* Reducción de padding para hacer los botones más pequeños */
+    font-size: 0.9em; /* Tamaño de fuente reducido */
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Colores de los botones */
+.btn-primary {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #43a047;
+}
+
+.btn-success {
+    background-color: #009688;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #00897b;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #ec9a29;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Campo de texto para mensaje */
+textarea.form-control {
+    width: 100%;
+    resize: vertical;
+    border-radius: 6px; /* Reducción de los bordes redondeados */
+    padding: 6px; /* Reducción de padding para hacerlo más pequeño */
+    font-size: 0.9em; /* Tamaño de fuente reducido */
+    border: 1px solid #ccc;
+    margin-top: 8px;
+}
+
+/* Icono de carga */
+.loading-icon {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    border-top-color: #009688;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* Animación de carga */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Ocultar input de archivo */
+input[type="file"] {
+    display: none;
 }
