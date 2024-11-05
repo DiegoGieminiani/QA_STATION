@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'user_projects/user_select.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  <main class="content">
+    <h1 class="project-title">{{ project.name }}</h1>
+
+    <div class="modules-grid">
+      <!-- Módulo de Casos de Prueba -->
+      <a href="{% url 'ai_module:testcases' %}" style="text-decoration: none; color: inherit;">
+        <div class="module-card">
+          <h2 class="module-title">Casos de prueba</h2>
+          <p class="module-description">
+            En este módulo podrás generar casos de prueba para tu proyecto utilizando IA, integrando documentos que ya hayas creado por tu cuenta o que te haya proporcionado tu empresa.
+          </p>
+          <div class="module-add-card">
+            <span class="add-icon">⮕</span>
+          </div>
+        </div>
+      </a>
+      </div>
+      <!-- Módulo de Pruebas Funcionales -->
+      <a href="{% url 'functional_tests:main_page' %}" style="text-decoration: none; color: inherit;">
+        <div class="module-card">
+          <h2 class="module-title">Pruebas Funcionales</h2>
+          <p class="module-description">
+            En este módulo, integrado con inteligencia artificial, podrás automatizar pruebas funcionales y visualizar en tiempo real el estado y progreso de las mismas.
+          </p>
+          <div class="module-add-card">
+            <span class="add-icon">⮕</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'user_projects/user_select.js' %}"></script>
+{% endblock %}

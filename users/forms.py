@@ -1,25 +1,39 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 
-class CustomAuthenticationForm(forms.Form):
-    email = forms.EmailField(label="Correo Electrónico", required=True)
-    password = forms.CharField(label="Contraseña", widget=forms.PasswordInput, required=True)
+class CustomAuthenticationForm(AuthenticationForm):
+    # Agrega campos personalizados o validaciones si es necesario
+    class Meta:
+        model = User
+        fields = ['username', 'password']  # Define los campos según tus necesidades
 
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        password = cleaned_data.get("password")
+    # Personalización de widgets
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Ingresa tu usuario'})
+        self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Ingresa tu contraseña'})
 
-        if email and password:
-            # Verificar si el correo existe en la base de datos
-            try:
-                user = User.objects.get(email=email)
-                # Autenticar usando el username del usuario
-                user = authenticate(username=user.username, password=password)
-                if user is None:
-                    self.add_error("password", "La contraseña ingresada es incorrecta. Por favor, intenta nuevamente o restablece tu contraseña si la has olvidado.")
-            except User.DoesNotExist:
-                self.add_error("email", "El correo electrónico ingresado no existe. Por favor, verifica e intenta nuevamente.")
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        
+        # Personalización de widgets para cada campo
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de usuario'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar contraseña'}),
+        }
 
-        return cleaned_data
+    # Validación personalizada si necesitas alguna específica
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este correo electrónico ya está registrado.")
+        return email

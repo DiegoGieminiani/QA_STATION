@@ -1,20 +1,170 @@
-.input-group {
+/* Fondo principal */
+/* General */
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+
+/* Contenedor principal centrado */
+.main-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    padding: 40px;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-textarea {
-    border: none; /* Elimina bordes */
-    box-shadow: none; /* Elimina sombras */
-    resize: none; /* Desactiva el redimensionamiento si lo deseas */
+/* Panel de resultados */
+.results-container {
+    background-color: #e9f7e9;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.icon-button {
-    background: none; /* Estilo adicional para botones */
-    border: none; /* Elimina bordes del botón */
-    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+.results-container h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 15px;
 }
 
-.icon-button i {
-    font-size: 1.5rem; /* Ajusta el tamaño del icono si es necesario */
+/* Contenedor de casos generados */
+.test-cases-container {
+    background-color: #d0f0d0;
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    font-family: monospace;
+    color: #333;
+    font-size: 0.9em;
+}
+
+
+/* Panel del generador de casos de prueba */
+.generator-panel {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.generator-panel h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.button-row form {
+    flex: 1; /* Hace que cada formulario ocupe el mismo espacio */
+}
+
+.button-row .btn {
+    width: 100%; /* Hace que el botón dentro del formulario ocupe todo el ancho */
+    padding: 8px;
+    font-size: 0.9em;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Botones en el panel del generador */
+button.btn {
+    width: 100%;
+    padding: 8px; /* Reducción de padding para hacer los botones más pequeños */
+    font-size: 0.9em; /* Tamaño de fuente reducido */
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Colores de los botones */
+.btn-primary {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #43a047;
+}
+
+.btn-success {
+    background-color: #009688;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #00897b;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #ec9a29;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Campo de texto para mensaje */
+textarea.form-control {
+    width: 100%;
+    resize: vertical;
+    border-radius: 6px; /* Reducción de los bordes redondeados */
+    padding: 6px; /* Reducción de padding para hacerlo más pequeño */
+    font-size: 0.9em; /* Tamaño de fuente reducido */
+    border: 1px solid #ccc;
+    margin-top: 8px;
+}
+
+/* Icono de carga */
+.loading-icon {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    border-top-color: #009688;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* Animación de carga */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Ocultar input de archivo */
+input[type="file"] {
+    display: none;
 }

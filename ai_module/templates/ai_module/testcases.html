@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <!-- Archivos CSS específicos de la página -->
+  <link rel="stylesheet" href="{% static 'ai_module/ai_module.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+
+    <!-- Panel de resultados: donde se muestra la respuesta generada -->
+    <div class="results-container">
+        <h2>Casos de Prueba Generados</h2>
+        
+        <!-- Área para mostrar los casos generados -->
+        <div class="test-cases-container">
+            <div class="test-case">
+                <div class="overflow-auto">{{ respuesta|safe }}</div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Panel de generación de casos de prueba con botones y entrada -->
+    <div class="generator-panel">
+        <h2>Generador de Casos de Prueba</h2>
+
+        <form method="POST" enctype="multipart/form-data" onsubmit="mostrarLoader()" class="d-flex align-items-center flex-column">
+            {% csrf_token %}
+            
+            <input type="file" name="archivo" id="archivo" style="display: none;" onchange="updateFileName()">
+            <button type="button" class="btn btn-primary mb-2" onclick="document.getElementById('archivo').click();">Adjuntar Archivo</button>
+            
+            <textarea name="mensaje" class="form-control mt-3" rows="1" placeholder="Escribe un mensaje..."></textarea>
+            
+            <button type="submit" class="btn btn-success mt-3">Generar Casos de Prueba</button>
+        </form>
+
+        <!-- Contenedor para los tres últimos botones en una fila -->
+        <div class="button-row mt-3">
+            <form action="{% url 'ai_module:ejecutar_html_processor' %}" method="post" onsubmit="mostrarLoader()">
+                {% csrf_token %}
+                <input type="hidden" name="respuesta" value="{{ respuesta }}">
+                <button type="submit" class="btn btn-secondary">Ejecutar HTML Processor</button>
+            </form>
+
+            <form id="jsonForm" onsubmit="event.preventDefault(); enviarJSON();">
+                <button type="submit" class="btn btn-warning">Enviar JSON a la URL</button>
+            </form>
+        </div>
+        
+        <p id="mensaje"></p>
+    </div>
+
+    <div class="loading-icon" id="loading" style="display:none;"></div>
+
+</div>
+
+<input type="hidden" id="resultadoProcesado" value="{{ resultado_procesado }}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'ai_module/ai_module.js' %}"></script>
+  
+{% endblock %}

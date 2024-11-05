@@ -1,6 +1,8 @@
-from django.urls import path, include
-from .views import project_view
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('',project_view, name='projects'),
+    path('', views.project_view, name='projects'),
+    path('select/', views.select_project, name='select_project'),
+
 ]

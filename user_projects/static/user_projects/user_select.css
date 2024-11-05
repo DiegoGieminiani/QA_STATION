@@ -1,0 +1,90 @@
+/* General container adjustments */
+.main-container {
+  display: flex;
+  padding: 40px;
+  margin-top: -5px;
+  margin-right: 1px;
+  margin-left: 150px;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  padding: 50px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Project title */
+.project-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Grid for modules */
+.modules-grid {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  gap: 70px; /* Espacio entre módulos */
+}
+
+/* Module card */
+.module-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 40px;
+  width: 45%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  min-height: 400px; /* Ajusta este valor según necesites */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+/* Module title */
+.module-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Module description */
+.module-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Add button card */
+.module-add-card {
+  background-color: #d3d3d3;
+  border-radius: 10px;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.module-add-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #28a745;
+
+}
+.add-icon {
+  font-size: 2rem; /* Ajusta el tamaño según prefieras */
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

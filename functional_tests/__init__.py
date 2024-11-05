@@ -1,2 +1,2 @@
 from .selenium_test import *
-from .api import *
+from .manual_test import *

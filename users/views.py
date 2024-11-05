@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
-from .forms import CustomAuthenticationForm 
-from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.forms import AuthenticationForm
 
 # Renderizar la página principal
 def main_view(request):
@@ -15,43 +15,44 @@ def main_view(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = CustomAuthenticationForm(request.POST)  # Usa el formulario personalizado
+        form = CustomAuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
-            # Autenticar y loguear al usuario
-            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            try:
-                user_obj = User.objects.get(email=email)
-                user = authenticate(request, username=user_obj.username, password=password)
-                if user is not None:
-                    login(request, user)
-                    messages.success(request, f'Bienvenido/a {user.username}')
-                    return redirect('about_us')  # Redirige a la página principal tras el login
-                else:
-                    form.add_error('password', "La contraseña ingresada es incorrecta.")
-            except User.DoesNotExist:
-                form.add_error('email', "El correo electrónico ingresado no existe. Por favor, verifica e intenta nuevamente.")
+
+            # Autenticación directa
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Bienvenido/a {user.username}')
+                return redirect('about_us')
+            else:
+                form.add_error('password', "La contraseña ingresada es incorrecta.")
         else:
             messages.error(request, 'Por favor, corrige los errores en el formulario.')
     else:
         form = CustomAuthenticationForm()
 
-        # Mostrar mensaje flash si el usuario fue redirigido desde logout
-        if 'next' in request.GET or request.path == reverse('users:login'):
-            messages.info(request, 'Has cerrado sesión exitosamente.')
+    if 'next' in request.GET or request.GET.get('logged_out') == '1':
+        messages.info(request, 'Has cerrado sesión exitosamente.')
 
     return render(request, 'users/login.html', {'form': form})
+def logout_view(request):
+    logout(request)
+    return redirect(f"{reverse('users:login')}?logged_out=1")
 
-# Vista de registro
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Cuenta creada con éxito.')
-            return redirect('login')
+            return redirect('users:login')
+        else:
+            messages.error(request, 'Ocurrió un error en el registro. Por favor, revisa los datos ingresados.')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
+
     return render(request, 'users/register.html', {'form': form})
 
 # Vista para restablecer la contraseña (solicitud)

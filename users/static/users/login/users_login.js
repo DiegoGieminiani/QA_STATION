@@ -17,4 +17,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Selecciona todos los mensajes flash
+    const messages = document.querySelectorAll(".message");
+
+    messages.forEach((message) => {
+      // Desvanece y elimina el mensaje después de 5 segundos
+      setTimeout(() => {
+        message.style.transition = "opacity 0.5s ease";
+        message.style.opacity = "0";
+        setTimeout(() => message.remove(), 500); // Remueve el mensaje del DOM
+      }, 5000); // 5 segundos
+    });
+  });

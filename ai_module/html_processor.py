@@ -111,84 +111,85 @@ def procesar_html(respuesta_chatgpt):
     else:
         return "No hay archivos HTML en la carpeta para procesar."
 
-    # Crear el mensaje para OpenAI, usando respuesta_chatgpt en lugar de historial
     mensaje = [
-        {"role": "system", "content": "Analiza el archivo HTML adjunto y entrega un JSON solo para los elementos HTML que realmente existen en el documento."},
-        {"role": "system", "content": "Asegúrate de que los elementos generados correspondan únicamente a los elementos que encuentras en el HTML proporcionado."},
-        {"role": "system", "content": "Analiza el archivo HTML adjunto en conjunto con el documento de casos de prueba y entrega un JSON para cada caso de prueba"},
-        {"role": "system", "content": "element_type debe ser uno de estos valores: id, name, xpath, css_selector, class_name, tag_name, link_text, partial_link, "},
+        {"role": "system", "content": "Eres un asistente experto en automatización de pruebas de software cuya tarea es analizar el HTML proporcionado y generar un JSON de casos de prueba compatible con Selenium."},
         {"role": "system", "content": """
-si element_type es xpath, dentro de esto: <>, tomalo como un valor variable que tienes que llenar tu "//<tag html>[text()='<el valor que tiene el tag html seleccionado>']"
-ejemplo:<button class='clase_de_ejemplo'>clickeame esta</button>. teniendo eso, deberias devolver \"button[text()='clickeame esta']\"
-ejemplo2:<a class='classname'>clickeame</a> teniendo eso, deberias devolver \"a[text()='clickeame']\"
- """},
+    Tu objetivo es identificar todos los elementos HTML interactivos relevantes en el archivo HTML y crear casos de prueba en formato JSON. Cada caso de prueba debe estar separado y debe incluir los siguientes campos obligatorios:
+    - **url**: La URL de la página que se está probando.
+    - **actions**: Una lista de acciones que deben realizarse en este caso de prueba.
+
+    Para cada acción dentro del caso de prueba, usa los siguientes campos:
+    - **action**: La acción que el usuario debe realizar (por ejemplo, "click", "enter_data", "submit").
+    - **element_type**: El tipo de selector de elemento que debe usarse en Selenium. Los valores permitidos son: id, name, xpath, css_selector, class_name, tag_name, link_text, partial_link.
+    - **value**: El valor del selector para el elemento (por ejemplo, el id o el xpath del elemento).
+    - **input_value** (opcional): En caso de ser necesario, el valor que se debe ingresar en el campo (solo para acciones de entrada de datos como "enter_data").
+        """},
         {"role": "system", "content": """
-        Por ejemplo, si encuentras esta etiqueta:
-        <a class="nav-link" href="#" id="login2" data-toggle="modal" data-target="#logInModal" style="display: block;">Log in</a>
-        la accion seria: click, element_type seria: id, value: seria login2
+    Aquí tienes un ejemplo del formato JSON esperado para los casos de prueba:
+    [
+        {
+            "url": "https://www.tu-url-aqui.com",
+            "actions": [
+                {
+                    "action": "click",
+                    "element_type": "id",
+                    "value": "login2"
+                },
+                {
+                    "action": "enter_data",
+                    "element_type": "name",
+                    "value": "q", 
+                    "input_value": "Texto a ingresar" 
+                },
+                {
+                    "action": "submit",
+                    "element_type": "xpath",
+                    "value": "//button[@type='submit']"
+                }
+            ]
+        },
+        {
+            "url": "https://www.otro-url-aqui.com",
+            "actions": [
+                {
+                    "action": "click",
+                    "element_type": "css_selector",
+                    "value": ".btn-primary"
+                },
+                {
+                    "action": "enter_data",
+                    "element_type": "id",
+                    "value": "email",
+                    "input_value": "usuario@example.com"
+                },
+                {
+                    "action": "enter_data",
+                    "element_type": "id",
+                    "value": "password",
+                    "input_value": "contraseñaSegura"
+                },
+                {
+                    "action": "submit",
+                    "element_type": "name",
+                    "value": "login"
+                }
+            ]
+        }
+    ]
         """},
-        {"role": "system", "content": """ Aquí tienes un ejemplo de como deberia ser El JSON: 
-[
-    {
-        "url": "https://www.tu-url-aqui.com",
-        "actions": [
-            {
-                "action": "click",
-                "element_type": "id",
-                "value": "login2"
-            },
-            {
-                "action": "enter_data",
-                "element_type": "name",
-                "value": "q", 
-                "input_value": "Texto a ingresar" 
-            },
-            {
-                "action": "submit",
-                "element_type": "xpath",
-                "value": "//button[@type='submit']"
-            }
-        ]
-    },
-    {
-        "url": "https://www.otro-url-aqui.com",
-        "actions": [
-            {
-                "action": "click",
-                "element_type": "css_selector",
-                "value": ".btn-primary"
-            },
-            {
-                "action": "enter_data",
-                "element_type": "id",
-                "value": "email",
-                "input_value": "usuario@example.com"
-            },
-            {
-                "action": "enter_data",
-                "element_type": "id",
-                "value": "password",
-                "input_value": "contraseñaSegura"
-            },
-            {
-                "action": "submit",
-                "element_type": "name",
-                "value": "login"
-            }
-        ]
-    }
-]
+        {"role": "system", "content": """
+    Asegúrate de que:
+    1. Cada caso de prueba esté claramente separado en su propio objeto JSON dentro de una lista.
+    2. Cada caso de prueba tenga todos los campos requeridos: "url" y "actions".
+    3. Las acciones dentro de cada caso de prueba estén bien detalladas y estructuradas con los campos correctos.
 
-
-
-Asegúrate de sustituir los valores correspondientes según el contenido del documento y el HTML proporcionado.
+    Entrega exclusivamente el JSON en el formato mostrado, sin explicaciones adicionales ni texto adicional fuera del JSON.
         """},
-        {"role": "assistant", "content": "La respuesta generada debe ser solo un JSON, nada de explicaciones ni nada, el puro JSON"},
-        {"role": "assistant", "content": respuesta_chatgpt},  # Cambiado a usar respuesta_chatgpt
-        {"role": "user", "content": prompt}
+        {"role": "assistant", "content": "La respuesta generada debe ser exclusivamente un JSON con los casos de prueba en el formato solicitado, sin explicaciones adicionales."},
+        {"role": "assistant", "content": respuesta_chatgpt},  
+        {"role": "user", "content": "Identifica todos los elementos HTML interactivos y genera el JSON para los casos de prueba basados en estos elementos, siguiendo estrictamente el formato indicado."}
     ]
 
-    
     # Realizar la solicitud a OpenAI
     response = openai.chat.completions.create(
         model="gpt-4o-mini",

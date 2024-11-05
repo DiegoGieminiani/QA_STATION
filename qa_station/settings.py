@@ -31,6 +31,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,11 +47,11 @@ INSTALLED_APPS = [
     'users',
     'user_documentation',
     'about_us',
+    'functional_tests',
     'user_projects',
     'ai_module',
 
-    # Tests
-    'functional_tests', 
+    # Third-party apps 
     'django_extensions',
     'rest_framework'
 ]
@@ -226,8 +227,6 @@ STATIC_URL = '/static/'
 
 # Donde se recopilarán todos los archivos estáticos cuando ejecutes 'collectstatic'
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Para producción
-
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

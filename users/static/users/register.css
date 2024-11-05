@@ -1,82 +1,126 @@
 /* Estilos generales */
-body, html {
+html {
     font-family: 'Poppins', sans-serif;
-    
+
 }
 
 /* Contenedor del background */
 .background-container {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 80vh; /* Ocupa toda la altura de la ventana */
     background-color: white; /* Fondo blanco */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+    display: flex; /* Centra horizontalmente */    /* Centra verticalmente */
+    height: 100vh;            /* Ocupa toda la altura de la ventana */
 }
 
 /* Estilos para el logo */
 .register-logo img {
-    width: 200%;  /* El logo se ajusta al tamaño del formulario */
-    max-width: 210px; /* Tamaño máximo igual al del formulario */
+    width: 200%;
     height: auto;
-    display: block;
-    margin: 0 auto 10px; /* Centra el logo horizontalmente */
+    max-width: 190px;
+    margin-bottom: 0 auto 10px;
 }
 
+/* Estilo del título */
 .title {
     text-align: center;
     font-weight: 500;
     margin-bottom: 20px;
-}
-
-/* Estilos para el formulario de registro */
-
-.register-form {
-    width: 100%;
-    max-width: 400px; 
-    padding: 30px;
-    background-color: whitesmoke; 
-    border-radius: 15px;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;  /* Centrar los inputs dentro del formulario */
-    align-items: center;
-}
-.form-group {
-    width: 100%;  /* Asegura que las cajitas ocupen todo el ancho del formulario */
-    margin-bottom: 15px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 1.0rem;
+    font-size: 1.5rem;
     color: #333;
 }
 
-.form-group input {
+/* Formulario de registro */
+.register-form {
     width: 100%;
-    padding: 10px;
+    max-width: 400px; /* Tamaño máximo del formulario y del logo */
+    padding: 30px;
+    background-color: whitesmoke; /* Fondo blanco para el formulario */
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    justify-content: center; 
+    align-items: center;
+}
+
+.register-form .form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.register-form .form-group label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.register-form .form-group input {
+    width: 100%;
+    padding: 12px;
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box;  /* Asegura que el padding esté dentro del tamaño total */
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.register-form .form-group input:focus {
+    border-color: #39b54a;
+    outline: none;
+    box-shadow: 0 0 5px rgba(57, 181, 74, 0.3);
 }
 
 /* Botón de registro */
 .btn-register {
     width: 100%;
-    padding: 10px;
-    font-size: 1.1rem;
-    font-weight: 600; /* Aumenta ligeramente el grosor del texto */
-    background-color: #39b54a; /* Color verde */
+    padding: 12px;
+    font-size: 1.0rem;
+    margin-top: 20px;
+    font-weight: 600;
+    background-color: #39b54a;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Suaviza el cambio de color */
+    transition: background-color 0.3s ease;
 }
-  
+
 .btn-register:hover {
     background-color: #45a049;
+}
+
+/* Mensajes de éxito y error */
+.message {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Mensajes de error en el formulario */
+.error-message {
+    font-size: 0.85rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    padding: 8px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-top: 5px;
 }

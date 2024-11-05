@@ -17,19 +17,48 @@ UPLOAD_FOLDER = settings.MEDIA_ROOT
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['pdf']
 
-historial = [
-    {"role": "system", "content": "Eres un asistente que ayuda a crear casos de prueba"},
-    {"role": "system", "content": "El titulo del documento debe ser simple y sencillo de leer, si tablas"},
+HISTORIAL_BASE = [
+    {"role": "system", "content": "Eres un asistente experto en calidad de software cuya tarea es generar solo casos de prueba detallados y estructurados para aplicaciones web."},
     {"role": "system", "content": """
-Genera un conjunto de casos de prueba para una aplicación web, basados en las siguientes pruebas funcionales comunes. Para cada prueba, proporciona un caso de prueba en el siguiente formato:
+Tu objetivo es crear una lista de casos de prueba en texto plano para la aplicación web Demoblaze. Los casos de prueba deben estar en un formato claro y específico, 
+adecuado para pruebas manuales y automatización. No incluyas encabezados, introducciones, tablas de contenido, secciones adicionales, conclusiones ni ningún tipo de formato o estructura de documento. Devuelve exclusivamente los casos de prueba en el formato de texto plano especificado.
+    """},
+    {"role": "system", "content": """
+Para cada caso de prueba, utiliza el siguiente formato en texto plano y simple, sin incluir encabezados, tablas de contenido, listas numeradas o cualquier formato visual complejo:
 
-URL:
-ID:
-NOMBRE:
+URL: [URL de la página que se está probando]
+ID: [Identificador único del caso de prueba, como TC001]
+NOMBRE: [Un nombre descriptivo que indique el propósito del caso de prueba]
+PASO A PASO: 
+- Paso 1: [Descripción detallada de la acción]
+- Paso 2: [Descripción detallada de la siguiente acción]
+- etc.
+RESULTADO ESPERADO: [Descripción del resultado esperado tras completar los pasos]
+
+Ejemplo de un caso de prueba:
+URL: https://example.com/login
+ID: TC001
+NOMBRE: Verificar inicio de sesión exitoso
 PASO A PASO:
-RESULTADO ESPERADO:
+- Navegar a la URL de inicio de sesión.
+- Ingresar un nombre de usuario válido en el campo "username".
+- Ingresar una contraseña válida en el campo "password".
+- Hacer clic en el botón "Iniciar sesión".
+RESULTADO ESPERADO: El usuario es redirigido a su panel de control y se muestra el mensaje "Inicio de sesión exitoso".
+    """},
+    {"role": "system", "content": """
+Por favor, genera casos de prueba que cubran lo siguiente:
+- Flujos de usuario críticos, como inicio de sesión, registro y recuperación de contraseña.
+- Validación de formularios (incluyendo datos válidos e inválidos).
+- Interacción con elementos interactivos como menús desplegables, botones de acción y campos de entrada.
+- Escenarios alternativos o errores comunes, como intentos de inicio de sesión fallidos o envíos de formularios incompletos.
+    """},
+    {"role": "system", "content": """
+Asegúrate de que cada caso de prueba esté claramente separado y siga el formato indicado en texto plano. No incluyas ninguna información adicional como encabezados, introducciones o conclusiones. Solo entrega los casos de prueba en el formato solicitado.
     """}
 ]
+
+
 
 def process_chat_request(request):
     # Inicializa un historial vacío si no existe
