@@ -13,39 +13,53 @@
     <!-- Cuadrícula de proyectos -->
     <div class="projects-grid">
       {% for project in projects %}
-      <div class="project-card" data-id="{{ project.id }}" onclick="showProjectDetails('{{ project.id }}')">
+      <div class="project-card" data-id="{{ project.id }}" onclick="redirectToProject('{{ project.id }}')">
+        <!-- Botón de eliminación -->
+        <button class="delete-btn" onclick="deleteProject('{{ project.id }}'); event.stopPropagation();">x</button>
         <span class="project-title">{{ project.name }}</span>
-        <p class="project-description">{{ project.description }}</p>
       </div>
       {% empty %}
       <p>No tienes proyectos aún. ¡Agrega uno nuevo!</p>
       {% endfor %}
 
-      <div class="project-card-add" onclick="document.getElementById('addProjectForm').style.display = 'block';">
+      <!-- Botón para añadir nuevo proyecto -->
+      <div class="project-card-add" onclick="openAddProjectForm();">
         <span class="project-title">+</span>
       </div>
     </div>
 
     <!-- Detalles del proyecto -->
-    <div id="projectDetails">
+    <div id="projectDetails" style="display: none;">
       <p>Haz clic en un proyecto para ver sus detalles o agregar uno nuevo</p>
       <h2 id="selectedProjectTitle"></h2>
       <p id="selectedProjectDescription"></p>
     </div>
 
+    <!-- Fondo oscuro cuando se abre el cuadro de añadir proyecto -->
+    <div id="overlay" onclick="closeAddProjectForm()"></div>
+
     <!-- Formulario para agregar un nuevo proyecto -->
     <div id="addProjectForm" style="display: none;">
       <h2>Añadir Nuevo Proyecto</h2>
-      <form method="post" action="{% url 'projects' %}">
+      <form method="post" action="{% url 'user_projects:projects' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Agregar Proyecto</button>
       </form>
     </div>
+
+    <!-- Campo oculto para el token CSRF -->
+    <form method="post" style="display: none;">
+      {% csrf_token %}
+    </form>
   </main>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'user_projects/user_project.js' %}"></script>
+<script>
+  // Obtener el token CSRF desde el campo oculto
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
 {% endblock %}

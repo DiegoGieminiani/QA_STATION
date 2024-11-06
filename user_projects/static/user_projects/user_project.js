@@ -6,8 +6,10 @@ document.querySelectorAll(".project-card").forEach((card) => {
     fetchProjectDetails(projectId); // Llama a la función para obtener los detalles desde el servidor
   });
 });
+// Coloca esto en tu archivo JavaScript
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-// Función para hacer una solicitud AJAX para obtener los detalles del proyecto
+// Función para obtener los detalles del proyecto
 function fetchProjectDetails(projectId) {
   fetch(`/projects/${projectId}/`) // Asume que la URL de detalle es /projects/<project_id>/
     .then((response) => {
@@ -19,7 +21,7 @@ function fetchProjectDetails(projectId) {
     .then((data) => {
       const projectDetails = document.getElementById("projectDetails");
       projectDetails.innerHTML = `<h2>${data.name}</h2><p>${data.description}</p>`;
-      document.getElementById("addProjectForm").style.display = "none"; // Oculta el formulario si está visible
+      closeAddProjectForm(); // Oculta el formulario si está visible
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -33,9 +35,21 @@ document
   .querySelector(".project-card-add")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    document.getElementById("addProjectForm").style.display = "block";
-    document.getElementById("projectDetails").innerHTML = ""; // Oculta cualquier detalle de proyecto cuando el formulario está visible
+    openAddProjectForm();
   });
+
+// Función para mostrar el formulario y el overlay
+function openAddProjectForm() {
+  document.getElementById("addProjectForm").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("projectDetails").innerHTML = ""; // Oculta cualquier detalle de proyecto cuando el formulario está visible
+}
+
+// Función para ocultar el formulario y el overlay
+function closeAddProjectForm() {
+  document.getElementById("addProjectForm").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+}
 
 // Agregar un nuevo proyecto
 document
@@ -68,6 +82,55 @@ document
       "projectDetails"
     ).innerHTML = `<h2>${newProjectName}</h2><p>${newProjectDescription}</p>`;
 
-    // Ocultar el formulario después de agregar el proyecto
-    document.getElementById("addProjectForm").style.display = "none";
+    // Ocultar el formulario y el overlay después de agregar el proyecto
+    closeAddProjectForm();
   });
+
+// Función para abrir el modal en modo "Ver Detalles del Proyecto"
+function redirectToProject(projectId) {
+  window.location.href = `/projects/select/${projectId}/`;
+}
+
+
+// Función para cerrar el modal
+function closeProjectModal() {
+  document.getElementById("projectModal").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+}
+
+// Funciones para mostrar/ocultar el formulario de nuevo proyecto
+function openAddProjectForm() {
+  document.getElementById("addProjectForm").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closeAddProjectForm() {
+  document.getElementById("addProjectForm").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+}
+
+// Función para eliminar un proyecto
+function deleteProject(projectId) {
+  if (confirm("¿Estás seguro de que deseas eliminar este proyecto?")) {
+    fetch(`/projects/delete/${projectId}/`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrftoken, // Usa el valor dinámico del token CSRF
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          document
+            .querySelector(`.project-card[data-id='${projectId}']`)
+            .remove();
+        } else {
+          alert("Error al eliminar el proyecto.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Error al eliminar el proyecto.");
+      });
+  }
+}

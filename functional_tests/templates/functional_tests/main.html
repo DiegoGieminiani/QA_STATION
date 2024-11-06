@@ -33,7 +33,7 @@
     <!-- Contenedor principal que estará a la derecha de las pruebas -->
     <div class="container">
         <h1>Proyecto: QA Station</h1>
-
+        <span class="project-title">{{ project.name }}</span>
         <form id="testForm" action="{% url 'functional_tests:run_manual_test' %}" method="POST">
 
             <label for="url">URL:</label>

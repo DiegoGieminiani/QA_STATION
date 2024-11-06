@@ -1,4 +1,8 @@
 /* General container adjustments */
+* {
+  box-sizing: border-box;
+}
+
 .main-container {
   display: flex;
   padding: 40px;
@@ -9,13 +13,16 @@
 
 .content {
   width: 100%;
+  margin-top: 20px;
   max-width: 1200px;
   padding: 50px;
-  background-color: #fff;
+  background-color: #e8fde9;
   border-radius: 15px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
   font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Project title */
@@ -25,43 +32,45 @@
   margin-bottom: 40px;
   text-align: center;
 }
-
-/* Grid for modules */
 .modules-grid {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  gap: 70px; /* Espacio entre módulos */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales */
+  gap: 20px; /* Espacio entre las tarjetas */
+  width: 100%;
+  margin-top: -40px;
+  margin-bottom: 20px;
 }
 
-/* Module card */
 .module-card {
-  background-color: #f9f9f9;
+  background-color: #f2f2f2;
   border-radius: 10px;
   padding: 40px;
-  width: 45%;
-  text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  min-height: 400px; /* Ajusta este valor según necesites */
-  display: flex;
+  min-height: 400px;
+  display: block;
   flex-direction: column;
   justify-content: space-between;
+  text-align: center;
 }
+
 /* Module title */
 .module-title {
   font-size: 1.5rem;
   color: #333;
-  margin-bottom: 10px;
   font-weight: bold;
+  text-align: center;
 }
 
-/* Module description */
-.module-description {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 20px;
-  line-height: 1.5;
+.module-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 400px; /* Asegura una altura mínima */
+  height: auto; /* Permite que la altura se expanda según el contenido */
+  padding: 20px;
 }
+
 
 /* Add button card */
 .module-add-card {
@@ -78,11 +87,11 @@
 
 .module-add-card:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  background-color: #28a745;
-
+  background-color: #82dd86;
 }
+
 .add-icon {
-  font-size: 2rem; /* Ajusta el tamaño según prefieras */
+  font-size: 2rem;
   color: #666;
   display: flex;
   align-items: center;

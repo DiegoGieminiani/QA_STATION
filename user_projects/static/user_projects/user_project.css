@@ -45,16 +45,16 @@
 .project-card-add {
   background-color: #d9fdda;
   border-radius: 10px;
-  padding: 45px 25px; /* Reducir el relleno */
+  padding: 45px 25px;
   text-align: left;
-  font-size: 1.1em; /* Reducir el tamaño de la fuente */
+  font-size: 1.1em;
   position: relative;
   transition: box-shadow 0.3s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 110px; /* Reducir la altura mínima */
+  min-height: 110px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -67,6 +67,30 @@
   font-size: 1.1em;
   font-weight: 600;
   color: #333;
+}
+
+/* Botón de eliminación en la tarjeta de proyecto */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #d9fdda; /* Color de fondo rojo */
+  color: #666;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #cf3d3d; /* Color más oscuro al pasar el mouse */
 }
 
 /* Estilos para la descripción en las tarjetas */
@@ -88,61 +112,79 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* Contenedor del formulario para agregar nuevo proyecto */
-#addProjectForm {
-  display: none; /* Se mantiene oculto inicialmente */
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  width: 50%; /* Ancho del formulario */
-  margin: 0 auto; /* Centrar horizontalmente */
-  margin-top: 40px; /* Separación superior */
-  text-align: center; /* Centrar texto dentro del formulario */
+/* Fondo oscuro cuando el cuadro está activo */
+#overlay {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Oscurece el fondo */
+  z-index: 5;
 }
 
-/* Estilo del título dentro del formulario */
+/* Contenedor del formulario para agregar nuevo proyecto */
+#addProjectForm {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  font-family: "Poppins", sans-serif;
+  text-align: left;
+}
+
+/* Título dentro del formulario */
 #addProjectForm h2 {
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   color: #333;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 /* Input del formulario */
-#newProjectForm input[type="text"],
-#newProjectForm textarea {
-  width: 80%; /* El input ocupa el 80% del contenedor */
+#addProjectForm input[type="text"],
+#addProjectForm textarea {
+  width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 0.7rem;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra interna suave */
+  font-size: 0.9rem;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo del label */
+#addProjectForm label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 /* Botón para agregar el proyecto */
-#newProjectForm button {
-  padding: 10px 20px;
+#addProjectForm button[type="submit"] {
+  width: 100%;
+  padding: 10px;
   background-color: #39b54a;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease; /* Transición suave para hover */
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 /* Efecto hover en el botón */
-#newProjectForm button:hover {
-  background-color: #2e8b41; /* Color de fondo al hacer hover */
-}
-
-/* Estilo del label */
-#newProjectForm label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-  color: #333;
+#addProjectForm button[type="submit"]:hover {
+  background-color: #2e8b41;
 }
 
 /* Estilo para el área de detalles del proyecto */

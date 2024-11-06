@@ -48,7 +48,18 @@ def add_project(request):
         form = ProjectForm()
     return render(request, 'user_projects/user_project.html', {'form': form})
 
-@login_required 
-def select_project(request):
-    projects = Project.objects.filter(user=request.user)  # Obtiene los proyectos del usuario actual
-    return render(request, 'user_projects/user_select.html', {'projects': projects})
+@login_required
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id, user=request.user)  # Asegúrate de que el proyecto pertenece al usuario
+    project.delete()
+    return JsonResponse({'success': True})
+
+@login_required
+def select_project(request, project_id):
+    selected_project = get_object_or_404(Project, id=project_id, user=request.user)  # Obtiene el proyecto seleccionado
+    projects = Project.objects.filter(user=request.user)  # Obtiene todos los proyectos del usuario
+    return render(request, 'user_projects/user_select.html', {
+        'projects': projects,
+        'selected_project': selected_project
+    })
+
