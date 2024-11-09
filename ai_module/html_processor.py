@@ -22,7 +22,7 @@ def extraer_primera_url(texto):
 # Función para descargar el HTML de la URL
 def descargar_html(url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         if response.status_code == 200:
             print("HTML descargado correctamente.")  # Mensaje de éxito
             return response.text  # Devuelve el contenido HTML
@@ -88,7 +88,7 @@ def procesar_respuesta_chatgpt(respuesta_chatgpt):
 # Función para procesar el HTML y generar el JSON basado en la respuesta de ChatGPT
 def procesar_html(respuesta_chatgpt):
     # Pedir el texto (Prompt)
-    texto_prompt = "Identifica todos los elementos HTML con los que el usuario debe interactuar y correspondientes a los casos de prueba."
+    texto_prompt = "Identifica todos los elementos HTML con los que el usuario debe interactuar y para que se cumplan a los casos de prueba."
 
     # Obtener la lista de archivos en la carpeta media
     html_folder = settings.MEDIA_ROOT
@@ -194,11 +194,12 @@ def procesar_html(respuesta_chatgpt):
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=mensaje,
-        temperature=0.1
+        temperature=0.0
     )
 
     # Obtener la respuesta de OpenAI
     respuesta = response.choices[0].message.content
     print("Este es el mensaje que entrega la respuesta combinada de casos de prueba:          ",respuesta)
     return respuesta
+
 

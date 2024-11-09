@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,13 +23,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l*8x1h$3$jx6c@!in^in(t-zxtya*6ni+8fgc4ojrriv9r4w5&'
+load_dotenv()
+SECRET_KEY =os.getenv('SECRET_KEY')
+#SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 
@@ -58,12 +58,12 @@ INSTALLED_APPS = [
 
 
 JAZZMIN_SETTINGS = {
-    "site_logo": "images/logo.png",  # Asegúrate de tener el logo en la carpeta static
+    "site_logo": "image/logo.png",  # Asegúrate de tener el logo en la carpeta static
     "site_icon": "images/favicon.png",  # Ícono para el favicon
     "site_title": "Administración QA Station",
     "site_header": "QA Station",
     "site_brand": "QA Station",
-    "login_logo": "images/logo.png",
+    "login_logo": "image/logo.png",
     "site_logo_classes": "img-circle",
     "welcome_sign": "Bienvenido a QA Station",
     "order_with_respect_to": ["users", "user_projects", "ai_module", "functional_tests"],
@@ -150,7 +150,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'qa_station',  # El nombre de la base de datos que creaste
         'USER': 'root',  # O el nombre del usuario que prefieras
-        'PASSWORD': 'Casino1980',  # La contraseña que usaste para el usuario de MySQL
+        'PASSWORD': 'QA_Station.,',  # La contraseña que usaste para el usuario de MySQL
         'HOST': 'localhost',  # Normalmente 'localhost' si MySQL está en la misma máquina
         'PORT': '3306',  # El puerto predeterminado de MySQL
         'OPTIONS': {
@@ -232,4 +232,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"  # Para producción
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
