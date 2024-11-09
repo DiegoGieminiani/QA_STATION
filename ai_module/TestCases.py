@@ -4,11 +4,12 @@ import openai
 from dotenv import load_dotenv
 from django.conf import settings
 from .html_processor import procesar_respuesta_chatgpt
+from .models import TestCase
 
 
 #Cargar variable de entorno
 load_dotenv()
-openai.api_key =os.getenv('OPENAI_API_KEY')
+openai.api_key=os.getenv('OPENAI_API_KEY')
 
 
 # Definir la carpeta de subida como se indica en settings.py
@@ -112,7 +113,27 @@ def process_chat_request(request):
         except Exception as e:
             print(f"Error al llamar a OpenAI: {str(e)}")
             return None
-
+        
     return None
 
 
+
+def guardar_en_bd(respuesta_chatgpt, mensaje_usuario):
+    """
+    Guarda las variables respuesta_chatgpt y mensaje_usuario en la base de datos.
+    """
+    try:
+        # Crea una nueva instancia de TestCase y asigna los valores
+        nuevo_test_case = TestCase(
+            actions_data=respuesta_chatgpt,
+            name=mensaje_usuario
+        )
+        
+        # Guarda la instancia en la base de datos
+        nuevo_test_case.save()
+        
+        print("Datos guardados correctamente en la base de datos.")
+        return True
+    except Exception as e:
+        print(f"Error al guardar en la base de datos: {e}")
+        return False
