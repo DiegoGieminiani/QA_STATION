@@ -2,6 +2,7 @@ from django.db import models
 from user_projects.models import Project
 
 class TestCase(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, verbose_name="Test Case Name")
     actions_data = models.TextField(verbose_name="Actions Data")  # Cambiado a TextField
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='test_cases', verbose_name="Project")

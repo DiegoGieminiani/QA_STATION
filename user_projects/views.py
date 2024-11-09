@@ -4,6 +4,7 @@ from .forms import ProjectForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+
 @login_required
 def project_view(request):
     projects = Project.objects.filter(user=request.user)  # Filtrar solo proyectos del usuario actual
@@ -14,7 +15,7 @@ def project_view(request):
             project = form.save(commit=False)  # Corregido aquí
             project.user = request.user  # Asigna el proyecto al usuario autenticado
             project.save()
-            return redirect('projects')
+            return redirect('/projects')
     else:
         form = ProjectForm()
 
@@ -43,7 +44,7 @@ def add_project(request):
             project = form.save(commit=False)  # No guardes aún en la base de datos
             project.user = request.user  # Asigna el usuario actual
             project.save()  # Ahora guarda el proyecto con el usuario asignado
-            return redirect('projects')  # Redirige a la lista de proyectos
+            return redirect('/')  # Redirige a la lista de proyectos
     else:
         form = ProjectForm()
     return render(request, 'user_projects/user_project.html', {'form': form})

@@ -52,6 +52,7 @@ def ejecutar_html_processor(request):
 def enviar_json_view(request):
     if request.method == 'POST':
         # Lee el JSON enviado desde el frontend
+        print(request.body)
         data = json.loads(request.body)
         resultado_procesado = data.get('resultado_procesado', '')
 

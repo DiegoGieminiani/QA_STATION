@@ -3,6 +3,7 @@ from user_projects.models import Project
 from ai_module.models import TestCase
 
 class FunctionalTest(models.Model):
+    id = models.AutoField(primary_key=True)
     json_data = models.JSONField(verbose_name="JSON Data")
     origin = models.CharField(max_length=255, verbose_name="Origin")
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, related_name='functional_tests', verbose_name="Project")

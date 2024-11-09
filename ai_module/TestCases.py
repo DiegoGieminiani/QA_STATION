@@ -117,7 +117,6 @@ def process_chat_request(request):
     return None
 
 
-
 def guardar_en_bd(respuesta_chatgpt, mensaje_usuario):
     """
     Guarda las variables respuesta_chatgpt y mensaje_usuario en la base de datos.
@@ -126,7 +125,8 @@ def guardar_en_bd(respuesta_chatgpt, mensaje_usuario):
         # Crea una nueva instancia de TestCase y asigna los valores
         nuevo_test_case = TestCase(
             actions_data=respuesta_chatgpt,
-            name=mensaje_usuario
+            name=mensaje_usuario,
+            project_id=15
         )
         
         # Guarda la instancia en la base de datos
