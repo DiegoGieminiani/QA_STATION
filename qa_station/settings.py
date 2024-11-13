@@ -151,7 +151,7 @@ DATABASES = {
         'NAME': 'qa_station',  # El nombre de la base de datos que creaste
         'USER': 'root',  # O el nombre del usuario que prefieras
         'PASSWORD': 'QA_Station.,',  # La contraseña que usaste para el usuario de MySQL
-        'HOST': 'localhost',  # Normalmente 'localhost' si MySQL está en la misma máquina
+        'HOST': 'database-project.c72koqsasmhr.us-east-2.rds.amazonaws.com','localhost'  # Normalmente 'localhost' si MySQL está en la misma máquina
         'PORT': '3306',  # El puerto predeterminado de MySQL
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
