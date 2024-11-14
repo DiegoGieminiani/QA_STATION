@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from django.conf import settings
 from .html_processor import procesar_respuesta_chatgpt
 from .models import TestCase
+from user_projects.models import Project
 
 
 #Cargar variable de entorno
@@ -117,16 +118,23 @@ def process_chat_request(request):
     return None
 
 
-def guardar_en_bd(respuesta_chatgpt, mensaje_usuario):
+def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, id):
     """
     Guarda las variables respuesta_chatgpt y mensaje_usuario en la base de datos.
     """
     try:
+        # Obtener el primer proyecto asociado con el usuario
+        proyecto = Project.objects.filter(id=id).first()  # Puedes usar `.first()` para obtener el primer proyecto
+        
+        if not proyecto:
+            print("No se encontró un proyecto para este usuario.")
+            return False
+        
         # Crea una nueva instancia de TestCase y asigna los valores
         nuevo_test_case = TestCase(
             actions_data=respuesta_chatgpt,
             name=mensaje_usuario,
-            project_id=15
+            project=proyecto  # Asocia el proyecto encontrado
         )
         
         # Guarda la instancia en la base de datos

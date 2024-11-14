@@ -8,24 +8,6 @@ from user_projects.models import Project
 from .forms import TestCaseForm
 import json
 
-
-
-def test_cases_view(request):
-    if request.method == 'POST':
-        # Procesa el archivo y genera la respuesta desde TestCases.py
-        respuesta_chatgpt = process_chat_request(request)  # Genera los casos de prueba y almacena la respuesta
-        
-        if respuesta_chatgpt:  # Verifica si la respuesta existe
-            procesar_respuesta_chatgpt(respuesta_chatgpt)  # Pasa la respuesta de ChatGPT directamente
-
-            # Convertir Markdown a HTML
-            respuesta_html = markdown2.markdown(respuesta_chatgpt)
-
-        return render(request, 'ai_module/testcases.html', {'respuesta': respuesta_html})  # Enviar HTML convertido
-    
-    # Si la solicitud es GET, renderizar un formulario vacío
-    return render(request, 'ai_module/testcases.html')
-
 def ejecutar_html_processor(request):
     respuesta_chatgpt = None
     resultado_procesado = None
@@ -83,7 +65,7 @@ def add_test_case(request, project_id):
 
 
 
-def test_cases_view(request):
+def test_cases_view(request, project_id=None):
     if request.method == 'POST':
         # Procesa el archivo y genera la respuesta desde TestCases.py
         respuesta_chatgpt = process_chat_request(request)  # Genera los casos de prueba y almacena la respuesta
@@ -97,10 +79,39 @@ def test_cases_view(request):
             # Obtén el mensaje del usuario de la solicitud
             mensaje_usuario = request.POST.get('mensaje', '')
 
-            # Llama a la nueva función para guardar en la base de datos
-            guardar_en_bd(respuesta_chatgpt, mensaje_usuario)
+            if request.user.is_authenticated:
+                # Si el proyecto_id es proporcionado en la URL
+                if project_id:
+                    try:
+                        proyecto = Project.objects.get(id=project_id, user_id=request.user.id)
+                    except Project.DoesNotExist:
+                        return HttpResponse("Proyecto no válido.", status=404)
+                else:
+                    # Si no hay project_id, se obtiene el primer proyecto del usuario
+                    proyecto = Project.objects.filter(user_id=request.user.id).first()
+
+                if proyecto:
+                    project_id = proyecto.id
+                else:
+                    # Si no se encuentra el proyecto, manejar el error o redirigir
+                    return HttpResponse("No se encontró un proyecto asociado con el usuario.", status=404)
+            else:
+                return HttpResponse("El usuario no está autenticado.", status=401)
+
+            # Llamar a la función para guardar el caso de prueba en la base de datos
+            guardar_en_bd(respuesta_chatgpt, mensaje_usuario, project_id)
+
+            # Redirigir o mostrar mensaje de éxito
+            return redirect('ai_module:test_cases_success')
 
         return render(request, 'ai_module/testcases.html', {'respuesta': respuesta_html})  # Enviar HTML convertido
     
-    # Si la solicitud es GET, renderizar un formulario vacío
-    return render(request, 'ai_module/testcases.html')
+    # Si la solicitud es GET, renderizar el formulario de creación de casos de prueba con el proyecto seleccionado
+    if project_id:
+        try:
+            proyecto = Project.objects.get(id=project_id, user_id=request.user.id)
+            return render(request, 'test_cases_form.html', {'proyecto': proyecto})
+        except Project.DoesNotExist:
+            return HttpResponse("Proyecto no válido.", status=404)
+    else:
+        return render(request, 'ai_module/testcases.html')
