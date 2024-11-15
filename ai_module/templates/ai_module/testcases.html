@@ -38,7 +38,7 @@
 
         <!-- Contenedor para los tres últimos botones en una fila -->
         <div class="button-row mt-3">
-            <form action="{% url 'ai_module:ejecutar_html_processor' project_id=project_id %}" method="post" onsubmit="mostrarLoader()">
+            <form action="{% url 'ai_module:ejecutar_html_processor'%}" method="post" onsubmit="mostrarLoader()">
                 {% csrf_token %}
                 <input type="hidden" name="respuesta" value="{{ respuesta }}">
                 <button type="submit" class="btn btn-secondary">Ejecutar HTML Processor</button>
@@ -67,7 +67,7 @@
             // Obtén el resultado procesado del HTML
             const resultadoProcesado = document.getElementById("resultadoProcesado").value;
     
-            fetch("{% url 'ai_module:enviar_json' project_id=project_id %}", {
+            fetch("{% url 'ai_module:enviar_json'}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
