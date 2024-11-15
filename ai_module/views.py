@@ -9,10 +9,10 @@ from user_projects.models import Project
 from .forms import TestCaseForm
 import json
 
-def ejecutar_html_processor(request):
+def ejecutar_html_processor(request, project_id):
     respuesta_chatgpt = None
     resultado_procesado = None
-    
+
     if request.method == 'POST':
         respuesta_chatgpt = request.POST.get('respuesta', 'No hay respuesta disponible aún.')
         
@@ -23,13 +23,15 @@ def ejecutar_html_processor(request):
         return render(request, 'ai_module/testcases.html', {
             'mensaje': 'Se ha ejecutado todo el proceso.',
             'respuesta': respuesta_chatgpt,
-            'resultado_procesado': resultado_procesado  # Incluye el resultado en el HTML
+            'resultado_procesado': resultado_procesado,  # Incluye el resultado en el HTML
+            'project_id': project_id  # Asegúrate de incluir project_id
         })
     
     # Si no es POST, asegúrate de devolver el contenido previo
     return render(request, 'ai_module/testcases.html', {
         'respuesta': respuesta_chatgpt,  # Muestra la respuesta previa
-        'mensaje': 'No se ha ejecutado aún el proceso.'
+        'mensaje': 'No se ha ejecutado aún el proceso.',
+        'project_id': project_id  # Incluye project_id en todas las respuestas
     })
 
 def enviar_json_view(request):
