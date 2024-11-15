@@ -118,29 +118,30 @@ def process_chat_request(request):
     return None
 
 
-def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, id):
+def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto_id):
     """
-    Guarda las variables respuesta_chatgpt y mensaje_usuario en la base de datos.
+    Guarda las variables respuesta_chatgpt y mensaje_usuario en la base de datos
+    asociadas al proyecto específico identificado por proyecto_id.
     """
     try:
-        # Obtener el primer proyecto asociado con el usuario
-        proyecto = Project.objects.filter(id=id).first()  # Puedes usar `.first()` para obtener el primer proyecto
+        # Obtener el proyecto específico por su ID
+        proyecto = Project.objects.filter(id=proyecto_id).first()
         
         if not proyecto:
-            print("No se encontró un proyecto para este usuario.")
+            print("No se encontró un proyecto con el ID proporcionado.")
             return False
         
-        # Crea una nueva instancia de TestCase y asigna los valores
+        # Crear una nueva instancia de TestCase y asignar los valores
         nuevo_test_case = TestCase(
             actions_data=respuesta_chatgpt,
             name=mensaje_usuario,
-            project=proyecto  # Asocia el proyecto encontrado
+            project=proyecto  # Asociar el proyecto específico
         )
         
-        # Guarda la instancia en la base de datos
+        # Guardar la instancia en la base de datos
         nuevo_test_case.save()
         
-        print("Datos guardados correctamente en la base de datos.")
+        print("Caso de prueba guardado correctamente en la base de datos asociado al proyecto.")
         return True
     except Exception as e:
         print(f"Error al guardar en la base de datos: {e}")

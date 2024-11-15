@@ -21,11 +21,11 @@
         </div>
     </div>
 
-        <!-- Panel de generación de casos de prueba con botones y entrada -->
+    <!-- Panel de generación de casos de prueba con botones y entrada -->
     <div class="generator-panel">
         <h2>Generador de Casos de Prueba</h2>
 
-        <form method="POST" enctype="multipart/form-data" onsubmit="mostrarLoader()" class="d-flex align-items-center flex-column">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'ai_module:testcases' project_id=project_id %}" onsubmit="mostrarLoader()" class="d-flex align-items-center flex-column">
             {% csrf_token %}
             
             <input type="file" name="archivo" id="archivo" style="display: none;" onchange="updateFileName()">
@@ -38,7 +38,7 @@
 
         <!-- Contenedor para los tres últimos botones en una fila -->
         <div class="button-row mt-3">
-            <form action="{% url 'ai_module:ejecutar_html_processor' %}" method="post" onsubmit="mostrarLoader()">
+            <form action="{% url 'ai_module:ejecutar_html_processor' project_id=project_id %}" method="post" onsubmit="mostrarLoader()">
                 {% csrf_token %}
                 <input type="hidden" name="respuesta" value="{{ respuesta }}">
                 <button type="submit" class="btn btn-secondary">Ejecutar HTML Processor</button>
@@ -62,13 +62,12 @@
 {% block extra_js %}
     <script src="{% static 'ai_module/ai_module.js' %}"></script>
 
-
     <script>
         function enviarJSON() {
             // Obtén el resultado procesado del HTML
             const resultadoProcesado = document.getElementById("resultadoProcesado").value;
     
-            fetch("{% url 'ai_module:enviar_json' %}", {
+            fetch("{% url 'ai_module:enviar_json' project_id=project_id %}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -86,5 +85,6 @@
             });
         }
     </script>
-
 {% endblock %}
+
+
