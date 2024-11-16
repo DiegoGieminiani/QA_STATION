@@ -67,7 +67,7 @@
             // Obtén el resultado procesado del HTML
             const resultadoProcesado = document.getElementById("resultadoProcesado").value;
     
-            fetch("{% url 'ai_module:enviar_json'%}", {
+            fetch("{% url 'ai_module:enviar_json' project_id=project_id %}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from .TestCases import process_chat_request, guardar_en_bd
 from .html_processor import procesar_respuesta_chatgpt, procesar_html
-from .json_processor import procesar_y_enviar_json
+from .json_processor import procesar_y_enviar_json, guardar_functional_test
 from user_projects.models import Project
 from .forms import TestCaseForm
 import json
@@ -34,22 +34,49 @@ def ejecutar_html_processor(request, project_id):
         'project_id': project_id  # Incluye project_id en todas las respuestas
     })
 
-def enviar_json_view(request):
+def enviar_json_view(request, project_id):
     if request.method == 'POST':
-        # Lee el JSON enviado desde el frontend
-        print(request.body)
-        data = json.loads(request.body)
-        resultado_procesado = data.get('resultado_procesado', '')
+        try:
+            # Lee el JSON enviado desde el frontend
+            print(request.body)
+            data = json.loads(request.body)
+            resultado_procesado = data.get('resultado_procesado', '')
 
-        # Procesa y envía el JSON
-        resultado = procesar_y_enviar_json(resultado_procesado)
-        if resultado:
-            mensaje = "JSON enviado exitosamente."
-        else:
-            mensaje = "Error al enviar el JSON."
+            # Procesa y envía el JSON (lógica proporcionada previamente)
+            resultado = procesar_y_enviar_json(resultado_procesado)
+            
+            # Determina el mensaje según el resultado del envío
+            if resultado:
+                mensaje = "JSON enviado exitosamente."
+                
+                # Guardar en la base de datos
+                json_data = resultado_procesado  # Asegúrate de que este sea el JSON correcto
+                origen = "Automatico"  # Origen identificativo
+                proyecto_id = get_object_or_404(Project, id=project_id, user=request.user)  # Debes enviar esto en el JSON
+                test_case_id = data.get('test_case_id')  # Debes enviar esto en el JSON
 
-        return JsonResponse({'mensaje': mensaje})
-    
+                if not proyecto_id or not test_case_id:
+                    return JsonResponse({
+                        'mensaje': "Faltan los IDs de proyecto o caso de prueba para guardar en la base de datos."
+                    }, status=400)
+
+                guardado_exitoso = guardar_functional_test(json_data, origen, proyecto_id, test_case_id)
+                
+                if guardado_exitoso:
+                    mensaje += " Datos guardados exitosamente en la base de datos."
+                else:
+                    mensaje += " Error al guardar los datos en la base de datos."
+
+            else:
+                mensaje = "Error al enviar el JSON."
+
+            return JsonResponse({'mensaje': mensaje})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'mensaje': "Error al decodificar el JSON enviado."}, status=400)
+        except Exception as e:
+            return JsonResponse({'mensaje': f"Error inesperado: {e}"}, status=500)
+
     return JsonResponse({'mensaje': 'Método no permitido.'}, status=405)
 
 

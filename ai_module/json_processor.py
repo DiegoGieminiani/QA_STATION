@@ -1,8 +1,12 @@
 import json
 import requests
+from functional_tests.models import FunctionalTest
+from user_projects.models import Project
+from .models import TestCase
 
 URL_DESTINO = 'http://127.0.0.1:8000/tests/api/run-tests/'
 
+#CONVIERTE LA RESPUESTA DE CHAT GPT A JSON
 def convertir_a_json(texto):
     """
     Convierte un texto a formato JSON. Se espera que el texto sea un JSON en formato string.
@@ -14,7 +18,9 @@ def convertir_a_json(texto):
     except json.JSONDecodeError as e:
         print(f"Error al decodificar JSON: {e}")
         return None
+    
 
+#FUNCION PARA ENVIAR EL JSON A LA URL DE DIEGO
 def enviar_json(json_data):
     """
     Envia datos JSON a la URL destino usando una solicitud POST.
@@ -34,7 +40,7 @@ def enviar_json(json_data):
     except requests.exceptions.RequestException as e:
         print(f"Error durante el envío del JSON: {e}")
         return None
-
+#FUNCION QUE JUNTA AMBAS FUNCIONES ATERIORES
 def procesar_y_enviar_json(texto):
     """
     Procesa el texto, lo convierte en JSON y lo envía a la URL destino.
@@ -50,3 +56,32 @@ def procesar_y_enviar_json(texto):
     else:
         print("No se pudo procesar el JSON.")
         return None
+    
+#FUNCION PARA GUARDAR EN LA BASE DE DATOS
+def guardar_functional_test(json_data, origen, proyecto_id, test_case_id):
+    try:
+        # Obtener el proyecto por su ID
+        proyecto = Project.objects.filter(id=proyecto_id).first()
+        if not proyecto:
+            print("No se encontró un proyecto con el ID proporcionado.")
+            return False
+
+        # Obtener el caso de prueba por su ID
+        test_case = TestCase.objects.filter(id=test_case_id).first()
+        if not test_case:
+            print("No se encontró un caso de prueba con el ID proporcionado.")
+            return False
+
+        # Crear una instancia del modelo FunctionalTest
+        nuevo_functional_test = FunctionalTest(
+            json_data=json_data,  # JSON con los datos de prueba
+            origin=origen,  # Origen de los datos
+            project=proyecto,  # Proyecto asociado
+            test_case=test_case  # Caso de prueba asociado
+        )
+
+        print("FunctionalTest guardado correctamente en la base de datos.")
+        return True
+    except Exception as e:
+        print(f"Error al guardar FunctionalTest en la base de datos: {e}")
+        return False
