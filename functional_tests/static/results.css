@@ -1,136 +1,70 @@
-.main-container {
-    display: flex;
-    padding: 40px;
-    margin-top: -5px;
-    margin-right: 1px; /* Espaciado desde la izquierda */
-}
-
-/* Sidebar para las pruebas */
-.sidebar-fixed {
-    width: 278px;
-    position: sticky;
-    top: 100px;
-    height: 100vh;
-    background-color: #fbfdff; /* Fondo más claro */
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 60px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.8rem;
-}
-
-/* Contenedor principal */
-.container {
-    margin-left: 35px; /* Deja espacio para el sidebar */
-    padding: 30px 50px;
-    width: 1300px;
-    background-color: white;
-    border-radius: 18px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    line-height: 1.4;
-    margin-bottom: 60px;
-}
-
-.sidebar-fixed h2 {
-    margin-bottom: 40px;
-    font-size: 18px;
-}
-
-/* Lista de pruebas */
-#testList {
-    list-style: none;
-    padding: 0;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
     margin: 0;
-    border-radius: 12px;
+    padding: 20px;
 }
 
-/* Estilo para los ítems de prueba */
-.test-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px;
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
     margin-bottom: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    font-size: 14px;
-    height: 50px;
 }
 
-.test-item input.test-name {
-    border: none;
-    background-color: transparent;
-    width: 80%;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    padding-left: 10px;
+.container {
+    max-width: 1200px;
+    margin: auto;
 }
 
-.test-item input.test-name:focus {
-    background-color: #e9ecef;
-    outline: none;
-}
-
-/* Estilo para ítems activos */
-.test-item.active {
-    background-color: #d1e7dd;
-    font-weight: bold;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Efecto hover */
-.test-item:hover {
-    background-color: #e9ecef;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilo para el botón de añadir prueba */
-#addTestBtn {
-    display: block;
+table {
     width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
     padding: 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-    border-radius: 12px;
-    font-size: 16px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-#addTestBtn:hover {
-    background-color: #218838; /* Cambia a un verde más oscuro en hover */
+table th {
+    background-color: #4CAF50;
     color: white;
 }
 
-h1, h2 {
-    color: #333;
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
-/* Estilos para el campo de texto editable */
-.test-name {
-    border: none;
-    background: transparent;
-    font-size: 16px;
-    width: 85%;
-    cursor: pointer;
+table tr:hover {
+    background-color: #ddd;
 }
 
-.test-name:hover, .test-name:focus {
-    background-color: #e9ecef;
-    outline: none;
-    border-radius: 20px;
+.success {
+    color: green;
+    font-weight: bold;
 }
 
-/* Ocultar contorno al hacer focus en los botones */
-button:focus, .delete-btn:focus {
-    outline: none;
+.fail {
+    color: red;
+    font-weight: bold;
+}
+
+/* Ajustar el tamaño de los gráficos */
+.chart-container {
+    width: 80%;         /* Controla el ancho del contenedor del gráfico */
+    max-width: 600px;    /* Tamaño máximo para el gráfico */
+    margin: 40px auto;   /* Centramos el gráfico y añadimos margen */
+    padding: 20px;
+}
+
+canvas {
+    width: 100%;         /* El gráfico ocupa todo el contenedor */
+    height: 300px;       /* Establecemos un alto específico */
+    max-height: 300px;   /* Limitamos el alto máximo */
 }

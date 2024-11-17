@@ -21,6 +21,3 @@ def initialize_chrome_driver():
     print("Cookies eliminadas con éxito.")
     
     return driver
-
-
-

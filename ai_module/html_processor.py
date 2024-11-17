@@ -187,7 +187,8 @@ def procesar_html(respuesta_chatgpt):
         """},
         {"role": "assistant", "content": "La respuesta generada debe ser exclusivamente un JSON con los casos de prueba en el formato solicitado, sin explicaciones adicionales."},
         {"role": "assistant", "content": respuesta_chatgpt},  
-        {"role": "user", "content": "Identifica todos los elementos HTML interactivos y genera el JSON para los casos de prueba basados en estos elementos, siguiendo estrictamente el formato indicado."}
+        {"role": "user", "content": "Identifica todos los elementos HTML interactivos y genera el JSON para los casos de prueba basados en estos elementos, siguiendo estrictamente el formato indicado."},
+        {"role": "assistant", "content": "Si generas un campo input_value, asegurate de darle los datos a ingresar"}, 
     ]
 
     # Realizar la solicitud a OpenAI

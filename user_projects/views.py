@@ -55,11 +55,8 @@ def delete_project(request, project_id):
     project.delete()
     return JsonResponse({'success': True})
 
+
 @login_required
 def select_project(request, project_id):
-    # Obtiene el proyecto seleccionado y verifica que pertenece al usuario
     selected_project = get_object_or_404(Project, id=project_id, user=request.user)
-    
-    # Redirige a la vista `test_cases_view` en `ai_module`, pasando `project_id`
-    return redirect('ai_module:testcases', project_id=selected_project.id)
-
+    return render(request, 'user_projects/user_select.html', {'project': selected_project})

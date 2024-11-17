@@ -1,35 +1,15 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de las Pruebas</title>
 
-{% block extra_css %}
-  <!-- Archivos CSS específicos de la página -->
-  <link rel="stylesheet" href="{% static 'results.css' %}">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="main-container">
-    <!-- Sidebar de pruebas -->
-    <div class="sidebar-fixed">
-        <h2>Pruebas</h2>
-        <div id="testList">
-            <div class="test-item active" id="test-1" onclick="showTest(1)">
-                <input type="text" value="Prueba 1" class="test-name" oninput="updateTestName(1, this.value)">
-                <button type="button" class="delete-btn" onclick="RemoveTest(1)">✖</button>
-            </div>
-            <div class="test-item" id="test-2" onclick="showTest(2)">
-                <input type="text" value="Prueba 2" class="test-name" oninput="updateTestName(2, this.value)">
-                <button type="button" class="delete-btn" onclick="RemoveTest(2)">✖</button>
-            </div>
-            <div class="test-item" id="test-3" onclick="showTest(3)">
-                <input type="text" value="Prueba 3" class="test-name" oninput="updateTestName(3, this.value)">
-                <button type="button" class="delete-btn" onclick="RemoveTest(3)">✖</button>
-            </div>
-            <button type="button" id="addTestBtn" onclick="addTest()">+ Añadir Prueba</button>
-        </div>
-    </div>
-
-    <!-- Contenido Principal -->
+    <!-- Incluir el CSS específico de results -->
+    <link rel="stylesheet" href="{% static 'results.css' %}">
+</head>
+<body>
     <div class="container">
         <h1>Resultados de las Pruebas</h1>
         
@@ -65,16 +45,17 @@
             <canvas id="actionBarChart"></canvas>
         </div>
     </div>
-</div>
-{% endblock %}
 
-{% block extra_js %}
-<!-- Incluir el JS específico de results -->
-<script src="{% static 'results.js' %}"></script>
-<script>
-    // Pasar los datos desde Django al archivo JS
-    const results = {{ results|safe }};
-    initializeCharts(results);
-</script>
-{% endblock %}
+    <!-- Incluir la librería de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Incluir el JS específico de results -->
+    <script src="{% static 'results.js' %}"></script>
+
+    <script>
+        // Pasar los datos desde Django al archivo JS
+        const results = {{ results|safe }};
+        initializeCharts(results);
+    </script>
+</body>
 </html>

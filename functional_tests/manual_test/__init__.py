@@ -1,2 +1,0 @@
-from .manual_execution_handler import execute_manual_tests
-from .manual_process import process_manual_test_data

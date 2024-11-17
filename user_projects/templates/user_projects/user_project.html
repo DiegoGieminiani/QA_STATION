@@ -12,6 +12,7 @@
 
     <!-- Cuadrícula de proyectos -->
     <div class="projects-grid">
+
       {% for project in projects %}
       <div class="project-card" data-id="{{ project.id }}" onclick="redirectToProject('{{ project.id }}')">
         <!-- Botón de eliminación -->
@@ -61,5 +62,5 @@
 <script>
   // Obtener el token CSRF desde el campo oculto
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+</script>
 {% endblock %}
