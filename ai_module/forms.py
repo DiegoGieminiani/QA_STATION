@@ -5,6 +5,4 @@ from .models import TestCase
 class TestCaseForm(forms.ModelForm):
     class Meta:
         model = TestCase
-        fields = ['name', 'actions_data']
-
-        
+        fields = ['nombre', 'url', 'resultado_esperado', 'functional_test_id']  # Ajusta los nombres de los campos

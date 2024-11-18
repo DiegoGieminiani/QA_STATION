@@ -1,35 +1,74 @@
 from django.db import models
+from django.apps import apps
 from user_projects.models import Project
-from ai_module.models import TestCase
 
+# Modelo de FunctionalTest
 class FunctionalTest(models.Model):
-    json_data = models.JSONField(verbose_name="JSON Data")
-    origin = models.CharField(max_length=255, verbose_name="Origin")
-    execution = models.CharField(max_length=255, verbose_name="Execution Status")
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, related_name='functional_tests', verbose_name="Project")
-    test_case = models.ForeignKey(TestCase, on_delete=models.SET_NULL, null=True, related_name='functional_tests', verbose_name="Test Case")
-    result = models.ForeignKey('Result', on_delete=models.CASCADE, verbose_name="Result")
-
-    def __str__(self):
-        return f"Functional Test for {self.test_case}"
+    functional_test_id = models.AutoField(primary_key=True, verbose_name="ID de la Prueba Funcional")
+    url = models.URLField(max_length=2048, verbose_name="URL de la Prueba Funcional")
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="functional_tests",
+        verbose_name="Proyecto Asociado"
+    )
 
     class Meta:
-        verbose_name = "Functional Test"
-        verbose_name_plural = "Functional Tests"
-        ordering = ['execution']
+        verbose_name = "Prueba Funcional"
+        verbose_name_plural = "Pruebas Funcionales"
 
+    def __str__(self):
+        return f"Prueba Funcional {self.functional_test_id}"
+
+
+# Modelo de Action
+class Action(models.Model):
+    action_id = models.AutoField(primary_key=True, verbose_name="ID de la Acción")
+    action = models.CharField(max_length=255, verbose_name="Acción")
+    element_type = models.CharField(max_length=100, verbose_name="Tipo de Elemento")
+    value = models.CharField(max_length=255, blank=True, null=True, verbose_name="Valor")
+    input_value = models.CharField(max_length=255, blank=True, null=True, verbose_name="Valor de Entrada")
+    functional_test = models.ForeignKey(
+        FunctionalTest,
+        on_delete=models.CASCADE,
+        related_name="actions",
+        verbose_name="Prueba Funcional"
+    )
+    paso_id = models.IntegerField(null=True, blank=True, verbose_name="ID del Paso Asociado")
+
+    def get_paso(self):
+        StepByStep = apps.get_model("ai_module", "StepByStep")
+        return StepByStep.objects.filter(id=self.paso_id).first()
+
+    class Meta:
+        verbose_name = "Acción"
+        verbose_name_plural = "Acciones"
+
+    def __str__(self):
+        return self.action
+
+
+# Modelo de Result
 class Result(models.Model):
-    status = models.CharField(max_length=50, verbose_name="Result Status", null=True, blank=True)
-    description = models.TextField(verbose_name="Result Description")
-    evidence = models.TextField(null=True, blank=True, verbose_name="Evidence")
-    test_results = models.JSONField(verbose_name="Test Results")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Creation Date")
-    functional_test = models.ForeignKey(FunctionalTest, on_delete=models.CASCADE, related_name='results', verbose_name="Functional Test")
+    STATUS_CHOICES = [
+        ('SUCCESS', 'Success'),
+        ('FAILURE', 'Failure'),
+        ('PENDING', 'Pending'),
+    ]
 
-    def __str__(self):
-        return f"Result for {self.functional_test}"
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, verbose_name="Estado")
+    description = models.CharField(max_length=255, verbose_name="Descripción")
+    evidence = models.CharField(max_length=255, blank=True, null=True, verbose_name="Evidencia")
+    action = models.ForeignKey(
+        Action,
+        on_delete=models.CASCADE,
+        related_name="results",
+        verbose_name="Acción Asociada"
+    )
 
     class Meta:
-        verbose_name = "Result"
-        verbose_name_plural = "Results"
-        ordering = ['created_at']
+        verbose_name = "Resultado"
+        verbose_name_plural = "Resultados"
+
+    def __str__(self):
+        return f"{self.status} - Acción {self.action.action_id}"
