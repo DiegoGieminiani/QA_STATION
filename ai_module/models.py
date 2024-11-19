@@ -23,10 +23,11 @@ class FunctionalTest(models.Model):
 
 class TestCase(models.Model):
     test_case_id = models.AutoField(primary_key=True, verbose_name="ID del Caso de Prueba")
+    use_id = models.CharField(max_length=10)
     nombre = models.CharField(max_length=255, verbose_name="Nombre del Caso de Prueba")
     url = models.URLField(max_length=2048, verbose_name="URL del Caso de Prueba")
     resultado_esperado = models.TextField(verbose_name="Resultado Esperado")  # Ajusta el valor predeterminado según tu lógica
-    functional_test_id = models.OneToOneField(FunctionalTest, on_delete=models.CASCADE)  # Usar apps.get_model
+    functional_test_id = models.OneToOneField(FunctionalTest, on_delete=models.SET_NULL,blank=True,null=True)  # Usar apps.get_model
     class Meta:
         verbose_name = "Caso de Prueba"
         verbose_name_plural = "Casos de Prueba"

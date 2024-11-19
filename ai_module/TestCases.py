@@ -38,8 +38,8 @@ Los casos de prueba deben abarcar estos temas:
 Asegúrate de que cada caso de prueba esté claramente separado y siga el formato indicado. No incluyas ninguna información adicional.
     """},
     {"role": "system", "content": "Ten en cuenta que siempre para iniciar sesion, hay que registrarse primero"},
-    {"role": "system", "content": "En los casos de prueba no pruebes elementos vacios, siempre da un texto a ingresar"}
-
+    {"role": "system", "content": "En los casos de prueba no pruebes elementos vacios, siempre da un texto a ingresar"},
+    {"role": "system", "content": "Entregame la respuesta en foramto JSON"}
 
 ]
 

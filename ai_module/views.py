@@ -8,6 +8,7 @@ from .json_processor import procesar_y_enviar_json, guardar_functional_test
 from user_projects.models import Project
 from .forms import TestCaseForm
 import json
+from .models import TestCase, StepByStep
 
 def ejecutar_html_processor(request, project_id):
     respuesta_chatgpt = None
@@ -112,7 +113,35 @@ def test_cases_view(request, project_id):
             mensaje_usuario = request.POST.get('mensaje', '')
 
             # Guarda el caso de prueba en la base de datos asociado al proyecto
-            guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto.id)
+            #guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto.id)
+            proyecto = Project.objects.filter(id=project_id).first()
+            json_strip=respuesta_chatgpt.strip('```json').strip('```').strip()
+            print(respuesta_chatgpt)
+            print("😘👌"*50)
+            print(json_strip)
+            print("❤️"*50)
+            json_data=json.loads(json_strip)
+            print("💩"*50)
+            for testcase in json_data:
+                use_id = testcase["ID"]
+                nombre = testcase["NOMBRE"]
+                url = testcase["URL"]
+                resultado_esperado = testcase["RESULTADO ESPERADO"]
+                new_testcase = TestCase(
+                    use_id = use_id,
+                    nombre = nombre,
+                    url = url,
+                    resultado_esperado = resultado_esperado
+                )
+                new_testcase.save()
+                for step in testcase["PASO A PASO"]:
+                    pasos = step,
+                    test_case = new_testcase.test_case_id
+                    new_step =StepByStep(
+                        pasos = pasos,
+                        test_case = new_testcase
+                    ).save()
+
 
         # Renderiza la respuesta HTML si `respuesta_chatgpt` está vacía o hubo algún error
         return render(request, 'ai_module/testcases.html', {'respuesta': respuesta_html, 'project_id': project_id})
