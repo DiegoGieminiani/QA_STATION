@@ -148,7 +148,7 @@ WSGI_APPLICATION = 'qa_station.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qa_station',  # El nombre de la base de datos que creaste
+        'NAME': 'qa_station_experimental',  # El nombre de la base de datos que creaste
         'USER': 'root',  # O el nombre del usuario que prefieras
         'PASSWORD': 'QA_Station.,',  # La contraseña que usaste para el usuario de MySQL
         'HOST': 'localhost',  # Normalmente 'localhost' si MySQL está en la misma máquina

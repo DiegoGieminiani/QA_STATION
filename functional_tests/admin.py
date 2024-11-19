@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import FunctionalTest, Result, Action
+from .models import Result, Action, FunctionalTest
 
 # Registra los modelos FunctionalTest y Action en el admin
 @admin.register(FunctionalTest)
