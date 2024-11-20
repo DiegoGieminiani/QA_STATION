@@ -8,8 +8,9 @@ from .json_processor import procesar_y_enviar_json, guardar_functional_test
 from user_projects.models import Project
 from .forms import TestCaseForm
 import json
-from .models import TestCase, StepByStep
+from .models import TestCase, StepByStep, FunctionalTest, Action
 
+#AQUI SE GENERA EL JSON DE HTML_PROCESSOR
 def ejecutar_html_processor(request, project_id):
     respuesta_chatgpt = None
     resultado_procesado = None
@@ -34,7 +35,7 @@ def ejecutar_html_processor(request, project_id):
         'mensaje': 'No se ha ejecutado aún el proceso.',
         'project_id': project_id  # Incluye project_id en todas las respuestas
     })
-
+#FUNCION PARA ENVIAR EL JSON A LA RAMA DE DIEGUITO
 def enviar_json_view(request, project_id):
     if request.method == 'POST':
         try:
@@ -44,29 +45,34 @@ def enviar_json_view(request, project_id):
             resultado_procesado = data.get('resultado_procesado', '')
 
             # Procesa y envía el JSON (lógica proporcionada previamente)
-            resultado = procesar_y_enviar_json(resultado_procesado)
+            json_procesado = procesar_y_enviar_json(resultado_procesado)
             
             # Determina el mensaje según el resultado del envío
-            if resultado:
+            if json_procesado:
                 mensaje = "JSON enviado exitosamente."
                 
                 # Guardar en la base de datos
-                json_data = resultado_procesado  # Asegúrate de que este sea el JSON correcto
-                origen = "Automatico"  # Origen identificativo
-                proyecto_id = get_object_or_404(Project, id=project_id, user=request.user)  # Debes enviar esto en el JSON
-                test_case_id = data.get('test_case_id')  # Debes enviar esto en el JSON
+                #QUE TENGO QUE GUARDAR?
+                #Tabla FunctionaTest
+                new_FunctionalTest = FunctionalTest(
+                url = "URL DE TESTCASES"
+                ).save()
+                #Tabla Action
+                for data in json_procesado:
+                    action = data["ID"]
+                    element_type = data["NOMBRE"]
+                    value = data["URL"]
+                    input_value= data["Nose"]
 
-                if not proyecto_id or not test_case_id:
-                    return JsonResponse({
-                        'mensaje': "Faltan los IDs de proyecto o caso de prueba para guardar en la base de datos."
-                    }, status=400)
-
-                guardado_exitoso = guardar_functional_test(json_data, origen, proyecto_id, test_case_id)
+                    new_Action = Action(
+                        action = action,
+                        element_type = element_type,
+                        value = value,
+                        input_value = input_value,
+                        functional_test = new_FunctionalTest.functional_test_id
+                    ).save()
                 
-                if guardado_exitoso:
-                    mensaje += " Datos guardados exitosamente en la base de datos."
-                else:
-                    mensaje += " Error al guardar los datos en la base de datos."
+
 
             else:
                 mensaje = "Error al enviar el JSON."
@@ -141,7 +147,6 @@ def test_cases_view(request, project_id):
                         pasos = pasos,
                         test_case = new_testcase
                     ).save()
-
 
         # Renderiza la respuesta HTML si `respuesta_chatgpt` está vacía o hubo algún error
         return render(request, 'ai_module/testcases.html', {'respuesta': respuesta_html, 'project_id': project_id})

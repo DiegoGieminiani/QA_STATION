@@ -3,7 +3,7 @@ from django.apps import apps
 from django.utils.timezone import now
 from user_projects.models import Project
 
-
+#MODELO DE FUNCTIOBNALTEST
 class FunctionalTest(models.Model):
     functional_test_id = models.AutoField(primary_key=True, verbose_name="ID de la Prueba Funcional")
     url = models.URLField(max_length=2048, verbose_name="URL de la Prueba Funcional")
