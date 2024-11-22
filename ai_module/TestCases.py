@@ -38,8 +38,9 @@ Los casos de prueba deben abarcar estos temas:
 Asegúrate de que cada caso de prueba esté claramente separado y siga el formato indicado. No incluyas ninguna información adicional.
     """},
     {"role": "system", "content": "Ten en cuenta que siempre para iniciar sesion, hay que registrarse primero"},
-    {"role": "system", "content": "En los casos de prueba no pruebes elementos vacios, siempre da un texto a ingresar"},
-    {"role": "system", "content": "Entregame la respuesta en foramto JSON"}
+    {"role": "system", "content": "En los casos de prueba no pruebes con elementos vacios, siempre debes dar un texto a ingresar"},
+    {"role": "system", "content": "Entregame la respuesta en foramto JSON"},
+    {"role": "system", "content": "El ID que generas debe ser representativo y  no debe exeder los 5 caracteres"}
 
 ]
 
@@ -86,8 +87,6 @@ def process_chat_request(request):
             # Obtiene la respuesta de ChatGPT
             respuesta_chatgpt = completion.choices[0].message.content
 
-            # Imprime la respuesta para verificar
-            print(f"Respuesta obtenida: {respuesta_chatgpt}")
 
             # Llama a la función para procesar la respuesta
             procesar_respuesta_chatgpt(respuesta_chatgpt)
@@ -99,6 +98,17 @@ def process_chat_request(request):
             return None
         
     return None
+
+def json_to_markdown(respuesta_chatgpt):
+    prompt ="Transforma este json a un documento de casos de prueba, no debes añadir ni modificar la informacio que hay dentro del json, solo transformarlo"
+    mensaje= prompt +respuesta_chatgpt
+    response = openai.chat.completions.create(
+        model="gpt-4o",
+        messages=mensaje,
+        temperature=0.0
+    )
+
+    documento = response.choices[0].message.content
 
 
 def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto_id):
@@ -116,7 +126,7 @@ def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto_id):
         
         # Crear una nueva instancia de TestCase y asignar los valores
         nuevo_test_case = TestCase(
-            actions_data=respuesta_chatgpt,
+            actions_data=respuesta_chatgpt, 
             name=mensaje_usuario,
             project=proyecto  # Asociar el proyecto específico
         )
@@ -129,3 +139,4 @@ def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto_id):
     except Exception as e:
         print(f"Error al guardar en la base de datos: {e}")
         return False
+#tengo un error

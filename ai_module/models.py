@@ -40,6 +40,12 @@ class StepByStep(models.Model):
     pasos = models.TextField(verbose_name="Descripción del Paso")
     test_case = models.ForeignKey(TestCase, on_delete=models.CASCADE, related_name="steps", verbose_name="Caso de Prueba Asociado")
 
+    # class Meta:
+    #     verbose_name = "Caso de Prueba"
+    #     verbose_name_plural = "Casos de Prueba"
+
+    # def __str__(self):
+    #     return self.pasos
 # Modelo de Action
 class Action(models.Model):
     action_id = models.AutoField(primary_key=True, verbose_name="ID de la Acción")
@@ -54,9 +60,7 @@ class Action(models.Model):
         verbose_name="Prueba Funcional"
     )
     paso_id = models.OneToOneField(
-        StepByStep,
-        on_delete=models.CASCADE, 
-        verbose_name="ID del Paso Asociado")
+        StepByStep,on_delete=models.SET_NULL,blank=True,null=True)
 
     class Meta:
         verbose_name = "Acción"

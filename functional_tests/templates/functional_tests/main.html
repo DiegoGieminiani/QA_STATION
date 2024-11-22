@@ -18,14 +18,6 @@
                 <input type="text" value="Prueba 1" class="test-name" oninput="updateTestName(1, this.value)">
                 <button type="button" class="delete-btn" onclick="RemoveTestTest(1)">✖</button>
             </div>
-            <div class="test-item" id="test-2" onclick="showTest(2)">
-                <input type="text" value="Prueba 2" class="test-name" oninput="updateTestName(2, this.value)">
-                <button type="button" class="delete-btn" onclick="RemoveTestTest(2)">✖</button>
-            </div>
-            <div class="test-item" id="test-3" onclick="showTest(3)">
-                <input type="text" value="Prueba 3" class="test-name" oninput="updateTestName(3, this.value)">
-                <button type="button" class="delete-btn" onclick="RemoveTest(3)">✖</button>
-            </div>
             <button type="button" id="addTestBtn" onclick="addTest()">+ Añadir Prueba</button>
         </div>
     </div>
@@ -33,8 +25,9 @@
     <!-- Contenedor principal que estará a la derecha de las pruebas -->
     <div class="container">
         <h1>Proyecto: QA Station</h1>
-
+        <span class="project-title">{{ project.name }}</span>
         <form id="testForm" action="{% url 'functional_tests:run_manual_test' %}" method="POST">
+
             <label for="url">URL:</label>
             <input type="text" id="url" name="url" placeholder="Ingrese URL" required>
             {% csrf_token %}

@@ -9,17 +9,36 @@
 {% block content %}
 <div class="main-container">
 
+    {% comment %} {% if flag %}  {% endcomment %}
     <!-- Panel de resultados: donde se muestra la respuesta generada -->
     <div class="results-container">
         <h2>Casos de Prueba Generados</h2>
         
         <!-- Área para mostrar los casos generados -->
-        <div class="test-cases-container">
-            <div class="test-case">
-                <div class="overflow-auto">{{ respuesta|safe }}</div>
+
+        {% for case in casos_prueba %}
+            <div class="test-cases-container">
+                <div class="test-case">
+                    <div class="overflow-auto" id="respuesta-generada">
+                        <strong>{{ case.testcase.nombre|safe }}</strong><br>
+                        <div style="text-align: left;">
+                            <strong>ID: </strong>{{ case.testcase.use_id|safe }}<br>
+                            <strong>URL:</strong>{{ case.testcase.url|safe }}<br>
+                            <strong>Pasos a seguir:</strong>
+                            
+                                {% for paso in case.pasos  %}
+                                <li>{{ paso.pasos|safe }}</li>
+                                {% endfor %}
+                            
+                            <strong>Resultado esperado:</strong>{{ case.testcase.resultado_esperado|safe }}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            <p></p>
+        {% endfor %}
     </div>
+    {% comment %} {% endif %} {% endcomment %}
 
     <!-- Panel de generación de casos de prueba con botones y entrada -->
     <div class="generator-panel">
@@ -86,5 +105,3 @@
         }
     </script>
 {% endblock %}
-
-

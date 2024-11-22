@@ -108,6 +108,10 @@ def procesar_html(respuesta_chatgpt):
 
         # Concatenar el contenido del HTML al prompt
         prompt = texto_prompt + "\n\n" + contenido_html
+        # print("💩"*20)
+        # print(prompt)
+        # print("💩"*20)
+        
     else:
         return "No hay archivos HTML en la carpeta para procesar."
 
@@ -188,19 +192,23 @@ def procesar_html(respuesta_chatgpt):
         {"role": "assistant", "content": "La respuesta generada debe ser exclusivamente un JSON con los casos de prueba en el formato solicitado, sin explicaciones adicionales."},
         {"role": "assistant", "content": respuesta_chatgpt},  
         {"role": "user", "content": "Identifica todos los elementos HTML interactivos y genera el JSON para los casos de prueba basados en estos elementos, siguiendo estrictamente el formato indicado."},
-        {"role": "assistant", "content": "Si generas un campo input_value, asegurate de darle los datos a ingresar, ya que este campo no ddebe estar vacio o nulo"}, 
+        {"role": "assistant", "content": "Si generas un campo input_value, asegurate de darle los datos a ingresar, ya que este campo no ddebe estar vacio o nulo"}   
     ]
 
     # Realizar la solicitud a OpenAI
     response = openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=mensaje,
         temperature=0.0
     )
 
+    # print(respuesta_chatgpt)
+
     # Obtener la respuesta de OpenAI
     respuesta = response.choices[0].message.content
-    print("Este es el mensaje que entrega la respuesta combinada de casos de prueba:          ",respuesta)
+
+    # print(respuesta)
+
     return respuesta
 
 
