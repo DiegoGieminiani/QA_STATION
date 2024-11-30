@@ -6,10 +6,26 @@ import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .process_manual_test_cases import process_manual_test_cases  # Importamos la función que ejecuta las pruebas
+import urllib.parse
+
+actionCategories = {
+    'navigation': ['click', 'scroll_to_element', 'switch_tab', 'back', 'forward', 'navigate_to_url', 'refresh'],
+    'forms': ['enter_data', 'select', 'check_checkbox', 'clear_field', 'select_radio_button', 'submit_form'],
+    'alerts': ['accept_alert', 'confirm_alert', 'prompt_alert', 'enter_prompt', 'alert_is_present', 'dismiss_alert'],
+    'keyboard_mouse': ['send_keys', 'drag_and_drop', 'context_click', 'double_click', 'click_and_hold', 'hover', 'release', 'scroll'],
+    'javascript': ['execute_script', 'change_element_style', 'get_element_property', 'scroll_into_element'],
+    'data_extraction': ['extract_text', 'extract_attribute', 'extract_dropdown_options', 'extract_links', 'extract_list_items', 'extract_table_data'],
+    'verifications': ['verify_text', 'verify_url', 'verify_attribute_value', 'verify_element_has_child', 'verify_element_presence', 'verify_element_selected']
+}
+
+
 
 def main_page(request):
     print("Vista main_page llamada")
-    return render(request, 'functional_tests/main.html')
+    context = {
+        'range': range(1, 4)  # Esto generará [1, 2, 3]
+    }
+    return render(request, 'functional_tests/main.html', context)
 
 # Ruta que ejecuta las pruebas manualmente desde un formulario
 @csrf_exempt
@@ -21,10 +37,15 @@ def run_manual_test(request):
     global manual_test_results  # Usamos una lista global para almacenar los resultados
 
     if request.method == 'POST':
+
         try:
             # Obtener los datos del cuerpo de la solicitud como JSON
             body_unicode = request.body.decode('utf-8')
             parameters = json.loads(body_unicode)
+            print("😶‍🌫️"*50)
+            print(body_unicode)
+            print("😶"*50)
+            print(parameters)
 
             # Validación inicial para verificar estructura mínima del JSON
             if not parameters or not isinstance(parameters, list):
@@ -66,7 +87,7 @@ def run_manual_test(request):
 
         except json.JSONDecodeError:
             logging.error("Error al decodificar el JSON del cuerpo de la solicitud.")
-            return JsonResponse({'error': 'JSON mal formado en la solicitud.'}, status=400)
+            return JsonResponse({'error': 'JSON mal formado en la solicitud Y EL PICO.'}, status=400)
 
         except Exception as e:
             logging.error(f"Error procesando las pruebas manuales: {str(e)} - Datos recibidos: {parameters}")

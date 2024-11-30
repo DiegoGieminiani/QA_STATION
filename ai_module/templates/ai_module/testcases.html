@@ -57,9 +57,12 @@
 
         <!-- Contenedor para los tres últimos botones en una fila -->
         <div class="button-row mt-3">
-            <form action="{% url 'ai_module:ejecutar_html_processor' project_id=project_id %}" method="post" onsubmit="mostrarLoader()">
+            <form action="{% url 'ai_module:ejecutar_html_processor' project_id=project_id %}" method="post" >
                 {% csrf_token %}
-                <input type="hidden" name="respuesta" value="{{ respuesta }}">
+                <input type="hidden" name="respuesta" value="{{ casos_prueba }}">
+                <script>console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                console.log("{{casos_prueba}}");</script>
+
                 <button type="submit" class="btn btn-secondary">Ejecutar HTML Processor</button>
             </form>
 

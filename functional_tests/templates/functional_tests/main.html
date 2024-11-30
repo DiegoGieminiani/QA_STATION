@@ -14,10 +14,16 @@
     <div class="sidebar-fixed">
         <h2>Pruebas</h2>
         <div id="testList">
-            <div class="test-item active" id="test-1" onclick="showTest(1)">
+            {% comment %} <div class="test-item active" id="test-1" onclick="showTest(1)">
                 <input type="text" value="Prueba 1" class="test-name" oninput="updateTestName(1, this.value)">
                 <button type="button" class="delete-btn" onclick="RemoveTestTest(1)">✖</button>
-            </div>
+            </div> {% endcomment %}
+            {% for i in range %}
+                <div id="test-{{ i }}"  class="test-item active" >
+                    <span type="text" class="test-name">Prueba {{ i }}</span>
+                    <button class="delete-btn" onclick="removeTest({{ i }})">✖</button>
+                </div>
+            {% endfor %}
             <button type="button" id="addTestBtn" onclick="addTest()">+ Añadir Prueba</button>
         </div>
     </div>

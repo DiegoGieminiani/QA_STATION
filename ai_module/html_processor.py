@@ -87,6 +87,8 @@ def procesar_respuesta_chatgpt(respuesta_chatgpt):
 
 # Función para procesar el HTML y generar el JSON basado en la respuesta de ChatGPT
 def procesar_html(respuesta_chatgpt):
+    print("RESULTADO ESPERADO\n\n\n\n\n\n\n")
+    print(respuesta_chatgpt)
     # Pedir el texto (Prompt)
     texto_prompt = "Identifica todos los elementos HTML con los que el usuario debe interactuar y para que se cumplan a los casos de prueba."
 

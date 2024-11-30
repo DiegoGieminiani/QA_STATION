@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 import markdown2
 from django.http import JsonResponse
 from django.http import HttpResponse
-from .TestCases import process_chat_request, guardar_en_bd
+from .TestCases import process_chat_request
 from .html_processor import procesar_respuesta_chatgpt, procesar_html
 from .json_processor import procesar_y_enviar_json, guardar_functional_test
 from user_projects.models import Project
@@ -95,26 +95,39 @@ def ejecutar_html_processor(request, project_id):
         respuesta_chatgpt = request.POST.get('respuesta')
         proyecto = get_object_or_404(Project, id=project_id, user=request.user)
         print("✅*20")
+        print("RESPUESTA GPT 1")
         print (respuesta_chatgpt)
         print("✅*20")
         
         # Llama a procesar_html() y guarda el resultado en una variable
-        print(respuesta_chatgpt)
-        respuesta_chatgpt = procesar_html(respuesta_chatgpt)
-        # print (respuesta_chatgpt)
-        respuesta_chatgpt = respuesta_chatgpt.strip('```json').strip('```').strip()
-        # print (respuesta_chatgpt)
-        respuesta_chatgpt = json.loads(respuesta_chatgpt)
-        # print (respuesta_chatgpt)
+        resultado_procesado = procesar_html(respuesta_chatgpt)
+        print("RESPUESTA PROCESAR HTML")
 
+        print (resultado_procesado)
+        print("✅*20")
+
+        respuesta_chatgpt = resultado_procesado.strip('```json').strip('```').strip()
+        print("RESPUESTA STRIPEAO")
+
+        print (respuesta_chatgpt)
+        print("✅*20")
+        respuesta_chatgpt = json.loads(respuesta_chatgpt)
+        print("RESPUESTA JSON")
+
+        print (respuesta_chatgpt)
+        print("✅*20")
         for data in respuesta_chatgpt:
+            print("DATA\n\n\n\n\n\n\n")
+
+            print(data)
+            print("✅*20")
             url = data["url"]
             new_FunctionalTest = FunctionalTest(
                 url = url,
                 project = proyecto
             )
             new_FunctionalTest.save()
-            print("Se guardo en Functional Test 👌"*52)
+            # print("Se guardo en Functional Test 👌"*52)
             for _action in data["actions"]:
                 try:
                     action = _action["action"]
@@ -132,7 +145,7 @@ def ejecutar_html_processor(request, project_id):
                     input_value= _action["input_value"]
                 except:
                     input_value= ""
-                print("✔️🟩"*50)
+                # print("✔️🟩"*50)
                 new_Action = Action(
                     action = action,
                     element_type = element_type,
@@ -142,12 +155,12 @@ def ejecutar_html_processor(request, project_id):
                     #Pendiente para ver 
                     paso_id = None
                 ).save()
-                print("Se guardo en Action Correctamente")
+                # print("Se guardo en Action Correctamente")
 
         # Devuelve un mensaje indicando que se ha ejecutado el proceso
         return render(request, 'ai_module/testcases.html', {
             'mensaje': 'Se ha ejecutado todo el proceso.',
-            'respuesta': respuesta_chatgpt,
+            'respuesta': resultado_procesado,
             'resultado_procesado': resultado_procesado,  # Incluye el resultado en el HTML
             'project_id': project_id,  # Asegúrate de incluir project_id
             'flag' : True 
@@ -157,7 +170,7 @@ def ejecutar_html_processor(request, project_id):
     # Si no es POST, asegúrate de devolver el contenido previo
     return render(request, 'ai_module/testcases.html',{
             'mensaje': 'Se ha ejecutado todo el proceso.',
-            'respuesta': respuesta_chatgpt,
+            'respuesta': resultado_procesado,
             'resultado_procesado': resultado_procesado,  # Incluye el resultado en el HTML
             'project_id': project_id,  # Asegúrate de incluir project_id
             'flag' : True 

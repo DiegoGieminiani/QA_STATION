@@ -18,7 +18,7 @@ const actionCategories = {
     'data_extraction': ['extract_text', 'extract_attribute', 'extract_dropdown_options', 'extract_links', 'extract_list_items', 'extract_table_data'],
     'verifications': ['verify_text', 'verify_url', 'verify_attribute_value', 'verify_element_has_child', 'verify_element_presence', 'verify_element_selected']
 };
-// Función para validar si la URL es válida
+//Función para validar si la URL es válida
 function isValidUrl(string) {
     try {
         new URL(string);

@@ -4,8 +4,6 @@ import openai
 from dotenv import load_dotenv
 from django.conf import settings
 from .html_processor import procesar_respuesta_chatgpt
-from .models import TestCase
-from user_projects.models import Project
 
 
 #Cargar variable de entorno
@@ -43,6 +41,7 @@ Asegúrate de que cada caso de prueba esté claramente separado y siga el format
     {"role": "system", "content": "El ID que generas debe ser representativo y  no debe exeder los 5 caracteres"}
 
 ]
+
 
 
 
@@ -87,6 +86,8 @@ def process_chat_request(request):
             # Obtiene la respuesta de ChatGPT
             respuesta_chatgpt = completion.choices[0].message.content
 
+            # Imprime la respuesta para verificar
+            print(f"Respuesta obtenida: {respuesta_chatgpt}")
 
             # Llama a la función para procesar la respuesta
             procesar_respuesta_chatgpt(respuesta_chatgpt)
@@ -98,45 +99,3 @@ def process_chat_request(request):
             return None
         
     return None
-
-def json_to_markdown(respuesta_chatgpt):
-    prompt ="Transforma este json a un documento de casos de prueba, no debes añadir ni modificar la informacio que hay dentro del json, solo transformarlo"
-    mensaje= prompt +respuesta_chatgpt
-    response = openai.chat.completions.create(
-        model="gpt-4o",
-        messages=mensaje,
-        temperature=0.0
-    )
-
-    documento = response.choices[0].message.content
-
-
-def guardar_en_bd(respuesta_chatgpt, mensaje_usuario, proyecto_id):
-    """
-    Guarda las variables respuesta_chatgpt y mensaje_usuario en la base de datos
-    asociadas al proyecto específico identificado por proyecto_id.
-    """
-    try:
-        # Obtener el proyecto específico por su ID
-        proyecto = Project.objects.filter(id=proyecto_id).first()
-        
-        if not proyecto:
-            print("No se encontró un proyecto con el ID proporcionado.")
-            return False
-        
-        # Crear una nueva instancia de TestCase y asignar los valores
-        nuevo_test_case = TestCase(
-            actions_data=respuesta_chatgpt, 
-            name=mensaje_usuario,
-            project=proyecto  # Asociar el proyecto específico
-        )
-        
-        # Guardar la instancia en la base de datos
-        nuevo_test_case.save()
-        
-        print("Caso de prueba guardado correctamente en la base de datos asociado al proyecto.")
-        return True
-    except Exception as e:
-        print(f"Error al guardar en la base de datos: {e}")
-        return False
-#tengo un error
