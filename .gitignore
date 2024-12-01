@@ -19,5 +19,4 @@ env/
 # MacOS
 .DS_Store
 
-!**/migrations/__init__.py
 

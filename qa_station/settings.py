@@ -148,11 +148,11 @@ WSGI_APPLICATION = 'qa_station.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qa_station',  # El nombre de la base de datos que creaste
-        'USER': 'root',  # O el nombre del usuario que prefieras
-        'PASSWORD': 'Casino1980',  # La contraseña que usaste para el usuario de MySQL
-        'HOST': 'localhost',  # Normalmente 'localhost' si MySQL está en la misma máquina
-        'PORT': '3306',  # El puerto predeterminado de MySQL
+        'NAME': os.getenv('MYSQL_NAME'),  # El nombre de la base de datos que creaste
+        'USER': os.getenv('MYSQL_USER'),  # O el nombre del usuario que prefieras
+        'PASSWORD': os.getenv('MYSQL_PASS'),  # La contraseña que usaste para el usuario de MySQL
+        'HOST': os.getenv('MYSQL_HOST'),  # Normalmente 'localhost' si MySQL está en la misma máquina
+        'PORT': os.getenv('MYSQL_PORT'),  # El puerto predeterminado de MySQL
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',  # Para soporte completo de caracteres UTF-8
