@@ -1,22 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados de las Pruebas</title>
+{% extends 'base.html' %}
+{% load static %}
 
-    <!-- Incluir el CSS específico de results -->
-    <link rel="stylesheet" href="{% static 'results.css' %}">
-</head>
-<body>
-    <div class="container">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'results.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header>
         <h1>Resultados de las Pruebas</h1>
-        
-        <!-- Tabla de resultados -->
+        <p>Resumen detallado de las pruebas ejecutadas.</p>
+    </header>
+
+    <!-- Tabla de resultados -->
+    <section>
+        <h2>Resultados Detallados</h2>
         <table>
             <thead>
                 <tr>
+                    <th>ID Prueba</th>
                     <th>Acción</th>
                     <th>Elemento</th>
                     <th>Status</th>
@@ -27,8 +29,9 @@
             <tbody>
                 {% for result in results %}
                 <tr>
+                    <td>{{ result.functional_test.id }}</td>
                     <td>{{ result.action }}</td>
-                    <td>{{ result.element }}</td>
+                    <td>{{ result.element|default_if_none:"-" }}</td>
                     <td class="{{ result.status|lower }}">{{ result.status }}</td>
                     <td>{{ result.input_value|default_if_none:"-" }}</td>
                     <td>{{ result.error|default_if_none:"-" }}</td>
@@ -36,26 +39,38 @@
                 {% endfor %}
             </tbody>
         </table>
+    </section>
 
-        <!-- Gráficos -->
+    <section>
+        <h2>Resumen Global</h2>
+        <div>
+            <p>Total de Pruebas: {{ total_tests }}</p>
+            <p>Éxitos: {{ success_count }}</p>
+            <p>Fallos: {{ fail_count }}</p>
+        </div>
+    </section>
+
+    <!-- Gráficos -->
+    <section>
+        <h2>Visualización de Resultados</h2>
         <div class="chart-container">
             <canvas id="statusPieChart"></canvas>
         </div>
         <div class="chart-container">
             <canvas id="actionBarChart"></canvas>
         </div>
-    </div>
+    </section>
+</div>
 
-    <!-- Incluir la librería de Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Incluir la librería de Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Incluir el JS específico de results -->
-    <script src="{% static 'results.js' %}"></script>
+<!-- Incluir el archivo JS -->
+<script src="{% static 'js/results.js' %}"></script>
 
-    <script>
-        // Pasar los datos desde Django al archivo JS
-        const results = {{ results|safe }};
-        initializeCharts(results);
-    </script>
-</body>
-</html>
+<script>
+    // Pasar los datos desde Django al archivo JS
+    const results = JSON.parse('{{ results_json|escapejs }}');
+    initializeCharts(results);
+</script>
+{% endblock %}

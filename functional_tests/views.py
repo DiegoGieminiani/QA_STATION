@@ -1,102 +1,128 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from functional_tests.runner import TestRunner
-from functional_tests.api.serializers import TestRunSerializer
-import logging
-import json
 from django.views.decorators.csrf import csrf_exempt
-from .process_manual_test_cases import process_manual_test_cases  # Importamos la función que ejecuta las pruebas
+from functional_tests.models import FunctionalTest, Result
+from functional_tests.api.serializers import TestRunSerializer
+import json
+import logging
+
 
 def main_page(request):
+    """
+    Renderiza la página principal de functional_tests.
+    """
     print("Vista main_page llamada")
     return render(request, 'functional_tests/main.html')
 
-# Ruta que ejecuta las pruebas manualmente desde un formulario
+
 @csrf_exempt
 def run_manual_test(request):
     """
-    Ruta que genera el formato JSON de pruebas manuales y las ejecuta.
-    Acumula las pruebas ejecutadas y genera un reporte con todas las pruebas.
+    Maneja la ejecución de pruebas manuales.
+    Guarda los datos en la base de datos y devuelve un reporte acumulado.
     """
-    global manual_test_results  # Usamos una lista global para almacenar los resultados
-
     if request.method == 'POST':
         try:
-            # Obtener los datos del cuerpo de la solicitud como JSON
+            # Decodificar el cuerpo de la solicitud
             body_unicode = request.body.decode('utf-8')
             parameters = json.loads(body_unicode)
 
-            # Validación inicial para verificar estructura mínima del JSON
-            if not parameters or not isinstance(parameters, list):
-                return JsonResponse({'error': 'El formato de datos proporcionado no es válido.'}, status=400)
+            # Validar que el JSON contenga pruebas válidas
+            serializer = TestRunSerializer(data=parameters, many=True)
+            if serializer.is_valid():
+                validated_data = serializer.validated_data
 
-            # Validación adicional para comprobar que cada prueba tiene 'url' y 'actions'
-            for test in parameters:
-                if 'url' not in test or 'actions' not in test:
-                    return JsonResponse({'error': 'Cada prueba debe contener "url" y "actions".'}, status=400)
+                # Procesar y guardar pruebas en la base de datos
+                individual_results = []
+                global_results = []
 
-            # Inicializar manual_test_results si no existe previamente
-            if 'manual_test_results' not in globals():
-                manual_test_results = []
+                for test in validated_data:
+                    # Crear registro de FunctionalTest
+                    functional_test = FunctionalTest.objects.create(
+                        json_data=test,
+                        origin="Manual",
+                        execution="In Progress"
+                    )
 
-            # Validar el JSON usando el serializer para múltiples pruebas
-            try:
-                serializer = TestRunSerializer(data=parameters, many=True)
-                if serializer.is_valid():
-                    # Procesar las pruebas manuales
-                    formatted_tests = process_manual_test_cases(serializer.validated_data)
+                    # Simular ejecución de prueba y obtener resultados
+                    actions = test.get("actions", [])
+                    url = test.get("url")
+                    results = []  # Aquí llamarías a `TestRunner` o lógica manual
 
-                    # Acumular los resultados de cada prueba manual en la lista global
-                    manual_test_results.extend(formatted_tests['individual_results'])
+                    for action in actions:
+                        result = {
+                            "action": action.get("action"),
+                            "status": "success",  # Simulación del resultado
+                            "element": action.get("value"),
+                            "input_value": action.get("input_value", None),
+                            "error": None
+                        }
+                        results.append(result)
 
-                    # Acumular los resultados globales
-                    global_results = [{'id': test.get('id', 'Desconocido'), 'result': test.get('result', 'Desconocido')} for test in manual_test_results]
+                    # Crear resultado global
+                    global_status = "success" if all(res["status"] == "success" for res in results) else "fail"
+                    result_record = Result.objects.create(
+                        status=global_status,
+                        description=f"Resultados de la prueba manual para {url}",
+                        test_results=results,
+                        functional_test=functional_test
+                    )
 
-                    # Devolver el reporte acumulado con resultados individuales y globales
-                    return JsonResponse({
-                        'individual_results': manual_test_results,
-                        'global_results': global_results  # Global con todas las pruebas ejecutadas
-                    }, status=200)
-                else:
-                    # Devolver errores de validación en caso de que el JSON no sea válido
-                    return JsonResponse({'errors': serializer.errors}, status=400)
-            except Exception as e:
-                logging.error(f"Error en la validación del serializer: {str(e)}")
-                return JsonResponse({'error': 'Error durante la validación de las pruebas.'}, status=500)
+                    # Actualizar estado de ejecución
+                    functional_test.execution = "Completed"
+                    functional_test.result = result_record
+                    functional_test.save()
+
+                    # Agregar a las listas de resultados acumulados
+                    individual_results.extend(results)
+                    global_results.append({"id": functional_test.id, "result": global_status})
+
+                # Devolver reporte
+                return JsonResponse({
+                    "individual_results": individual_results,
+                    "global_results": global_results
+                }, status=200)
+            else:
+                # Errores de validación
+                return JsonResponse({"errors": serializer.errors}, status=400)
 
         except json.JSONDecodeError:
-            logging.error("Error al decodificar el JSON del cuerpo de la solicitud.")
-            return JsonResponse({'error': 'JSON mal formado en la solicitud.'}, status=400)
+            return JsonResponse({"error": "JSON mal formado en la solicitud."}, status=400)
 
         except Exception as e:
-            logging.error(f"Error procesando las pruebas manuales: {str(e)} - Datos recibidos: {parameters}")
-            return JsonResponse({'error': f'Error interno: {str(e)}'}, status=500)
+            logging.error(f"Error procesando pruebas manuales: {str(e)}")
+            return JsonResponse({"error": f"Error interno: {str(e)}"}, status=500)
 
-    # Si el método no es POST, devolvemos un error
-    return JsonResponse({'error': 'Método inválido. Debes usar POST.'}, status=405)
+    return JsonResponse({"error": "Método inválido. Debes usar POST."}, status=405)
 
-# Mostrar los resultados de las pruebas
+
+
+
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+
 def results_page(request):
-    # Asegúrate de que `results` contiene datos válidos
-    results = [
-        {
-            "action": "click",
-            "element": "//h5[text()='Forms']",
-            "status": "success"
-        },
-        {
-            "action": "click",
-            "element": "//span[text()='Practice Form']",
-            "status": "success"
-        },
-        {
-            "action": "enter_data",
-            "element": "firstName",
-            "status": "success",
-            "input_value": "John"
-        }
-        # Más resultados...
-    ]
-    
-    # Pasar los resultados al template
-    return render(request, 'functional_tests/results.html', {'results': results})
+    try:
+        # Obtener resultados desde la base de datos
+        results = Result.objects.select_related("functional_test").all()
+
+        # Preparar datos para la plantilla
+        results_data = []
+        for result in results:
+            test_results = result.test_results
+            print(f"Test Results for FunctionalTest {result.functional_test.id}: {test_results}")
+            for action_result in test_results:
+                results_data.append({
+                    "functional_test": result.functional_test.id,
+                    "action": action_result.get("action"),
+                    "element": action_result.get("element"),
+                    "status": action_result.get("status"),
+                    "input_value": action_result.get("input_value", None),
+                    "error": action_result.get("error", None)
+                })
+
+        print(f"Results Data Prepared: {results_data}")
+        return render(request, "functional_tests/results.html", {"results": results_data})
+    except Exception as e:
+        logging.error(f"Error al cargar los resultados: {str(e)}")
+        return render(request, "functional_tests/results.html", {"results": []})
