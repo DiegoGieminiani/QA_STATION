@@ -19,4 +19,5 @@ env/
 # MacOS
 .DS_Store
 
-
+#auth AWS
+*.pem
