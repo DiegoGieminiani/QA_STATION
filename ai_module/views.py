@@ -8,6 +8,20 @@ from .json_processor import procesar_y_enviar_json, guardar_functional_test
 from user_projects.models import Project
 from .forms import TestCaseForm
 import json
+from .models import TestCase
+
+def view_cases(request, project_id):
+    print('\n'*10)
+    mensajes = TestCase.objects.filter(project_id = project_id)
+    print(mensajes)
+    print('\n'*10)
+
+    # Si no es POST, asegúrate de devolver el contenido previo
+    return render(request, 'ai_module/testcases.html', {
+        'respuesta': [mensaje.actions_data for mensaje in mensajes],  # Muestra la respuesta previa
+        'mensaje': [mensaje.actions_data for mensaje in mensajes],
+        'project_id': project_id  # Incluye project_id en todas las respuestas
+    })
 
 def ejecutar_html_processor(request, project_id):
     respuesta_chatgpt = None
@@ -27,12 +41,14 @@ def ejecutar_html_processor(request, project_id):
             'project_id': project_id  # Asegúrate de incluir project_id
         })
     
+    mensaje = TestCase.objects.filter(project_id = project_id)
     # Si no es POST, asegúrate de devolver el contenido previo
     return render(request, 'ai_module/testcases.html', {
-        'respuesta': respuesta_chatgpt,  # Muestra la respuesta previa
-        'mensaje': 'No se ha ejecutado aún el proceso.',
+        'respuesta': mensaje.actions_data,  # Muestra la respuesta previa
+        'mensaje': mensaje.actions_data,
         'project_id': project_id  # Incluye project_id en todas las respuestas
     })
+
 
 def enviar_json_view(request, project_id):
     if request.method == 'POST':
