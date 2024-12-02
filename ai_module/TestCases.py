@@ -48,6 +48,7 @@ Asegúrate de que cada caso de prueba esté claramente separado y siga el format
 def process_chat_request(request):
     # Inicializa un historial vacío si no existe
     global historial
+
     
     try:
         cantidad= int(request.POST.get('cantidad'))
@@ -55,6 +56,7 @@ def process_chat_request(request):
         cantidad= 6
     cantidad_mensaje= f"La cantidad de casos de prueba a generar es de {cantidad}"
     
+
     if 'archivo' in request.FILES:
         archivo = request.FILES['archivo']
 
@@ -74,11 +76,13 @@ def process_chat_request(request):
                     texto_pdf += lector_pdf.pages[pagina].extract_text()
 
             # Añade el contenido del PDF al historial
+
             historial.append({"role": "assistant", "content": f"Este es el contenido del archivo PDF:\n{texto_pdf} {cantidad_mensaje}"})
 
     mensaje_usuario = request.POST.get('mensaje')
 
     if mensaje_usuario:
+
         historial.append({"role": "user", "content": f"Genera el documento de casos de prueba en base a esta URL:\n{mensaje_usuario} {cantidad_mensaje}, la cual debe ir en el documento generado"})
 
         try:
