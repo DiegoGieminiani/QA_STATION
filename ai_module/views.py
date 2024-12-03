@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 import markdown2
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -61,42 +62,24 @@ def enviar_json_view(request, project_id):
             print(request.body)
             data = json.loads(request.body)
             resultado_procesado = data.get('resultado_procesado', '')
-
+            
             # Procesa y envía el JSON (lógica proporcionada previamente)
             resultado = procesar_y_enviar_json(resultado_procesado)
             
-            # Determina el mensaje según el resultado del envío
+            # Determina el mensaje y la URL de redirección según el resultado
             if resultado:
-                mensaje = "JSON enviado exitosamente."
-                
-                # Guardar en la base de datos
-                json_data = resultado_procesado  # Asegúrate de que este sea el JSON correcto
-                origen = "Automatico"  # Origen identificativo
-                proyecto_id = get_object_or_404(Project, id=project_id, user=request.user)  # Debes enviar esto en el JSON
-                test_case_id = data.get('test_case_id')  # Debes enviar esto en el JSON
-
-                if not proyecto_id or not test_case_id:
-                    return JsonResponse({
-                        'mensaje': "Faltan los IDs de proyecto o caso de prueba para guardar en la base de datos."
-                    }, status=400)
-
-                guardado_exitoso = guardar_functional_test(json_data, origen, proyecto_id, test_case_id)
-                
-                if guardado_exitoso:
-                    mensaje += " Datos guardados exitosamente en la base de datos."
-                else:
-                    mensaje += " Error al guardar los datos en la base de datos."
-
+                return JsonResponse({
+                    'mensaje': "JSON enviado exitosamente.",
+                    'redirect_url': reverse('functional_tests:results_page')  # Asume que 'result_page' es el nombre de tu URL
+                })
             else:
-                mensaje = "Error al enviar el JSON."
-
-            return JsonResponse({'mensaje': mensaje})
-
+                return JsonResponse({'mensaje': "Error al enviar el JSON."})
+                
         except json.JSONDecodeError:
             return JsonResponse({'mensaje': "Error al decodificar el JSON enviado."}, status=400)
         except Exception as e:
             return JsonResponse({'mensaje': f"Error inesperado: {e}"}, status=500)
-
+    
     return JsonResponse({'mensaje': 'Método no permitido.'}, status=405)
 
 

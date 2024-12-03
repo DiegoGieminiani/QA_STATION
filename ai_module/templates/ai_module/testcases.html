@@ -67,7 +67,7 @@
         function enviarJSON() {
             // Obtén el resultado procesado del HTML
             const resultadoProcesado = document.getElementById("resultadoProcesado").value;
-    
+            
             fetch("{% url 'ai_module:enviar_json' project_id=project_id %}", {
                 method: "POST",
                 headers: {
@@ -79,6 +79,13 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById("mensaje").innerText = data.mensaje;
+                // Aquí está el cambio principal - revisamos si hay URL de redirección
+                if (data.redirect_url) {
+                    // Esperamos un segundo para que el usuario vea el mensaje de éxito
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 1000);
+                }
             })
             .catch(error => {
                 console.error("Error al enviar JSON:", error);
