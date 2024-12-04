@@ -14,17 +14,11 @@ from .models import TestCase
 def view_cases(request, project_id):
     print('\n'*10)
     mensajes = TestCase.objects.filter(project_id = project_id)
-    
-    for mensaje in mensajes:
-        print('mensaje')
-        msg = mensaje.actions_data.replace('\n', '<br>')
-        msg+= '\n'
 
-  
     # Si no es POST, asegúrate de devolver el contenido previo
     return render(request, 'ai_module/testcases.html', {
-        'respuesta': msg,  # Muestra la respuesta previa
-        'mensaje': [mensaje.actions_data for mensaje in mensajes],
+        'respuesta': [mensaje.actions_data.replace('\n', '<br>') for mensaje in mensajes],
+        'mensaje': [mensaje.actions_data.replace('\n', '<br>') for mensaje in mensajes],
         'project_id': project_id  # Incluye project_id en todas las respuestas
     })
 
